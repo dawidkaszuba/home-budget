@@ -5,15 +5,21 @@ import {HttpClientModule} from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { SecurityComponent } from './security/security.component';
 import { JwtClientService } from './security/jwt-client.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SecurityComponent
+    SecurityComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    AppRoutingModule
   ],
   providers: [JwtClientService],
   bootstrap: [AppComponent]
