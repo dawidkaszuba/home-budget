@@ -3,13 +3,13 @@
         <mat-toolbar color="primary">Login Page</mat-toolbar>
         <form xLayoutAlign="stretch" fxLayout="column" >
             <mat-form-field>
-            <input matInput placeholder="username">
+            <input [(ngModel)]="username" name="username" matInput placeholder="username">
             </mat-form-field>
         
             <mat-form-field>
-                <input matInput type="password" placeholder="password">
+                <input [(ngModel)]="password" name="password" matInput type="password" placeholder="password">
             </mat-form-field>
-            <button mat-raised-button type="submit">Login</button>
+            <button (click)="getAccessToken()" mat-raised-button type="submit">Login</button>
         </form>
     </mat-card>    
 </div>
