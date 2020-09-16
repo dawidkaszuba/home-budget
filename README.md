@@ -1,5 +1,7 @@
 # HomeBudget
 
+Angular client application for my REST API written in SpringBoot: https://github.com/dawidkaszuba/homeBudget. Both projects are still in progress. 
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.0.
 
 ## Development server
