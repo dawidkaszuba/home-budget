@@ -15,6 +15,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { FormsModule } from '@angular/forms';
+import { MainPageComponent } from './main-page/main-page.component';
 
 
 
@@ -23,7 +24,8 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     SecurityComponent,
-    LoginComponent
+    LoginComponent,
+    MainPageComponent
   ],
   imports: [
     BrowserModule,
