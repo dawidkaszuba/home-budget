@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtClientService } from '../security/jwt-client.service';
+import { AuthRequest } from 'src/model/AuthRequest';
+
 
 @Component({
   selector: 'app-login',
@@ -18,13 +20,8 @@ export class LoginComponent implements OnInit {
 
   public getAccessToken() {
 
-    let authRequest  = {
-      "username": this.username,
-      "password": this.password
-    };
-
+    const authRequest: AuthRequest = new AuthRequest(this.username, this.password);
     const resp = this.service.generateToken(authRequest);
-    resp.subscribe(data => console.log("Token: " + data.token));
+    resp.subscribe(data => console.log('Token: ' + data.token));
   }
-
 }
