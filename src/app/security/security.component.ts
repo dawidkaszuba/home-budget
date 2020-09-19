@@ -21,7 +21,6 @@ export class SecurityComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAccessToken(this.authRequest);
-    this.getBalance(this.token, this.id);
   }
 
   public getAccessToken(authRequest) {
@@ -29,10 +28,4 @@ export class SecurityComponent implements OnInit {
     resp.subscribe(data => this.token = data.token);
     resp.subscribe(data => this.id = data.id);
   }
-
-  public getBalance(token, userid) {
-    const resp = this.service.getBalance(token, userid);
-    resp.subscribe(balance => console.log('Balance: ' + balance.value));
-  }
-
 }

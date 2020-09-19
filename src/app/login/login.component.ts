@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
     const authRequest: AuthRequest = new AuthRequest(this.username, this.password);
     const resp = this.service.generateToken(authRequest);
     resp.subscribe(data => localStorage.setItem('token', data.token));
+    resp.subscribe(data => localStorage.setItem('userid', data.id));
     this.router.navigate(['/mainpage']);
   }
 }

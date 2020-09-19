@@ -16,10 +16,12 @@ export class JwtClientService {
     return this.http.post<TokenResponse>('http://localhost:8080/authenticate', request, { responseType: 'json' });
   }
 
-  public getBalance(token, userid): Observable<Balance> {
-    const tokenStr = 'Bearer ' + token;
+  public getBalance(): Observable<Balance> {
+    const tokenStr = 'Bearer ' + localStorage.getItem('key');
+    const userid = localStorage.getItem('userid');
     const headers = new HttpHeaders().set('Authorization', tokenStr);
     return this.http.get<Balance>('http://localhost:8080/users/' + userid + '/balance', { headers, responseType: 'json' });
   }
 }
+
 
