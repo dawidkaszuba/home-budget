@@ -17,6 +17,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule } from '@angular/forms';
 import { MainPageComponent } from './main-page/main-page.component';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { BalanceService } from './balance.service';
 
 
 
@@ -42,7 +43,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
     FormsModule,
   ],
   providers: [JwtClientService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService],
+    JwtHelperService, BalanceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

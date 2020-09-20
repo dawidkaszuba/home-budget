@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BalanceService } from '../balance.service';
+import { JwtClientService } from '../security/jwt-client.service';
 
 @Component({
   selector: 'app-main-page',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private balanceService: BalanceService) { }
+
+   currentBalance;
 
   ngOnInit(): void {
+    this.showBalance();
   }
 
+  public showBalance(): void{
+    this.balanceService.getBalance().subscribe(balance => this.currentBalance = balance.value);
+  }
 }
