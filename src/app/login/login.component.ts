@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { JwtClientService } from '../security/jwt-client.service';
+import { JwtClientService } from '../jwt/jwt-client.service';
 import { AuthRequest } from 'src/model/AuthRequest';
 import { Router } from '@angular/router';
 
