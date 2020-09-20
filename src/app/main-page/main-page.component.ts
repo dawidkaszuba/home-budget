@@ -25,6 +25,6 @@ export class MainPageComponent implements OnInit {
   }
 
   public showAllExpensesForCurrentMonth(): void{
-    this.expenseService.getAllIncomes().subscribe(expenses => this.expenses = expenses);
+    this.expenseService.getAllExpenses().subscribe(expenses => this.expenses = expenses);
   }
 }
