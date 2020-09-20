@@ -1,2 +1,6 @@
 <p>main-page works!</p>
 <p>Balance: {{currentBalance}}</p>
+<p>Expenses: </p>
+<ul *ngFor="let expense of expenses">
+    <li>{{expense.amount}} {{expense.note}}</li>
+</ul>

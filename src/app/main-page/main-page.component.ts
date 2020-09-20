@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BalanceService } from '../balance.service';
-import { JwtClientService } from '../security/jwt-client.service';
+import { ExpenseService } from '../expense.service';
+import { Expense } from 'src/model/Expense';
 
 @Component({
   selector: 'app-main-page',
@@ -9,15 +10,21 @@ import { JwtClientService } from '../security/jwt-client.service';
 })
 export class MainPageComponent implements OnInit {
 
-  constructor(private balanceService: BalanceService) { }
+  constructor(private balanceService: BalanceService, private expenseService: ExpenseService) { }
 
-   currentBalance;
+  currentBalance;
+  expenses: Array<Expense>;
 
   ngOnInit(): void {
     this.showBalance();
+    this.showAllExpensesForCurrentMonth();
   }
 
   public showBalance(): void{
     this.balanceService.getBalance().subscribe(balance => this.currentBalance = balance.value);
+  }
+
+  public showAllExpensesForCurrentMonth(): void{
+    this.expenseService.getAllIncomes().subscribe(expenses => this.expenses = expenses);
   }
 }

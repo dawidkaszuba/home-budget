@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { MainPageComponent } from './main-page/main-page.component';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { BalanceService } from './balance.service';
+import { ExpenseService } from './expense.service';
 
 
 
@@ -43,7 +44,7 @@ import { BalanceService } from './balance.service';
     FormsModule,
   ],
   providers: [JwtClientService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService, BalanceService],
+    JwtHelperService, BalanceService, ExpenseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
