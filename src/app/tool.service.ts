@@ -8,10 +8,6 @@ export class ToolService {
 
   constructor() { }
 
-  public getTokenFromLocalStorage(): string {
-    return'Bearer ' + localStorage.getItem('token');
-  }
-
   public getUserIdFromLocalStorage(): string {
     return localStorage.getItem('userid');
   }
