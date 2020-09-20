@@ -14,7 +14,7 @@ export class JwtClientService {
   constructor(private http: HttpClient, private toolService: ToolService) { }
 
   public generateToken(request: AuthRequest): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>('http://localhost:8080/authenticate', request, {headers: {skip: 'true'}, responseType: 'json'});
+    return this.http.post<TokenResponse>('http://localhost:8080/authenticate', request, { responseType: 'json' });
   }
 
   public getBalance(): Observable<Balance> {

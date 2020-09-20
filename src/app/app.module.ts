@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { SecurityComponent } from './security/security.component';
 import { JwtClientService } from './security/jwt-client.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -28,7 +27,6 @@ import { TokenInterceptor } from './TokenInterceptor';
 @NgModule({
   declarations: [
     AppComponent,
-    SecurityComponent,
     LoginComponent,
     MainPageComponent
   ],
