@@ -13,9 +13,11 @@ export class MainPageComponent implements OnInit {
   constructor(private balanceService: BalanceService, private expenseService: ExpenseService) { }
 
   currentBalance;
+  currentSavings;
   expenses: Array<Expense>;
   amount: number;
   note: string;
+
 
   ngOnInit(): void {
     this.showBalance();
@@ -29,4 +31,6 @@ export class MainPageComponent implements OnInit {
   public showAllExpensesForCurrentMonth(): void{
     this.expenseService.getAllExpenses().subscribe(expenses => this.expenses = expenses);
   }
+
+  public showCurrentSavings
 }
