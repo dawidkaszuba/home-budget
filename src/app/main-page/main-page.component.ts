@@ -14,6 +14,8 @@ export class MainPageComponent implements OnInit {
 
   currentBalance;
   expenses: Array<Expense>;
+  amount: number;
+  note: string;
 
   ngOnInit(): void {
     this.showBalance();
