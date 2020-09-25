@@ -12,7 +12,6 @@ export class BalanceService {
   constructor(private httpService: HttpClient, private toolService: ToolService) { }
 
   public getBalance(): Observable<Balance> {
-    //const headers = new HttpHeaders().set('Authorization', this.toolService.getTokenFromLocalStorage());
     const params = new HttpParams().set('from', this.toolService.getFirstDayOfCurrentMonth())
     .set('to', this.toolService.getLastDayOfCurrentMonth());
 
