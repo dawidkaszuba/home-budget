@@ -1,10 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { SecurityComponent } from './security/security.component';
-import { JwtClientService } from './security/jwt-client.service';
+import { JwtClientService } from './jwt/jwt-client.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
@@ -19,6 +18,8 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { BalanceService } from './balance.service';
 import { ExpenseService } from './expense.service';
+import { ToolService } from './tool.service';
+import { TokenInterceptor } from './TokenInterceptor';
 
 
 
@@ -26,7 +27,6 @@ import { ExpenseService } from './expense.service';
 @NgModule({
   declarations: [
     AppComponent,
-    SecurityComponent,
     LoginComponent,
     MainPageComponent
   ],
@@ -44,7 +44,8 @@ import { ExpenseService } from './expense.service';
     FormsModule,
   ],
   providers: [JwtClientService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService, BalanceService, ExpenseService],
+    JwtHelperService, BalanceService, ExpenseService, ToolService,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
