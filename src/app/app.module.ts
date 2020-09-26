@@ -20,6 +20,7 @@ import { BalanceService } from './balance.service';
 import { ExpenseService } from './expense.service';
 import { ToolService } from './tool.service';
 import { TokenInterceptor } from './TokenInterceptor';
+import { SavingsService } from './savings.service';
 
 
 
@@ -44,7 +45,7 @@ import { TokenInterceptor } from './TokenInterceptor';
     FormsModule,
   ],
   providers: [JwtClientService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService, BalanceService, ExpenseService, ToolService,
+    JwtHelperService, BalanceService, ExpenseService, ToolService, SavingsService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })

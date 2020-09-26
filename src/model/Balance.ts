@@ -1,3 +1,3 @@
-export interface Balance{
+export class Balance{
     value: string;
 }

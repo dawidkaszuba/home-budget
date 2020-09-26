@@ -1,6 +1,29 @@
 <h1>Clear Home Budget</h1>
 <p>Balance: {{currentBalance}}</p>
+<br>
 <p>Expenses: </p>
 <ul *ngFor="let expense of expenses">
     <li>{{expense.amount}} {{expense.note}}</li>
 </ul>
+<br>
+
+<p>SAVINGS {{currentSavings}}</p>
+
+
+<br>
+<p>add expense</p>
+
+<form>
+    <p>
+      <label>amount</label> 
+      <input [(ngModel)]="amount" name="amount">
+   </p>
+   <p>
+     <label>note</label> 
+     <input [(ngModel)]="note" name="note">
+   </p>
+   <p>
+     <button>add</button>
+   </p>
+</form>
+
