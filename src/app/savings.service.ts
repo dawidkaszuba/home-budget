@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ToolService } from './tool.service';
 import { Observable } from 'rxjs';
+import { Savings } from 'src/model/Savings';
 
 @Injectable({
   providedIn: 'root'

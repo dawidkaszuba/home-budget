@@ -1,4 +1,4 @@
-interface Savings {
+export interface Savings {
 
      id: string;
      amount: string;
