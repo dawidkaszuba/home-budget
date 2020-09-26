@@ -25,6 +25,7 @@ export class MainPageComponent implements OnInit {
   ngOnInit(): void {
     this.showBalance();
     this.showAllExpensesForCurrentMonth();
+    this.showCurrentSavings();
   }
 
   public showBalance(): void{
@@ -36,7 +37,8 @@ export class MainPageComponent implements OnInit {
   }
 
   public showCurrentSavings(): void {
-    this.savingsService.getCurrentSavings().subscribe(savings => this.currentSavings = savings.amount);
+
+    this.savingsService.getCurrentSavings().subscribe(savingsFromAPI => this.currentSavings = savingsFromAPI.amount);
   }
 
 }
