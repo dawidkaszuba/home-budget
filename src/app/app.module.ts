@@ -21,6 +21,11 @@ import { ExpenseService } from './expense.service';
 import { ToolService } from './tool.service';
 import { TokenInterceptor } from './TokenInterceptor';
 import { SavingsService } from './savings.service';
+import { RootNavComponent } from './root-nav/root-nav.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 
 
@@ -29,7 +34,8 @@ import { SavingsService } from './savings.service';
   declarations: [
     AppComponent,
     LoginComponent,
-    MainPageComponent
+    MainPageComponent,
+    RootNavComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +49,10 @@ import { SavingsService } from './savings.service';
     MatCardModule,
     MatToolbarModule,
     FormsModule,
+    LayoutModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
   ],
   providers: [JwtClientService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService, BalanceService, ExpenseService, ToolService, SavingsService,
