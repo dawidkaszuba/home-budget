@@ -1,14 +1,14 @@
 <h1>Clear Home Budget</h1>
-<p>Balance: {{currentBalance}}</p>
-<br>
-<p>Expenses: </p>
-<ul *ngFor="let expense of expenses">
+
+<div fxLayout="row" fxLayoutAlign="space-around center" >
+  <p>Balance: {{currentBalance}}</p>
+  <p>Savings: {{currentSavings}}</p>
+  <div><p>Expenses: </p>
+    <ul *ngFor="let expense of expenses">
     <li>{{expense.amount}} {{expense.note}}</li>
-</ul>
-<br>
-
-<p>SAVINGS {{currentSavings}}</p>
-
+    </ul>
+  </div>
+</div>
 
 <br>
 <p>add expense</p>
