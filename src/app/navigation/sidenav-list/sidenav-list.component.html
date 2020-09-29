@@ -1,11 +1,15 @@
 <mat-nav-list>
     <a mat-list-item routerLink="/mainpage" (click)="onSidenavClose()">
-        <mat-icon>home</mat-icon><span class="nav-caption">home</span>
+        <mat-icon>home</mat-icon><span class="nav-caption">Home</span>
     </a>
-    <a mat-list-item routerLink="/mainpage" (click)="onSidenavClose()">
-        <mat-icon>home</mat-icon><span class="nav-caption">home</span>
+    <a mat-list-item routerLink="newexpense" (click)="onSidenavClose()">
+        <mat-icon>indeterminate_check_box</mat-icon><span class="nav-caption">new expense</span>
     </a>
-    <a mat-list-item routerLink="/mainpage" (click)="onSidenavClose()">
-        <mat-icon>home</mat-icon><span class="nav-caption">home</span>
+    <a mat-list-item routerLink="/newincome" (click)="onSidenavClose()">
+        <mat-icon>add_circle_outline</mat-icon><span class="nav-caption">new income</span>
     </a>
+    <a mat-list-item routerLink="/#" (click)="onSidenavClose()">
+        <mat-icon>power_settings_new</mat-icon><span class="nav-caption">log out</span>
+    </a>
+    
 </mat-nav-list>

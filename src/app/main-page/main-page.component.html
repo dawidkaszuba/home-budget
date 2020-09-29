@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="space-around center" >
+<div fxLayout="row" fxLayoutAlign="space-around center" fxLayout.xs="column">
   <p>Balance: {{currentBalance}}</p>
   <p>Savings: {{currentSavings}}</p>
   <div><p>Expenses: </p>
@@ -8,20 +8,5 @@
   </div>
 </div>
 
-<br>
-<p>add expense</p>
 
-<form>
-    <p>
-      <label>amount</label> 
-      <input [(ngModel)]="amount" name="amount">
-   </p>
-   <p>
-     <label>note</label> 
-     <input [(ngModel)]="note" name="note">
-   </p>
-   <p>
-     <button>add</button>
-   </p>
-</form>
 
