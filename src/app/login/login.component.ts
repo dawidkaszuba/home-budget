@@ -19,12 +19,12 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public getAccessToken() {
+  public getAccessToken(): void {
 
     const authRequest: AuthRequest = new AuthRequest(this.username, this.password);
     const resp = this.service.generateToken(authRequest);
     resp.subscribe(data => localStorage.setItem('token', data.token));
     resp.subscribe(data => localStorage.setItem('userid', data.id));
-    this.router.navigate(['/mainpage']);
+    this.router.navigate(['mainpage']);
   }
 }

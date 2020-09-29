@@ -10,26 +10,25 @@
     </div>
     <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
         <ul fxLayout fxLayoutGap="15px" class="navigation-items">
-            <li>
-                <a routerLink="/mainpage">
-                    <mat-icon>home</mat-icon>
-                </a>
+            <li *ngIf="authService.isAuthenticated()">
+                <a routerLink="/mainpage">home</a>
             </li>
-            <li>
-                <a routerLink="newexpense">
-                    <mat-icon>indeterminate_check_box</mat-icon>
-                </a>
+            <li *ngIf="authService.isAuthenticated()">
+                <a routerLink="newexpense">new expense</a>
             </li>
-            <li>
-                <a routerLink="newincome">
-                    <mat-icon>add_circle_outline</mat-icon>
-                </a>
+            <li *ngIf="authService.isAuthenticated()">
+                <a routerLink="newincome">new income</a>
             </li>
-            <li>
-                <a routerLink="logout">
+            <li *ngIf="authService.isAuthenticated()">
+                <button  mat-icon-button (click)="logOut()">
                     <mat-icon>power_settings_new</mat-icon>
-                </a>
+                </button>
             </li>
+            <li *ngIf="!authService.isAuthenticated()">
+                <a routerLink="login">
+                    <mat-icon>login</mat-icon>
+                </a>
+            </li> 
         </ul>
     </div>
 </mat-toolbar>
