@@ -21,15 +21,20 @@ import { ExpenseService } from './expense.service';
 import { ToolService } from './tool.service';
 import { TokenInterceptor } from './TokenInterceptor';
 import { SavingsService } from './savings.service';
-
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { HeaderComponent } from './navigation/header/header.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    MainPageComponent
+    MainPageComponent,
+    HeaderComponent,
+    SidenavListComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +48,11 @@ import { SavingsService } from './savings.service';
     MatCardModule,
     MatToolbarModule,
     FormsModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule
+
   ],
   providers: [JwtClientService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService, BalanceService, ExpenseService, ToolService, SavingsService,
