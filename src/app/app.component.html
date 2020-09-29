@@ -1,1 +1,18 @@
-<router-outlet></router-outlet>
+<<<<<<< HEAD
+
+<mat-sidenav-container>
+    <mat-sidenav #sidenav role="navigation">
+        <app-sidenav-list (sidenavClose)="sidenav.close()"></app-sidenav-list>
+    </mat-sidenav>    
+ <mat-sidenav-content>
+    <app-header (sidenavToggle)="sidenav.toggle()" ></app-header>
+    <div>
+        <router-outlet></router-outlet>
+    </div>
+ </mat-sidenav-content>
+</mat-sidenav-container>
+=======
+<app-root-nav>
+    <router-outlet></router-outlet> 
+</app-root-nav>
+>>>>>>> 48007269ada5ec3ec8a4ed1a3771ba1567026777
