@@ -8,15 +8,15 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 export class SidenavListComponent implements OnInit {
 
   @Output()
-  sideNavClose = new EventEmitter();
+  sidenavClose = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  public onSidenacClose = () => {
-    this.sideNavClose.emit();
+  public onSidenavClose = () => {
+    this.sidenavClose.emit();
   }
 
 }
