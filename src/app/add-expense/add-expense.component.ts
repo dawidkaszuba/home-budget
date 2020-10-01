@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { TagService } from '../service/tag.service';
 
 @Component({
   selector: 'app-add-expense',
@@ -10,7 +11,7 @@ export class AddExpenseComponent implements OnInit {
 
   contactForm: FormGroup;
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder, private tagService: TagService){
     this.contactForm = fb.group({
       amount : '',
       note : '',
@@ -19,6 +20,11 @@ export class AddExpenseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllTags('POSITIVE');
+  }
+
+  public getAllTags(kind: string): void {
+    this.tagService.getAllTags(kind).subscribe(tags => console.log(tags));
   }
 
 }
