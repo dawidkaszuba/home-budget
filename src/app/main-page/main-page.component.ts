@@ -30,7 +30,6 @@ export class MainPageComponent implements OnInit {
 
   public showBalance(): void{
     this.balanceService.getBalance().subscribe(balance => this.currentBalance = balance.value);
-    this.balanceService.getBalance().subscribe(balance => console.log(balance));
   }
 
   public showAllExpensesForCurrentMonth(): void{

@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainPageComponent } from './main-page/main-page.component';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { BalanceService } from './balance.service';
@@ -53,7 +53,9 @@ import { AddExpenseComponent } from './add-expense/add-expense.component';
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
-    MatListModule
+    MatListModule,
+    FormsModule,
+    ReactiveFormsModule,
 
   ],
   providers: [JwtClientService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

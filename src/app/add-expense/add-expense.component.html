@@ -1,1 +1,17 @@
-<p>add-expense works!</p>
+<form fxLayout="column" [formGroup]="contactForm">
+    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+      <mat-form-field fxFlex>
+        <input matInput type="text" placeholder="AMOUNT" formControlName="amount">
+      </mat-form-field>
+
+      <mat-form-field fxFlex>
+        <input matInput type="text" placeholder="NOTE" formControlName="note">
+      </mat-form-field>
+    </div>
+
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <input matInput  type="text"  placeholder="TAG" formControlName="tag">
+      </mat-form-field>
+    </div>
+  </form>

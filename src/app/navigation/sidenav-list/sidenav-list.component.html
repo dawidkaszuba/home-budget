@@ -2,7 +2,7 @@
     <a mat-list-item routerLink="/mainpage" (click)="onSidenavClose()" *ngIf="authService.isAuthenticated()">
         <mat-icon>home</mat-icon><span class="nav-caption">Home</span>
     </a>
-    <a mat-list-item routerLink="newexpense" (click)="onSidenavClose()" *ngIf="authService.isAuthenticated()">
+    <a mat-list-item routerLink="addExpense" (click)="onSidenavClose()" *ngIf="authService.isAuthenticated()">
         <mat-icon>indeterminate_check_box</mat-icon><span class="nav-caption">new expense</span>
     </a>
     <a mat-list-item routerLink="/newincome" (click)="onSidenavClose()" *ngIf="authService.isAuthenticated()">

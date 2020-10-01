@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-add-expense',
@@ -7,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddExpenseComponent implements OnInit {
 
-  constructor() { }
+  contactForm: FormGroup;
+
+  constructor(private fb: FormBuilder){
+    this.contactForm = fb.group({
+      amount : '',
+      note : '',
+      tag : ''
+    });
+  }
 
   ngOnInit(): void {
   }
