@@ -16,12 +16,10 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </div>
 
-    <div class="input-row">
       <mat-form-field fxFlex>
         <mat-label>tag</mat-label>
-        <mat-select  name="tag" formControlName="tagSelectedValue">
+        <mat-select name="tag" formControlName="tagSelectedValue">
           <mat-option *ngFor="let tag of tags" [value]="tag.id">
             {{tag.name}}
           </mat-option>
