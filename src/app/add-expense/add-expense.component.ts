@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { TagService } from '../service/tag.service';
 import { PlannedCashFlowService } from '../service/planned-cash-flow.service';
 import { PlannedCashFlow } from 'src/model/PlannedCashFlow';
+import { Tag } from 'src/model/Tag';
 
 @Component({
   selector: 'app-add-expense',
@@ -18,13 +19,15 @@ export class AddExpenseComponent implements OnInit {
     this.contactForm = fb.group({
       amount : '',
       note : '',
-      tag : '',
+      tags : '',
       flows: '',
-      flowSelectedValue: ''
+      flowSelectedValue: '',
+      tagSelectedValue: ''
     });
   }
 
   flows: PlannedCashFlow[];
+  tags: Tag[];
 
   ngOnInit(): void {
     this.getAllTags('NEGATIVE');
@@ -33,7 +36,7 @@ export class AddExpenseComponent implements OnInit {
   }
 
   public getAllTags(kind: string): void {
-    this.tagService.getAllTags(kind).subscribe(tags => console.log(tags));
+    this.tagService.getAllTags(kind).subscribe(tagsFromAPI => this.tags = tagsFromAPI);
   }
 
   public getAllPlannedCashFlows(): void {

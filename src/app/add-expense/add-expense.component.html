@@ -11,16 +11,21 @@
 
     <div class="input-row">
       <mat-form-field fxFlex>
-        <input matInput  type="text"  placeholder="TAG" formControlName="tag">
+        <mat-label>Planned cash flow</mat-label>
+        <mat-select  name="flow" formControlName="flowSelectedValue">
+          <mat-option *ngFor="let flow of flows" [value]="flow.id">
+            {{flow.name}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 
     <div class="input-row">
       <mat-form-field fxFlex>
-        <mat-label>Planned cash flow</mat-label>
-        <mat-select  name="flow" formControlName="flowSelectedValue">
-          <mat-option *ngFor="let flow of flows" [value]="flow.id">
-            {{flow.name}}
+        <mat-label>tag</mat-label>
+        <mat-select  name="tag" formControlName="tagSelectedValue">
+          <mat-option *ngFor="let tag of tags" [value]="tag.id">
+            {{tag.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
