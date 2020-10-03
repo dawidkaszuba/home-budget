@@ -12,10 +12,10 @@ export class PlannedCashFlowService {
   constructor(private httpService: HttpClient, private toolService: ToolService) { }
 
   public getAllPlannedCashFlow(): Observable<Array<PlannedCashFlow>> {
-    // const params = new HttpParams()
-    // .set('startDate', this.toolService.getFirstDayOfCurrentMonth())
-    // .set('endDate', this.toolService.getLastDayOfCurrentMonth());
+    const params = new HttpParams()
+    .set('startDate', this.toolService.getFirstDayOfCurrentMonth())
+    .set('endDate', this.toolService.getLastDayOfCurrentMonth());
     return this.httpService.get<Array<PlannedCashFlow>>('http://localhost:8080/users/' +
-    this.toolService.getUserIdFromLocalStorage() + '/plannedCashFlows');
+    this.toolService.getUserIdFromLocalStorage() + '/plannedCashFlows', {params});
   }
 }

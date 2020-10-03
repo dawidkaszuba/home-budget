@@ -19,6 +19,6 @@ export class ToolService {
 
   public getLastDayOfCurrentMonth(): string {
     const date = new Date();
-    return new Date(date.getFullYear(), date.getMonth() + 1, 2).toISOString().split('T')[0];
+    return new Date(date.getFullYear(), date.getMonth() + 1).toISOString().split('T')[0];
   }
 }
