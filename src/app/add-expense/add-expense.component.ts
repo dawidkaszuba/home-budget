@@ -4,6 +4,8 @@ import { TagService } from '../service/tag.service';
 import { PlannedCashFlowService } from '../service/planned-cash-flow.service';
 import { PlannedCashFlow } from 'src/model/PlannedCashFlow';
 import { Tag } from 'src/model/Tag';
+import { ExpenseService } from '../expense.service';
+import { Expense } from 'src/model/Expense';
 
 @Component({
   selector: 'app-add-expense',
@@ -15,7 +17,8 @@ export class AddExpenseComponent implements OnInit {
   contactForm: FormGroup;
 
   constructor(private fb: FormBuilder, private tagService: TagService,
-              private plannedCashFlowService: PlannedCashFlowService){
+              private plannedCashFlowService: PlannedCashFlowService,
+              private expenseService: ExpenseService){
     this.contactForm = fb.group({
       amount : '',
       note : '',
@@ -41,6 +44,10 @@ export class AddExpenseComponent implements OnInit {
 
   public getAllPlannedCashFlows(): void {
     this.plannedCashFlowService.getAllPlannedCashFlow().subscribe(plannedCashFlows => this.flows = plannedCashFlows);
+  }
+
+  public saveExpense(expense: Expense): void {
+    this.expenseService.saveExpense(expense);
   }
 
 }
