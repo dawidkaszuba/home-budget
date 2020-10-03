@@ -27,6 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { AddExpenseComponent } from './add-expense/add-expense.component';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import { AddExpenseComponent } from './add-expense/add-expense.component';
     MatListModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSelectModule,
 
   ],
   providers: [JwtClientService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

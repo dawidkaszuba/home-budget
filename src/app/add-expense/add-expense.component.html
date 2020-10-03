@@ -14,4 +14,16 @@
         <input matInput  type="text"  placeholder="TAG" formControlName="tag">
       </mat-form-field>
     </div>
+
+    <div class="input-row">
+      <mat-form-field fxFlex>
+        <mat-label>Planned cash flow</mat-label>
+        <mat-select  name="flow" formControlName="flowSelectedValue">
+          <mat-option *ngFor="let flow of flows" [value]="flow.id">
+            {{flow.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button type="submit">add</button>
   </form>
