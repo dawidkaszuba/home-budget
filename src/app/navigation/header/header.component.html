@@ -14,7 +14,7 @@
                 <a routerLink="/mainpage">home</a>
             </li>
             <li *ngIf="authService.isAuthenticated()">
-                <a routerLink="newexpense">new expense</a>
+                <a routerLink="addExpense">new expense</a>
             </li>
             <li *ngIf="authService.isAuthenticated()">
                 <a routerLink="newincome">new income</a>
