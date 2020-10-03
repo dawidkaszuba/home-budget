@@ -20,7 +20,7 @@ export class AddExpenseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllTags('POSITIVE');
+    this.getAllTags('NEGATIVE');
   }
 
   public getAllTags(kind: string): void {
