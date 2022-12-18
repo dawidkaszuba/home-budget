@@ -25,7 +25,7 @@
       <tbody>
         <tr th:each = "expense: ${expenses}">
             <td th:text = "${expense.time}"></td>
-            <td th:text = "${expense.category}"></td>
+            <td th:text = "${expense.category.name}"></td>
             <td th:text = "${expense.value}"></td>
         </tr>
       </tbody>
