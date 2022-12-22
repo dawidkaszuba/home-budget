@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import pl.dawidkaszuba.homebudget.model.CategoryType;
 import pl.dawidkaszuba.homebudget.model.Expense;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
@@ -33,7 +34,7 @@ public class ExpenseController {
     public String addNewExpense(Model model) {
         Expense expense = new Expense();
         model.addAttribute("expense", expense);
-        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("categories", categoryService.findByCategoryType(CategoryType.EXPENSE));
         return "create_expense";
     }
 
@@ -49,7 +50,7 @@ public class ExpenseController {
     public String updateStudent(@PathVariable Long id, Model model) {
         if(expenseService.getExpenseById(id).isPresent()) {
             model.addAttribute("expense", expenseService.getExpenseById(id).get());
-            model.addAttribute("categories", categoryService.getAllCategories());
+            model.addAttribute("categories", categoryService.findByCategoryType(CategoryType.EXPENSE));
             return "update_expense";
         }
         return "redirect:expenses"; //todo zrobić obsługę błędów

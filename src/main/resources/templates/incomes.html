@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>incomes management</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Home budget management system</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/operations}">Operations</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class = "container">
+  <div class = "row">
+    <h1>List incomes</h1>
+  </div>
+  <div class = "row">
+    <div class = "col-lg-3">
+      <a th:href = "@{/incomes/new}" class="btn btn-primary btn-sm mb-3">Add income</a>
+    </div>
+  </div>
+  <table class = "table table-striped table-bordered">
+    <thead class = "table-dark">
+    <tr>
+      <th>create time</th>
+      <th>last edit time</th>
+      <th>category</th>
+      <th>value</th>
+      <th>actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each = "income: ${incomes}">
+      <td th:text = "${#temporals.format(income.createTime, 'dd-MM-yyyy HH:mm')}"></td>
+      <td th:text = "${#temporals.format(income.lastEditTime, 'dd-MM-yyyy HH:mm')}"></td>
+      <td th:text = "${income.category.name}"></td>
+      <td th:text = "${income.value}"></td>
+      <td>
+        <a th:href = "@{/incomes/edit/{id}(id=${income.id})}"
+           class = "btn btn-primary">update</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
