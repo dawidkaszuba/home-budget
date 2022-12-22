@@ -1,5 +1,5 @@
-insert into categories(name) values("paliwo");
-insert into categories(name) values("żywność");
+insert into categories(name) values('paliwo');
+insert into categories(name) values('żywność');
 
 insert into users(first_name, last_name) values("Dawid", "Kaszuba");
 

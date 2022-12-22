@@ -8,4 +8,6 @@ import java.util.List;
 @Service
 public interface ExpenseService {
     List<Expense> getAllExpenses();
+
+    Expense save(Expense expense);
 }

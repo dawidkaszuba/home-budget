@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Add expense</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+            <h1 class = "text-center">Add new expense</h1>
+            <div class = "card=body">
+                <form th:action="@{/expenses}" th:object="${expense}" method="post">
+                    <div class = "form-group">
+                        <label>value</label>
+                        <input
+                          type = "text"
+                          name = "value"
+                          th:field = "${expense.value}"
+                          placeholder = "amount of the expense"
+                          class = "form-control"
+                        />
+                    </div>
+                    <div class="box-footer">
+                      <button type="submit" class="btn btn-primary">
+                        Submit
+                      </button>
+                    </div>
+                </form>
+            </div>
+          </div>
+      </div>
+    </div>
+</body>
+</html>
