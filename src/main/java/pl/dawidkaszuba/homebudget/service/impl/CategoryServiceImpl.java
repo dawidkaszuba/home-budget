@@ -2,6 +2,7 @@ package pl.dawidkaszuba.homebudget.service.impl;
 
 import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.Category;
+import pl.dawidkaszuba.homebudget.model.CategoryType;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 
@@ -19,4 +20,10 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
+
+    @Override
+    public List<Category> findByCategoryType(CategoryType type) {
+        return categoryRepository.findByCategoryType(type);
+    }
+
 }

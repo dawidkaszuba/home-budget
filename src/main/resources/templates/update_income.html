@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Update income</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Home budget management system</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/operations}">Operations</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+      <h1 class = "text-center">Update income</h1>
+      <div class = "card=body">
+        <form th:action="@{/incomes/{id} (id=${income.id})}" th:object="${income}" method="POST">
+          <div class = "form-group">
+            <label>value</label>
+            <input
+                    type = "text"
+                    name = "value"
+                    th:field = "${income.value}"
+                    class = "form-control"
+            />
+          </div>
+          <div class = "form-group">
+            <label>category</label>
+            <select th:field="${income.category}">
+              <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
+              </option>
+            </select>
+          </div>
+          <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
