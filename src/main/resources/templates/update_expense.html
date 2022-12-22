@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Expenses management</title>
+  <title>Update expense</title>
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -34,38 +34,35 @@
   </div>
 </nav>
 
-<div class = "container">
-  <div class = "row">
-    <h1>List Expenses</h1>
-  </div>
-  <div class = "row">
-    <div class = "col-lg-3">
-      <a th:href = "@{/expenses/new}" class="btn btn-primary btn-sm mb-3">Add expense</a>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+      <h1 class = "text-center">Update expense</h1>
+      <div class = "card=body">
+        <form th:action="@{/expenses/{id} (id=${expense.id})}" th:object="${expense}" method="POST">
+          <div class = "form-group">
+            <label>value</label>
+            <input
+              type = "text"
+              name = "value"
+              th:field = "${expense.value}"
+              class = "form-control"
+            />
+          </div>
+          <div class = "form-group">
+            <label>category</label>
+            <select th:field="${expense.category}">
+              <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
+              </option>
+            </select>
+          </div>
+          <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-    <table class = "table table-striped table-bordered">
-      <thead class = "table-dark">
-        <tr>
-          <th>create time</th>
-          <th>last edit time</th>
-          <th>category</th>
-          <th>value</th>
-          <th>actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each = "expense: ${expenses}">
-            <td th:text = "${#temporals.format(expense.time, 'dd-MM-yyyy HH:mm')}"></td>
-            <td th:text = "${#temporals.format(expense.lastEditTime, 'dd-MM-yyyy HH:mm')}"></td>
-            <td th:text = "${expense.category.name}"></td>
-            <td th:text = "${expense.value}"></td>
-            <td>
-                <a th:href = "@{/expenses/edit/{id}(id=${expense.id})}"
-                class = "btn btn-primary">update</a>
-            </td>
-        </tr>
-      </tbody>
-    </table>
 </div>
 </body>
 </html>

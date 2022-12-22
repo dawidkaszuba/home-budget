@@ -20,6 +20,7 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime time;
+    private LocalDateTime lastEditTime;
     @ManyToOne
     private User user;
     @ManyToOne

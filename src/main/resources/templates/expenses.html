@@ -9,6 +9,30 @@
         crossorigin="anonymous">
 </head>
 <body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Home budget management system</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/expenses}">Expenses</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/incomes}">Incomes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/operations}">Operations</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
 <div class = "container">
   <div class = "row">
@@ -16,13 +40,14 @@
   </div>
   <div class = "row">
     <div class = "col-lg-3">
-      <a th:hrref = "@{/expenses/new}" class="btn btn-primary btn-sm mb-3">Add expense</a>
+      <a th:href = "@{/expenses/new}" class="btn btn-primary btn-sm mb-3">Add expense</a>
     </div>
   </div>
     <table class = "table table-striped table-bordered">
       <thead class = "table-dark">
         <tr>
-          <th>date</th>
+          <th>create time</th>
+          <th>last edit time</th>
           <th>category</th>
           <th>value</th>
           <th>actions</th>
@@ -30,9 +55,14 @@
       </thead>
       <tbody>
         <tr th:each = "expense: ${expenses}">
-            <td th:text = "${expense.time}"></td>
+            <td th:text = "${#temporals.format(expense.time, 'dd-MM-yyyy HH:mm')}"></td>
+            <td th:text = "${#temporals.format(expense.lastEditTime, 'dd-MM-yyyy HH:mm')}"></td>
             <td th:text = "${expense.category.name}"></td>
             <td th:text = "${expense.value}"></td>
+            <td>
+                <a th:href = "@{/expenses/edit/{id}(id=${expense.id})}"
+                class = "btn btn-primary">update</a>
+            </td>
         </tr>
       </tbody>
     </table>
