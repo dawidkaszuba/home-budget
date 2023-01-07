@@ -1,9 +1,10 @@
 package pl.dawidkaszuba.homebudget.service;
 
 import org.springframework.stereotype.Service;
-import pl.dawidkaszuba.homebudget.model.Expense;
 import pl.dawidkaszuba.homebudget.model.Income;
+import pl.dawidkaszuba.homebudget.model.BudgetUser;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +18,6 @@ public interface IncomeService {
     Optional<Income> getIncomeById(Long id);
 
     Income updateIncome(Income income);
+
+    Double getSumOfAllIncomesByUserAndTimeBetween(BudgetUser budgetUser, LocalDateTime startDateTime, LocalDateTime endDateTime);
 }

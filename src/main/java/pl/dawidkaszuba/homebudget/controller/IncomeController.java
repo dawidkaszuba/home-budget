@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import pl.dawidkaszuba.homebudget.model.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.CategoryType;
 import pl.dawidkaszuba.homebudget.model.Income;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
@@ -40,8 +41,11 @@ public class IncomeController {
 
     @PostMapping("/incomes")
     public String saveIncome(@ModelAttribute("income") Income income) {
-        income.setCreateTime(LocalDateTime.now());
+        income.setCreationTime(LocalDateTime.now());
         income.setLastEditTime(LocalDateTime.now());
+        BudgetUser user = new BudgetUser();
+        user.setId(1L);
+        income.setBudgetUser(user);
         incomeService.save(income);
         return "redirect:/incomes";
     }
