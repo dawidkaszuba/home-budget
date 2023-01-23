@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.Income;
 import pl.dawidkaszuba.homebudget.model.BudgetUser;
 import pl.dawidkaszuba.homebudget.repository.IncomeRepository;
+import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -15,14 +15,17 @@ import java.util.Optional;
 public class IncomeServiceImpl implements IncomeService {
 
     private final IncomeRepository incomeRepository;
+    private final BudgetUserService budgetUserService;
 
-    public IncomeServiceImpl(IncomeRepository incomeRepository) {
+    public IncomeServiceImpl(IncomeRepository incomeRepository, BudgetUserService budgetUserService) {
         this.incomeRepository = incomeRepository;
+        this.budgetUserService = budgetUserService;
     }
 
     @Override
-    public List<Income> getAllIncomes() {
-        return incomeRepository.findAll();
+    public List<Income> getAllIncomesByUser(String userName) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
+        return incomeRepository.findAllByBudgetUser(budgetUser);
     }
 
     @Override
@@ -50,9 +53,8 @@ public class IncomeServiceImpl implements IncomeService {
         Income expenseFromDb = getIncomeById(income.getId()).get();
         expenseFromDb.setCategory(income.getCategory());
         expenseFromDb.setValue(income.getValue());
-        income.setLastEditTime(LocalDateTime.now());
-        income.setCreationTime(expenseFromDb.getCreationTime());
-        return incomeRepository.save(income);
+        expenseFromDb.setLastEditTime(LocalDateTime.now());
+        return incomeRepository.save(expenseFromDb);
     }
 
     @Override

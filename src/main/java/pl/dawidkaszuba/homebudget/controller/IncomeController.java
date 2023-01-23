@@ -29,8 +29,8 @@ public class IncomeController {
     }
 
     @GetMapping("/incomes")
-    public String listIncomes(Model model) {
-        model.addAttribute("incomes", incomeService.getAllIncomes());
+    public String listIncomes(Model model, Principal principal) {
+        model.addAttribute("incomes", incomeService.getAllIncomesByUser(principal.getName()));
         return "incomes";
     }
 

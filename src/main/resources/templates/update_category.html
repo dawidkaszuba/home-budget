@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Aktualizuj kategorię</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="fragments/navbar"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+      <h1 class = "text-center">Aktualizuj kategorię</h1>
+      <div class = "card=body">
+        <form th:action="@{/categories/{id} (id=${category.id})}" th:object="${category}" method="POST">
+          <div class = "form-group">
+            <label>nazwa</label>
+            <input
+                    type = "text"
+                    name = "value"
+                    th:field = "${category.name}"
+                    class = "form-control"
+            />
+          </div>
+          <div class = "form-group">
+            <label>typ kategorii</label>
+            <select th:field="${category.categoryType}">
+              <option th:each="categoryType : ${categoryTypes}" th:value="${categoryType}" th:text="${categoryType}">
+              </option>
+            </select>
+          </div>
+          <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Aktualizuj</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
