@@ -6,6 +6,7 @@ import pl.dawidkaszuba.homebudget.model.BudgetUser;
 import pl.dawidkaszuba.homebudget.repository.IncomeRepository;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,11 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     public Income save(Income income) {
+        income.setCreationTime(LocalDateTime.now());
+        income.setLastEditTime(LocalDateTime.now());
+        BudgetUser user = new BudgetUser();
+        user.setId(1L);
+        income.setBudgetUser(user);
         return incomeRepository.save(income);
     }
 

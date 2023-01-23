@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.Income;
 import pl.dawidkaszuba.homebudget.model.BudgetUser;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
