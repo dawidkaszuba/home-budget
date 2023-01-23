@@ -2,15 +2,21 @@ package pl.dawidkaszuba.homebudget.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Local;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.BudgetUser;
+import pl.dawidkaszuba.homebudget.model.SecurityUser;
 import pl.dawidkaszuba.homebudget.model.Summary;
+import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
 import pl.dawidkaszuba.homebudget.service.HomeService;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
+import pl.dawidkaszuba.homebudget.service.JpaUserDetailsService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -18,16 +24,17 @@ public class HomeServiceImpl implements HomeService {
 
     private final ExpenseService expenseService;
     private final IncomeService incomeService;
+    private final BudgetUserService budgetUserService;
 
-    public HomeServiceImpl(ExpenseService expenseService, IncomeService incomeService) {
+    public HomeServiceImpl(ExpenseService expenseService, IncomeService incomeService, BudgetUserService budgetUserService) {
         this.expenseService = expenseService;
         this.incomeService = incomeService;
+        this.budgetUserService = budgetUserService;
     }
 
     @Override
-    public Summary getSummary(long userId) {
-        BudgetUser budgetUser = new BudgetUser();
-        budgetUser.setId(userId);
+    public Summary getSummary(String userName) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalDateTime startDateTimeAnnual = LocalDateTime.of(currentDateTime.getYear(), 1, 1, 0, 0);
         LocalDateTime endDateTimeAnnual = LocalDateTime.of(currentDateTime.getYear(), 12, 31, 23, 59);

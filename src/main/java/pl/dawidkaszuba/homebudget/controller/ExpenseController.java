@@ -6,11 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import pl.dawidkaszuba.homebudget.model.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.CategoryType;
 import pl.dawidkaszuba.homebudget.model.Expense;
+import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Controller
@@ -18,10 +21,12 @@ public class ExpenseController {
 
     private final ExpenseService expenseService;
     private final CategoryService categoryService;
+    private final BudgetUserService budgetUserService;
 
-    public ExpenseController(ExpenseService expenseService, CategoryService categoryService) {
+    public ExpenseController(ExpenseService expenseService, CategoryService categoryService, BudgetUserService budgetUserService) {
         this.expenseService = expenseService;
         this.categoryService = categoryService;
+        this.budgetUserService = budgetUserService;
     }
 
     @GetMapping("/expenses")
@@ -39,9 +44,11 @@ public class ExpenseController {
     }
 
     @PostMapping("/expenses")
-    public String saveExpense(@ModelAttribute("expense") Expense expense) {
+    public String saveExpense(@ModelAttribute("expense") Expense expense, Principal principal) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
         expense.setCreationTime(LocalDateTime.now());
         expense.setLastEditTime(LocalDateTime.now());
+        expense.setBudgetUser(budgetUser);
         expenseService.save(expense);
         return "redirect:/expenses";
     }

@@ -9,24 +9,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import pl.dawidkaszuba.homebudget.model.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.CategoryType;
 import pl.dawidkaszuba.homebudget.model.Income;
+import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
 
-import java.time.LocalDateTime;
+import java.security.Principal;
 
 @Controller
 public class IncomeController {
 
     private final IncomeService incomeService;
     private final CategoryService categoryService;
+    private final BudgetUserService budgetUserService;
 
-    public IncomeController(IncomeService incomeService, CategoryService categoryService) {
+    public IncomeController(IncomeService incomeService, CategoryService categoryService, BudgetUserService budgetUserService) {
         this.incomeService = incomeService;
         this.categoryService = categoryService;
+        this.budgetUserService = budgetUserService;
     }
 
     @GetMapping("/incomes")
-    public String listIncomes(Model model ) {
+    public String listIncomes(Model model) {
         model.addAttribute("incomes", incomeService.getAllIncomes());
         return "incomes";
     }
@@ -40,12 +43,9 @@ public class IncomeController {
     }
 
     @PostMapping("/incomes")
-    public String saveIncome(@ModelAttribute("income") Income income) {
-        income.setCreationTime(LocalDateTime.now());
-        income.setLastEditTime(LocalDateTime.now());
-        BudgetUser user = new BudgetUser();
-        user.setId(1L);
-        income.setBudgetUser(user);
+    public String saveIncome(@ModelAttribute("income") Income income, Principal principal) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        income.setBudgetUser(budgetUser);
         incomeService.save(income);
         return "redirect:/incomes";
     }
