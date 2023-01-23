@@ -1,6 +1,7 @@
 package pl.dawidkaszuba.homebudget.service.impl;
 
 import org.springframework.stereotype.Service;
+import pl.dawidkaszuba.homebudget.model.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.Expense;
 import pl.dawidkaszuba.homebudget.repository.ExpenseRepository;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
@@ -34,12 +35,17 @@ public class ExpenseServiceImpl implements ExpenseService {
         expenseFromDb.setCategory(expense.getCategory());
         expenseFromDb.setValue(expense.getValue());
         expense.setLastEditTime(LocalDateTime.now());
-        expense.setTime(expenseFromDb.getTime());
+        expense.setCreationTime(expenseFromDb.getCreationTime());
         return expenseRepository.save(expense);
     }
 
     @Override
     public Optional<Expense> getExpenseById(Long id) {
         return expenseRepository.findById(id);
+    }
+
+    @Override
+    public Double getSumOfAllExpensesByUserAndTimeBetween(BudgetUser budgetUser, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return expenseRepository.getSumOfValueByUserAndTimeBetween(budgetUser, startDateTime, endDateTime);
     }
 }

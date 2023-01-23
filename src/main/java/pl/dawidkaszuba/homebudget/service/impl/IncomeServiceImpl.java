@@ -2,6 +2,7 @@ package pl.dawidkaszuba.homebudget.service.impl;
 
 import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.Income;
+import pl.dawidkaszuba.homebudget.model.BudgetUser;
 import pl.dawidkaszuba.homebudget.repository.IncomeRepository;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
 
@@ -44,7 +45,12 @@ public class IncomeServiceImpl implements IncomeService {
         expenseFromDb.setCategory(income.getCategory());
         expenseFromDb.setValue(income.getValue());
         income.setLastEditTime(LocalDateTime.now());
-        income.setCreateTime(expenseFromDb.getCreateTime());
+        income.setCreationTime(expenseFromDb.getCreationTime());
         return incomeRepository.save(income);
+    }
+
+    @Override
+    public Double getSumOfAllIncomesByUserAndTimeBetween(BudgetUser budgetUser, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return incomeRepository.findSumOfValueByUserAndCreateTimeBetween(budgetUser, startDateTime, endDateTime);
     }
 }

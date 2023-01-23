@@ -40,7 +40,7 @@ public class ExpenseController {
 
     @PostMapping("/expenses")
     public String saveExpense(@ModelAttribute("expense") Expense expense) {
-        expense.setTime(LocalDateTime.now());
+        expense.setCreationTime(LocalDateTime.now());
         expense.setLastEditTime(LocalDateTime.now());
         expenseService.save(expense);
         return "redirect:/expenses";

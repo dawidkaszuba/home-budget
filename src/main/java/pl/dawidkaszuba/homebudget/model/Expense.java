@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -19,10 +18,10 @@ public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime time;
+    private LocalDateTime creationTime;
     private LocalDateTime lastEditTime;
     @ManyToOne
-    private User user;
+    private BudgetUser budgetUser;
     @ManyToOne
     private Category category;
     private double value;
