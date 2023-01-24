@@ -37,9 +37,6 @@ public class IncomeServiceImpl implements IncomeService {
     public Income save(Income income) {
         income.setCreationTime(LocalDateTime.now());
         income.setLastEditTime(LocalDateTime.now());
-        BudgetUser user = new BudgetUser();
-        user.setId(1L);
-        income.setBudgetUser(user);
         return incomeRepository.save(income);
     }
 

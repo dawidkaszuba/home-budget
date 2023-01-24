@@ -1,4 +1,5 @@
 insert into budget_user(first_name, last_name, user_name, password, roles) values('Dawid', 'Kaszuba', 'dkaszuba', '$2a$12$BpjOXITCwRiucibTA.5UEupmp6AaNKFDxiP2tDde.MvvPziSKSWgu', 'ROLE_ADMIN, ROLE_USER');
+insert into budget_user(first_name, last_name, user_name, password, roles) values('Franek', 'Kowalski', 'fkowalski', '$2a$12$qgWzpbD2l1HFbpJA2M72leJe8tno1BvckdSpErzMPzoO1hMEPczeu', 'ROLE_USER');
 
 insert into categories(name, category_type, budget_user_id) values('paliwo', 'EXPENSE', 1);
 insert into categories(name, category_type, budget_user_id) values('żywność', 'EXPENSE', 1);
