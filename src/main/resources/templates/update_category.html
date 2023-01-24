@@ -2,33 +2,33 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
-  <title>Aktualizuj wpływ</title>
+  <title>Aktualizuj kategorię</title>
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
 </head>
 <body>
-  <div th:insert="fragments/navbar"></div>
+<div th:insert="fragments/navbar"></div>
 <div class="container">
   <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-      <h1 class = "text-center">Aktualizuj wpływ</h1>
+      <h1 class = "text-center">Aktualizuj kategorię</h1>
       <div class = "card=body">
-        <form th:action="@{/incomes/{id} (id=${income.id})}" th:object="${income}" method="POST">
+        <form th:action="@{/categories/{id} (id=${category.id})}" th:object="${category}" method="POST">
           <div class = "form-group">
-            <label>value</label>
+            <label>nazwa</label>
             <input
                     type = "text"
                     name = "value"
-                    th:field = "${income.value}"
+                    th:field = "${category.name}"
                     class = "form-control"
             />
           </div>
           <div class = "form-group">
-            <label>kategoria</label>
-            <select th:field="${income.category}">
-              <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
+            <label>typ kategorii</label>
+            <select th:field="${category.categoryType}">
+              <option th:each="categoryType : ${categoryTypes}" th:value="${categoryType}" th:text="${categoryType}">
               </option>
             </select>
           </div>

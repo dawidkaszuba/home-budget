@@ -14,5 +14,7 @@ public class Category {
     private String name;
     @Enumerated(EnumType.STRING)
     private CategoryType categoryType;
+    @ManyToOne
+    private BudgetUser budgetUser;
 }
 

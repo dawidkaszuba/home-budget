@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface ExpenseService {
     List<Expense> getAllExpenses();
 
+    List<Expense> getAllExpensesByBudgetUser(String userName);
+
     Expense save(Expense expense);
 
     Expense updateExpense(Expense expense);

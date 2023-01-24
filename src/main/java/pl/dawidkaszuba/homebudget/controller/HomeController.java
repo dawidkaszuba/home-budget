@@ -26,7 +26,6 @@ public class HomeController {
         model.addAttribute(homeService.getSummary(principal.getName()));
         model.addAttribute("currentMonth", currentDate.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, locale));
         model.addAttribute("currentYear", currentDate.getYear());
-
         return "index";
     }
 }

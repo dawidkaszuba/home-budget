@@ -1,5 +1,6 @@
 package pl.dawidkaszuba.homebudget.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class Expense {
     private LocalDateTime creationTime;
     private LocalDateTime lastEditTime;
     @ManyToOne
+    @JsonIgnore
     private BudgetUser budgetUser;
     @ManyToOne
     private Category category;

@@ -44,12 +44,18 @@ public class HomeServiceImpl implements HomeService {
         LocalDateTime startDateTimeMonthly = LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(), firstDayOfCurrentMonth, 0, 0);
         LocalDateTime endDateTimeMonthly = LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(), lastDayOfCurrentMonth, 0, 0);
 
-        Double annualExpenses = expenseService.getSumOfAllExpensesByUserAndTimeBetween(budgetUser, startDateTimeAnnual, endDateTimeAnnual);
-        Double monthlyExpenses = expenseService.getSumOfAllExpensesByUserAndTimeBetween(budgetUser, startDateTimeMonthly, endDateTimeMonthly);
-        Double annualIncomes = incomeService.getSumOfAllIncomesByUserAndTimeBetween(budgetUser, startDateTimeAnnual, endDateTimeAnnual);
-        Double monthlyIncomes = incomeService.getSumOfAllIncomesByUserAndTimeBetween(budgetUser, startDateTimeMonthly, endDateTimeMonthly);
+        Double annualExpensesDb = expenseService.getSumOfAllExpensesByUserAndTimeBetween(budgetUser, startDateTimeAnnual, endDateTimeAnnual);
+        Double monthlyExpensesDb = expenseService.getSumOfAllExpensesByUserAndTimeBetween(budgetUser, startDateTimeMonthly, endDateTimeMonthly);
+        Double annualIncomesDb = incomeService.getSumOfAllIncomesByUserAndTimeBetween(budgetUser, startDateTimeAnnual, endDateTimeAnnual);
+        Double monthlyIncomesDb = incomeService.getSumOfAllIncomesByUserAndTimeBetween(budgetUser, startDateTimeMonthly, endDateTimeMonthly);
 
         Summary summary = new Summary();
+
+        Double annualExpenses = annualExpensesDb != null ? annualExpensesDb : Double.valueOf(0);
+        Double monthlyExpenses = monthlyExpensesDb != null ? monthlyExpensesDb : Double.valueOf(0);
+        Double annualIncomes = annualIncomesDb != null ? annualIncomesDb : Double.valueOf(0);
+        Double monthlyIncomes = monthlyIncomesDb != null ? monthlyIncomesDb : Double.valueOf(0);
+
         summary.setAnnualBalance(annualIncomes - annualExpenses);
         summary.setMonthlyBalance(monthlyIncomes - monthlyExpenses);
         summary.setMonthlyIncomes(monthlyIncomes);

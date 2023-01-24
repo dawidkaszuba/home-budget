@@ -4,14 +4,13 @@ import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.Income;
 import pl.dawidkaszuba.homebudget.model.BudgetUser;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public interface IncomeService {
-    List<Income> getAllIncomes();
+    List<Income> getAllIncomesByUser(String userName);
     Optional<Income> findById(Long id);
 
     Income save(Income expense);

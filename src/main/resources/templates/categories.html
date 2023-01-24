@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
-  <title>Home budget</title>
+  <title>Zarządzanie kategoriami</title>
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -12,23 +12,29 @@
 <div th:insert="fragments/navbar"></div>
 <div class = "container">
   <div class = "row">
-    <h1>Witaj</h1>
+    <h1>Lista kategorii</h1>
+  </div>
+  <div class = "row">
+    <div class = "col-lg-3">
+      <a th:href = "@{/categories/new}" class="btn btn-primary btn-sm mb-3">Dodaj kategorię</a>
+    </div>
   </div>
   <table class = "table table-striped table-bordered">
     <thead class = "table-dark">
     <tr>
-      <th>saldo: <span th:text="${currentMonth}"></span></th>
-      <th>saldo: <span th:text="${currentYear}"></span> rok</th>
-      <th>wydatki: <span th:text="${currentMonth}"></span></th>
-      <th>wpływy: <span th:text="${currentMonth}"></span></th>
+      <th>nazwa</th>
+      <th>typ</th>
+      <th>akcje</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td th:text = "${summary.monthlyBalance}"></td>
-      <td th:text = "${summary.annualBalance}"></td>
-      <td th:text = "${summary.monthlyExpenses}"></td>
-      <td th:text = "${summary.monthlyIncomes}"></td>
+    <tr th:each = "category: ${categories}">
+      <td th:text = "${category.name}"></td>
+      <td th:text = "${category.categoryType}"></td>
+      <td>
+        <a th:href = "@{/categories/edit/{id}(id=${category.id})}"
+           class = "btn btn-primary">Aktualizuj</a>
+      </td>
     </tr>
     </tbody>
   </table>

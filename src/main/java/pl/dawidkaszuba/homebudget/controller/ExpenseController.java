@@ -2,10 +2,7 @@ package pl.dawidkaszuba.homebudget.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.dawidkaszuba.homebudget.model.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.CategoryType;
 import pl.dawidkaszuba.homebudget.model.Expense;
@@ -30,8 +27,8 @@ public class ExpenseController {
     }
 
     @GetMapping("/expenses")
-    public String listExpenses(Model model ) {
-        model.addAttribute("expenses", expenseService.getAllExpenses());
+    public String listExpenses(Model model, Principal principal) {
+        model.addAttribute("expenses", expenseService.getAllExpensesByBudgetUser(principal.getName()));
         return "expenses";
     }
 
@@ -54,7 +51,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/expenses/edit/{id}")
-    public String updateStudent(@PathVariable Long id, Model model) {
+    public String updateExpense(@PathVariable Long id, Model model) {
         if(expenseService.getExpenseById(id).isPresent()) {
             model.addAttribute("expense", expenseService.getExpenseById(id).get());
             model.addAttribute("categories", categoryService.findByCategoryType(CategoryType.EXPENSE));

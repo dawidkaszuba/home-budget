@@ -16,8 +16,11 @@
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/incomes}">Wpływy</a>
             </li>
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <a class="nav-link" th:href="@{/categories}">Kategorie</a>
+            </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/operations}">Operacje</a>
+                <a class="nav-link" th:href="@{/logout}">wyloguj</a>
             </li>
         </ul>
     </div>
