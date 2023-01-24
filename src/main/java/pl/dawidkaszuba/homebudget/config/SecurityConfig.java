@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractAu
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import pl.dawidkaszuba.homebudget.service.JpaUserDetailsService;
+import pl.dawidkaszuba.homebudget.service.impl.JpaUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -28,11 +28,13 @@ public class SecurityConfig {
             .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/categories/**").hasRole("ADMIN")
+                .requestMatchers("/api/**").hasRole("ADMIN")
                 .anyRequest().authenticated().and()
                 .userDetailsService(jpaUserDetailsService)
                 .headers(headers -> headers.frameOptions().sameOrigin())
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .logout().logoutUrl("/logout");
+                .logout().logoutUrl("/logout").and()
+                .exceptionHandling().accessDeniedPage("/access-denied");
         return http.build();
     }
 

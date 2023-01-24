@@ -1,4 +1,4 @@
-package pl.dawidkaszuba.homebudget.service;
+package pl.dawidkaszuba.homebudget.service.impl;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

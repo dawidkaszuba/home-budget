@@ -1,22 +1,16 @@
 package pl.dawidkaszuba.homebudget.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.BudgetUser;
-import pl.dawidkaszuba.homebudget.model.SecurityUser;
 import pl.dawidkaszuba.homebudget.model.Summary;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
 import pl.dawidkaszuba.homebudget.service.HomeService;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
-import pl.dawidkaszuba.homebudget.service.JpaUserDetailsService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @Slf4j
