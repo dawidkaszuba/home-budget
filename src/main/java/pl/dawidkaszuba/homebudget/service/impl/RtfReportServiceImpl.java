@@ -30,9 +30,11 @@ public class RtfReportServiceImpl {
         this.expenseService = expenseService;
     }
 
-    public void generateReport(ReportType reportType, String userName) throws FileNotFoundException {
+    public String generateReport(ReportType reportType, String userName) throws FileNotFoundException {
 
-        final File outputFile = new File("target/" + reportType + "_" + userName + ".rtf");
+        String fileName = "target/" + reportType + "_" + userName + ".rtf";
+
+        final File outputFile = new File(fileName);
 
         Document document = new Document(PageSize.A4);
         RtfWriter2 rtf = RtfWriter2.getInstance(document, new FileOutputStream(outputFile));
@@ -52,7 +54,7 @@ public class RtfReportServiceImpl {
         table.addCell(new Phrase("kategoria", headerFont));
         table.addCell(new Phrase("wartość", headerFont));
 
-        if (reportType.equals("INCOMES_REPORT")) {
+        if (reportType.equals(ReportType.INCOMES_REPORT)) {
 
             List<Income> incomes = incomeService.getAllIncomesByUser(userName);
 
@@ -78,5 +80,6 @@ public class RtfReportServiceImpl {
         }
 
         rtf.close();
+        return fileName;
     }
 }

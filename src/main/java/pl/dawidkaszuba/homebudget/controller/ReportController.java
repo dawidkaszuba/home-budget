@@ -1,18 +1,23 @@
 package pl.dawidkaszuba.homebudget.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import pl.dawidkaszuba.homebudget.model.Income;
+import org.springframework.web.bind.annotation.RestController;
 import pl.dawidkaszuba.homebudget.model.UserReport;
 import pl.dawidkaszuba.homebudget.service.impl.RtfReportServiceImpl;
 
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.Principal;
 
-@Controller
+@Slf4j
+@RestController
 public class ReportController {
 
     private final RtfReportServiceImpl rtfReportService;
@@ -22,12 +27,20 @@ public class ReportController {
     }
 
     @PostMapping("/generate-report")
-    public String showReportOptions(@ModelAttribute("userReport") UserReport report, Principal principal) {
-        try {
-            rtfReportService.generateReport(report.getReportType(), principal.getName());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return "redirect:/";
+    public ResponseEntity getFile(@ModelAttribute("userReport") UserReport report, Principal principal) throws IOException {
+
+        String fileName = rtfReportService.generateReport(report.getReportType(), principal.getName());
+
+        File file = new File(fileName);
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+        log.info("Generowanie raportu " + report.getReportType() + " dla użytkownika " + principal.getName() + ".");
+        return ResponseEntity.ok().headers(headers).contentLength(
+            file.length()).contentType(MediaType.parseMediaType("application/txt")).body(resource);
     }
 }
