@@ -24,6 +24,7 @@
     <tr>
       <th>nazwa</th>
       <th>typ</th>
+      <th>użytkownik</th>
       <th>akcje</th>
     </tr>
     </thead>
@@ -31,6 +32,7 @@
     <tr th:each = "category: ${categories}">
       <td th:text = "${category.name}"></td>
       <td th:text = "${category.categoryType}"></td>
+      <td th:text = "${category.budgetUser.userName}"></td>
       <td>
         <a th:href = "@{/categories/edit/{id}(id=${category.id})}"
            class = "btn btn-primary">Aktualizuj</a>

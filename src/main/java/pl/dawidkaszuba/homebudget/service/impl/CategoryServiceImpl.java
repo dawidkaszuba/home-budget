@@ -48,10 +48,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category updateExpense(Category category) {
+    public Category updateCategory(Category category) {
         Category categoryInDb = categoryRepository.findById(category.getId()).get();
         categoryInDb.setCategoryType(category.getCategoryType());
         categoryInDb.setName(category.getName());
+        categoryInDb.setBudgetUser(category.getBudgetUser());
         categoryRepository.save(categoryInDb);
         return null;
     }
