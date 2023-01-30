@@ -19,7 +19,9 @@
                     <div class = "form-group">
                         <label>wartość</label>
                         <input
-                                type = "text"
+                                type = "number"
+                                step = ".01"
+                                min = "0.01"
                                 name = "value"
                                 th:field = "${income.value}"
                                 class = "form-control"

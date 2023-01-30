@@ -19,10 +19,12 @@
           <div class = "form-group">
             <label>wartość</label>
             <input
-              type = "text"
-              name = "value"
-              th:field = "${expense.value}"
-              class = "form-control"
+                    type = "number"
+                    step = ".01"
+                    min = "0.01"
+                    name = "value"
+                    th:field = "${expense.value}"
+                    class = "form-control"
             />
           </div>
           <div class = "form-group">
