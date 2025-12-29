@@ -1,8 +1,8 @@
 package pl.dawidkaszuba.homebudget.service;
 
 import org.springframework.stereotype.Service;
-import pl.dawidkaszuba.homebudget.model.BudgetUser;
-import pl.dawidkaszuba.homebudget.model.Expense;
+import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
+import pl.dawidkaszuba.homebudget.model.db.Expense;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,4 +21,6 @@ public interface ExpenseService {
     Optional<Expense> getExpenseById(Long id);
 
     Double getSumOfAllExpensesByUserAndTimeBetween(BudgetUser userId, LocalDateTime startDateTime, LocalDateTime endDateTime);
+
+    void deleteIncome(Expense expense);
 }

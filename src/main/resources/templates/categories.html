@@ -31,7 +31,7 @@
     <tbody>
     <tr th:each = "category: ${categories}">
       <td th:text = "${category.name}"></td>
-      <td th:text = "${category.categoryType}"></td>
+      <td th:text = "${category.categoryType.value}"></td>
       <td th:text = "${category.budgetUser.userName}"></td>
       <td>
         <a th:href = "@{/categories/edit/{id}(id=${category.id})}"

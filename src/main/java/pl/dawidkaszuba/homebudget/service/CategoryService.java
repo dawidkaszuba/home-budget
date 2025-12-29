@@ -1,8 +1,8 @@
 package pl.dawidkaszuba.homebudget.service;
 
 import org.springframework.stereotype.Service;
-import pl.dawidkaszuba.homebudget.model.Category;
-import pl.dawidkaszuba.homebudget.model.CategoryType;
+import pl.dawidkaszuba.homebudget.model.db.Category;
+import pl.dawidkaszuba.homebudget.model.db.CategoryType;
 
 import java.util.List;
 import java.util.Optional;

@@ -169,3 +169,4 @@ target
 .idea
 
 /config/*.yml
+/config/*.properties

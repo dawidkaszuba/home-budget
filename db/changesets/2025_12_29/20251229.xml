@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="init-budget-db" author="dawid">
+        <sqlFile path="db/changesets/2025_12_29/01_budget_user.sql"/>
+        <sqlFile path="db/changesets/2025_12_29/02_categories.sql"/>
+        <sqlFile path="db/changesets/2025_12_29/03_expenses.sql"/>
+        <sqlFile path="db/changesets/2025_12_29/04_incomes.sql"/>
+        <rollback>
+            <sqlFile path="rollback.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="init-budget-users" author="dawid" context="dev,test">
+        <sqlFile path="db/changesets/2025_12_29/00_users.sql"/>
+        <rollback>
+            DELETE FROM budget_users WHERE user_name IN ('dkaszuba', 'fkowalski');
+        </rollback>
+    </changeSet>
+
+    <changeSet id="tag-init-db" author="dawid">
+        <tagDatabase tag="v0.0.1"/>
+    </changeSet>
+
+
+</databaseChangeLog>
