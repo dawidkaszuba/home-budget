@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <!-- Brand -->
-    <a class="navbar-brand" href="/">System zarządzania budżetem domowym</a>
+    <a class="navbar-brand" href="/">Budżet domowy</a>
 
     <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -23,10 +23,5 @@
                 <a class="nav-link" th:href="@{/logout}">wyloguj</a>
             </li>
         </ul>
-    </div>
-    <div style="color:green;size:30px">
-        <span>dziejsza cena złota wg NBP</span>
-        <span style="color:red;" th:text = "${goldPrice.cena}"></span>
-        <span> zł/gram</span>
     </div>
 </nav>

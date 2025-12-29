@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import pl.dawidkaszuba.homebudget.model.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.CategoryType;
 import pl.dawidkaszuba.homebudget.model.Income;
-import pl.dawidkaszuba.homebudget.model.ReportType;
-import pl.dawidkaszuba.homebudget.model.UserReport;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.IncomeService;

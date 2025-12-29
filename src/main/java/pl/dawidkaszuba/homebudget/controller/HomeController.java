@@ -4,8 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import pl.dawidkaszuba.homebudget.model.ReportType;
-import pl.dawidkaszuba.homebudget.model.UserReport;
-import pl.dawidkaszuba.homebudget.service.GoldPriceService;
 import pl.dawidkaszuba.homebudget.service.HomeService;
 
 import java.security.Principal;
@@ -30,7 +28,6 @@ public class HomeController {
         model.addAttribute("currentMonth", currentDate.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, locale));
         model.addAttribute("currentYear", currentDate.getYear());
         model.addAttribute("reportTypes", ReportType.values());
-        model.addAttribute("userReport", new UserReport());
         return "index";
     }
 }

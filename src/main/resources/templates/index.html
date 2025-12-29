@@ -14,20 +14,6 @@
   <div class = "row">
     <h1>Cześć</h1>
   </div>
-  <div class = "col-lg-3">
-    <form th:action="@{/generate-report}" th:object="${userReport}" method="POST">
-      <div class = "form-group">
-        <label>Raport</label>
-        <select th:field="${userReport.reportType}">
-          <option th:each="reportType : ${reportTypes}" th:value="${reportType}" th:text="${reportType.name}">
-          </option>
-        </select>
-      </div>
-      <p class="box-footer">
-        <button type="submit" class="btn btn-primary">Generuj</button>
-      </p>
-    </form>
-  </div>
   <table class = "table table-striped table-bordered">
     <thead class = "table-dark">
     <tr>
