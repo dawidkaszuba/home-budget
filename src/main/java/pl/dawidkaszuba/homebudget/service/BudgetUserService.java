@@ -1,7 +1,7 @@
 package pl.dawidkaszuba.homebudget.service;
 
 import org.springframework.stereotype.Service;
-import pl.dawidkaszuba.homebudget.model.BudgetUser;
+import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 
 import java.util.List;
 

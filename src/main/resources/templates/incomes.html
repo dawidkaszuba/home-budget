@@ -22,22 +22,26 @@
   <table class = "table table-striped table-bordered">
     <thead class = "table-dark">
     <tr>
+      <th>wartość</th>
+      <th>kategoria</th>
       <th>data utworzenia</th>
       <th>data ostatniej edycji</th>
-      <th>kategoria</th>
-      <th>wartość</th>
       <th>akcje</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each = "income: ${incomes}">
-      <td th:text = "${#temporals.format(income.creationTime, 'dd-MM-yyyy HH:mm')}"></td>
-      <td th:text = "${#temporals.format(income.lastEditTime, 'dd-MM-yyyy HH:mm')}"></td>
-      <td th:text = "${income.category.name}"></td>
       <td th:text = "${income.value}"></td>
+      <td th:text = "${income.category.name}"></td>
+      <td th:text = "${#temporals.format(income.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+      <td th:text = "${#temporals.format(income.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>
       <td>
         <a th:href = "@{/incomes/edit/{id}(id=${income.id})}"
            class = "btn btn-primary">Aktualizuj</a>
+          <form th:action="@{/incomes/delete/{id}(id=${income.id})}" method="post">
+              <input type="hidden" name="_method" value="delete"/>
+              <button type="submit" class="btn btn-danger">Usuń</button>
+          </form>
       </td>
     </tr>
     </tbody>

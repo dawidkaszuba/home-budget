@@ -1,4 +1,4 @@
-package pl.dawidkaszuba.homebudget.model;
+package pl.dawidkaszuba.homebudget.model.db;
 
 import lombok.Getter;
 

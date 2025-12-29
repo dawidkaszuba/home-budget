@@ -2,13 +2,10 @@ package pl.dawidkaszuba.homebudget.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import pl.dawidkaszuba.homebudget.model.BudgetUser;
-import pl.dawidkaszuba.homebudget.model.CategoryType;
-import pl.dawidkaszuba.homebudget.model.Income;
+import org.springframework.web.bind.annotation.*;
+import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
+import pl.dawidkaszuba.homebudget.model.db.CategoryType;
+import pl.dawidkaszuba.homebudget.model.db.Income;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
@@ -64,6 +61,16 @@ public class IncomeController {
     public String saveUpdatedIncome(@PathVariable Long id, @ModelAttribute("income") Income income) {
         if(incomeService.getIncomeById(id).isPresent()) {
             incomeService.updateIncome(income);
+            return "redirect:/incomes";
+        }
+        //todo obsługa błędów
+        return "/incomes/edit/" + id;
+    }
+
+    @DeleteMapping("/incomes/delete/{id}")
+    public String deleteIncome(@PathVariable Long id, @ModelAttribute("income") Income income) {
+        if(incomeService.getIncomeById(id).isPresent()) {
+            incomeService.deleteIncome(income);
             return "redirect:/incomes";
         }
         //todo obsługa błędów

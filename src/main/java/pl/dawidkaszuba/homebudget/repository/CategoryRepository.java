@@ -1,9 +1,9 @@
 package pl.dawidkaszuba.homebudget.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.dawidkaszuba.homebudget.model.BudgetUser;
-import pl.dawidkaszuba.homebudget.model.Category;
-import pl.dawidkaszuba.homebudget.model.CategoryType;
+import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
+import pl.dawidkaszuba.homebudget.model.db.Category;
+import pl.dawidkaszuba.homebudget.model.db.CategoryType;
 
 import java.util.List;
 

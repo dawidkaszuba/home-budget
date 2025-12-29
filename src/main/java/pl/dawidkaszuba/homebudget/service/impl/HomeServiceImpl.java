@@ -2,13 +2,14 @@ package pl.dawidkaszuba.homebudget.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.dawidkaszuba.homebudget.model.BudgetUser;
-import pl.dawidkaszuba.homebudget.model.Summary;
+import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
+import pl.dawidkaszuba.homebudget.model.dto.Summary;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
 import pl.dawidkaszuba.homebudget.service.HomeService;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -50,10 +51,10 @@ public class HomeServiceImpl implements HomeService {
         Double annualIncomes = annualIncomesDb != null ? annualIncomesDb : Double.valueOf(0);
         Double monthlyIncomes = monthlyIncomesDb != null ? monthlyIncomesDb : Double.valueOf(0);
 
-        summary.setAnnualBalance(annualIncomes - annualExpenses);
-        summary.setMonthlyBalance(monthlyIncomes - monthlyExpenses);
-        summary.setMonthlyIncomes(monthlyIncomes);
-        summary.setMonthlyExpenses(monthlyExpenses);
+        summary.setAnnualBalance(BigDecimal.valueOf(annualIncomes - annualExpenses));
+        summary.setMonthlyBalance(BigDecimal.valueOf(monthlyIncomes - monthlyExpenses));
+        summary.setMonthlyIncomes(BigDecimal.valueOf(monthlyIncomes));
+        summary.setMonthlyExpenses(BigDecimal.valueOf(monthlyExpenses));
         return summary;
     }
 }

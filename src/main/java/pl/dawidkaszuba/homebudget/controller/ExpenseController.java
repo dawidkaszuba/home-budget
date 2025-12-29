@@ -3,9 +3,9 @@ package pl.dawidkaszuba.homebudget.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.dawidkaszuba.homebudget.model.BudgetUser;
-import pl.dawidkaszuba.homebudget.model.CategoryType;
-import pl.dawidkaszuba.homebudget.model.Expense;
+import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
+import pl.dawidkaszuba.homebudget.model.db.CategoryType;
+import pl.dawidkaszuba.homebudget.model.db.Expense;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
@@ -43,8 +43,8 @@ public class ExpenseController {
     @PostMapping("/expenses")
     public String saveExpense(@ModelAttribute("expense") Expense expense, Principal principal) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
-        expense.setCreationTime(LocalDateTime.now());
-        expense.setLastEditTime(LocalDateTime.now());
+        expense.setCreatedAt(LocalDateTime.now());
+        expense.setUpdatedAt(LocalDateTime.now());
         expense.setBudgetUser(budgetUser);
         expenseService.save(expense);
         return "redirect:/expenses";
@@ -64,6 +64,16 @@ public class ExpenseController {
     public String saveUpdatedExpense(@PathVariable Long id, @ModelAttribute("expense") Expense expense) {
         if(expenseService.getExpenseById(id).isPresent()) {
             expenseService.updateExpense(expense);
+            return "redirect:/expenses";
+        }
+        //todo obsługa błędów
+        return "/expenses/edit/" + id;
+    }
+
+    @DeleteMapping("/expenses/delete/{id}")
+    public String deleteExpense(@PathVariable Long id, @ModelAttribute("expense") Expense expense) {
+        if(expenseService.getExpenseById(id).isPresent()) {
+            expenseService.deleteIncome(expense);
             return "redirect:/expenses";
         }
         //todo obsługa błędów
