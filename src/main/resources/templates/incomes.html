@@ -32,7 +32,7 @@
     <tbody>
     <tr th:each = "income: ${incomes}">
       <td th:text = "${income.value}"></td>
-      <td th:text = "${income.category.name}"></td>
+      <td th:text = "${income.categoryName}"></td>
       <td th:text = "${#temporals.format(income.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
       <td th:text = "${#temporals.format(income.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>
       <td>

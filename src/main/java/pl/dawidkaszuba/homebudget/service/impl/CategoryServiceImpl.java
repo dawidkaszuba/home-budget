@@ -1,13 +1,19 @@
 package pl.dawidkaszuba.homebudget.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.dawidkaszuba.homebudget.mapper.CategoryMapper;
 import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.db.Category;
 import pl.dawidkaszuba.homebudget.model.db.CategoryType;
+import pl.dawidkaszuba.homebudget.model.dto.category.CategoryViewDto;
+import pl.dawidkaszuba.homebudget.model.dto.category.CreateCategoryDto;
+import pl.dawidkaszuba.homebudget.model.dto.category.UpdateCategoryDto;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,45 +22,56 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final BudgetUserService budgetUserService;
+    private final CategoryMapper categoryMapper;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, BudgetUserService budgetUserService) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, BudgetUserService budgetUserService, CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
         this.budgetUserService = budgetUserService;
+        this.categoryMapper = categoryMapper;
     }
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    @Transactional(readOnly = true)
+    @Override
+    public List<CategoryViewDto> getAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(categoryMapper::mapToDto)
+                .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Category> findByCategoryType(CategoryType type) {
         return categoryRepository.findByCategoryType(type);
     }
 
+    @Transactional
     @Override
-    public List<Category> getAllCategoriesByBudgetUser(String userName) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
-        return categoryRepository.findAllByBudgetUser(budgetUser);
+    public void save(CreateCategoryDto dto, Principal principal) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        Category category = categoryMapper.toEntity(dto);
+        category.setBudgetUser(budgetUser);
+        categoryRepository.save(category);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Category save(Category category) {
-        return categoryRepository.save(category);
+    public Category getCategoryById(Long id) {
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        return optionalCategory.orElseThrow();
     }
 
+    @Transactional
     @Override
-    public Optional<Category> getCategoryById(Long id) {
-        return categoryRepository.findById(id);
-    }
+    public void updateCategory(UpdateCategoryDto dto) {
+        Category category = categoryRepository.findById(dto.getId()).orElseThrow();
 
-    @Override
-    public Category updateCategory(Category category) {
-        Category categoryInDb = categoryRepository.findById(category.getId()).get();
-        categoryInDb.setCategoryType(category.getCategoryType());
-        categoryInDb.setName(category.getName());
-        categoryInDb.setBudgetUser(category.getBudgetUser());
-        categoryRepository.save(categoryInDb);
-        return null;
+        if (!category.getCategoryType().equals(dto.getCategoryType())) {
+            category.setCategoryType(dto.getCategoryType());
+        }
+        if (!category.getName().equals(dto.getName())) {
+            category.setName(dto.getName());
+        }
     }
 
 }

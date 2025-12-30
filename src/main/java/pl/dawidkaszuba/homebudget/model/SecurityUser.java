@@ -11,7 +11,7 @@ import java.util.Collection;
 public class SecurityUser implements UserDetails {
 
 
-    private BudgetUser user;
+    private final BudgetUser user;
 
     public SecurityUser(BudgetUser user) {
         this.user = user;

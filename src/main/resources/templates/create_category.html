@@ -27,13 +27,9 @@
             />
           </div>
           <div class = "form-group">
-            <label>użytkownik</label>
+            <label>typ</label>
             <select th:field="${category.categoryType}">
               <option th:each="categoryType : ${categoryTypes}" th:value="${categoryType}" th:text="${categoryType.value}">
-              </option>
-            </select>
-            <select th:field="${category.budgetUser}">
-              <option th:each="budgetUser : ${budgetUsers}" th:value="${budgetUser.id}" th:text="${budgetUser.userName}">
               </option>
             </select>
           </div>

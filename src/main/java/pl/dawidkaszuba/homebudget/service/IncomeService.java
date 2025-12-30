@@ -3,23 +3,26 @@ package pl.dawidkaszuba.homebudget.service;
 import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.db.Income;
 import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
+import pl.dawidkaszuba.homebudget.model.dto.income.CreateIncomeDto;
+import pl.dawidkaszuba.homebudget.model.dto.income.IncomeViewDto;
+import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface IncomeService {
-    List<Income> getAllIncomesByUser(String userName);
-    Optional<Income> findById(Long id);
 
-    Income save(Income expense);
+    List<IncomeViewDto> getAllIncomesByUser(String userName);
 
-    Optional<Income> getIncomeById(Long id);
+    void save(CreateIncomeDto dto, Principal principal);
 
-    Income updateIncome(Income income);
+    Income getIncomeById(Long id);
+
+    void updateIncome(UpdateIncomeDto dto);
 
     Double getSumOfAllIncomesByUserAndTimeBetween(BudgetUser budgetUser, LocalDateTime startDateTime, LocalDateTime endDateTime);
 
-    void deleteIncome(Income income);
+    void deleteIncome(Long id);
 }

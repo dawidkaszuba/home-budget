@@ -3,21 +3,22 @@ package pl.dawidkaszuba.homebudget.service;
 import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.db.Category;
 import pl.dawidkaszuba.homebudget.model.db.CategoryType;
+import pl.dawidkaszuba.homebudget.model.dto.category.CategoryViewDto;
+import pl.dawidkaszuba.homebudget.model.dto.category.CreateCategoryDto;
+import pl.dawidkaszuba.homebudget.model.dto.category.UpdateCategoryDto;
 
+import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface CategoryService {
-    List<Category> getAllCategories();
+    List<CategoryViewDto> getAllCategories();
 
     List<Category> findByCategoryType(CategoryType type);
 
-    List<Category> getAllCategoriesByBudgetUser(String userName);
+    void save(CreateCategoryDto dto, Principal principal);
 
-    Category save(Category category);
+    Category getCategoryById(Long id);
 
-    Optional<Category> getCategoryById(Long id);
-
-    Category updateCategory(Category category);
+    void updateCategory(UpdateCategoryDto dto);
 }
