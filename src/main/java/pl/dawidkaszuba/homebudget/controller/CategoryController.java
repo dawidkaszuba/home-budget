@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.dawidkaszuba.homebudget.model.db.Category;
 import pl.dawidkaszuba.homebudget.model.db.CategoryType;
+import pl.dawidkaszuba.homebudget.model.dto.category.CreateCategoryDto;
+import pl.dawidkaszuba.homebudget.model.dto.category.UpdateCategoryDto;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 
@@ -32,37 +34,34 @@ public class CategoryController {
 
     @GetMapping("/categories/new")
     public String addNewCategory(Model model) {
-        Category category = new Category();
-        model.addAttribute("category", category);
+        CreateCategoryDto dto = new CreateCategoryDto();
+        model.addAttribute("category", dto);
         model.addAttribute("categoryTypes", CategoryType.values());
-        model.addAttribute("budgetUsers", budgetUserService.getAllUsers());
+        model.addAttribute("budgetUsers", budgetUserService.getAllUsers()); //todo to remove??
         return "create_category";
     }
 
     @PostMapping("/categories")
-    public String saveCategory(@ModelAttribute("category") Category category, Principal principal) {
-        categoryService.save(category);
+    public String saveCategory(@ModelAttribute("category") CreateCategoryDto dto, Principal principal) {
+        categoryService.save(dto, principal);
         return "redirect:/categories";
     }
 
     @GetMapping("/categories/edit/{id}")
     public String updateCategory(@PathVariable Long id, Model model) {
-        if(categoryService.getCategoryById(id).isPresent()) {
-            model.addAttribute("category", categoryService.getCategoryById(id).get());
-            model.addAttribute("categoryTypes", CategoryType.values());
-            model.addAttribute("budgetUsers", budgetUserService.getAllUsers());
-            return "update_category";
-        }
-        return "redirect:categories"; //todo zrobić obsługę błędów
+
+        Category category = categoryService.getCategoryById(id);
+
+        model.addAttribute("category", category);
+        model.addAttribute("categoryTypes", CategoryType.values());
+        model.addAttribute("budgetUsers", budgetUserService.getAllUsers());
+
+        return "update_category";
     }
 
     @PostMapping("/categories/{id}")
-    public String saveUpdatedCategory(@PathVariable Long id, @ModelAttribute("category") Category category) {
-        if(categoryService.getCategoryById(id).isPresent()) {
-            categoryService.updateCategory(category);
-            return "redirect:/categories";
-        }
-        //todo obsługa błędów
-        return "/categories/edit/" + id;
+    public String saveUpdatedCategory(@PathVariable Long id, @ModelAttribute("category") UpdateCategoryDto dto) {
+        categoryService.updateCategory(dto);
+        return "redirect:/categories";
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.dawidkaszuba.homebudget.model.SecurityUser;
 import pl.dawidkaszuba.homebudget.repository.BudgetUserRepository;
 
@@ -16,6 +17,7 @@ public class JpaUserDetailsService implements UserDetailsService {
         this.budgetUserRepository = budgetUserRepository;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return budgetUserRepository

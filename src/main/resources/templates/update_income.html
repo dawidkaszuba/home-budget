@@ -38,7 +38,7 @@
           </div>
           <div class = "form-group">
             <label>kategoria</label>
-            <select th:field="${income.category}">
+            <select th:field="${income.categoryId}">
               <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
               </option>
             </select>

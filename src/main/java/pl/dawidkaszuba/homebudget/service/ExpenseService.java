@@ -3,24 +3,26 @@ package pl.dawidkaszuba.homebudget.service;
 import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.db.Expense;
+import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
+import pl.dawidkaszuba.homebudget.model.dto.expense.ExpenseViewDto;
+import pl.dawidkaszuba.homebudget.model.dto.expense.UpdateExpenseDto;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface ExpenseService {
-    List<Expense> getAllExpenses();
 
-    List<Expense> getAllExpensesByBudgetUser(String userName);
+    List<ExpenseViewDto> getAllExpensesByBudgetUser(String userName);
 
-    Expense save(Expense expense);
+    void save(CreateExpenseDto dto, Principal principal);
 
-    Expense updateExpense(Expense expense);
+    void updateExpense(UpdateExpenseDto dto);
 
-    Optional<Expense> getExpenseById(Long id);
+    Expense getExpenseById(Long id);
 
     Double getSumOfAllExpensesByUserAndTimeBetween(BudgetUser userId, LocalDateTime startDateTime, LocalDateTime endDateTime);
 
-    void deleteIncome(Expense expense);
+    void deleteIncome(Long id);
 }
