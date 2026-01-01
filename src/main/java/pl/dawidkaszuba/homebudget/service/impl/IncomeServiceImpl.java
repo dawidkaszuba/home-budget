@@ -1,7 +1,5 @@
 package pl.dawidkaszuba.homebudget.service.impl;
 
-import jakarta.persistence.EntityManager;
-import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dawidkaszuba.homebudget.mapper.IncomeMapper;
@@ -27,14 +25,15 @@ public class IncomeServiceImpl implements IncomeService {
     private final IncomeRepository incomeRepository;
     private final BudgetUserService budgetUserService;
     private final CategoryRepository categoryRepository;
-    private final EntityManager entityManager;
     private final IncomeMapper incomeMapper;
 
-    public IncomeServiceImpl(IncomeRepository incomeRepository, BudgetUserService budgetUserService, CategoryRepository categoryRepository, EntityManager entityManager, IncomeMapper incomeMapper) {
+    public IncomeServiceImpl(IncomeRepository incomeRepository,
+                             BudgetUserService budgetUserService,
+                             CategoryRepository categoryRepository,
+                             IncomeMapper incomeMapper) {
         this.incomeRepository = incomeRepository;
         this.budgetUserService = budgetUserService;
         this.categoryRepository = categoryRepository;
-        this.entityManager = entityManager;
         this.incomeMapper = incomeMapper;
     }
 
@@ -42,8 +41,6 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     public List<IncomeViewDto> getAllIncomesByUser(String userName) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("deletedFilter");
         return incomeRepository.findAllByBudgetUser(budgetUser)
                 .stream()
                 .map(incomeMapper::toDto)
@@ -95,8 +92,6 @@ public class IncomeServiceImpl implements IncomeService {
     @Transactional(readOnly = true)
     @Override
     public Double getSumOfAllIncomesByUserAndTimeBetween(BudgetUser budgetUser, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("deletedFilter");
         return incomeRepository.findSumOfValueByUserAndCreateTimeBetween(budgetUser, startDateTime, endDateTime);
     }
 
