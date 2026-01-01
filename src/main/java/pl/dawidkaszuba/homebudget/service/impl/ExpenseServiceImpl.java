@@ -1,7 +1,5 @@
 package pl.dawidkaszuba.homebudget.service.impl;
 
-import jakarta.persistence.EntityManager;
-import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dawidkaszuba.homebudget.mapper.ExpenseMapper;
@@ -27,14 +25,15 @@ public class ExpenseServiceImpl implements ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final BudgetUserService budgetUserService;
     private final CategoryRepository categoryRepository;
-    private final EntityManager entityManager;
     private final ExpenseMapper expenseMapper;
 
-    public ExpenseServiceImpl(ExpenseRepository expenseRepository, BudgetUserService budgetUserService, CategoryRepository categoryRepository, EntityManager entityManager, ExpenseMapper expenseMapper) {
+    public ExpenseServiceImpl(ExpenseRepository expenseRepository,
+                              BudgetUserService budgetUserService,
+                              CategoryRepository categoryRepository,
+                              ExpenseMapper expenseMapper) {
         this.expenseRepository = expenseRepository;
         this.budgetUserService = budgetUserService;
         this.categoryRepository = categoryRepository;
-        this.entityManager = entityManager;
         this.expenseMapper = expenseMapper;
     }
 
@@ -42,8 +41,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Transactional(readOnly = true)
     @Override
     public List<ExpenseViewDto> getAllExpensesByBudgetUser(String userName) {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("deletedFilter");
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
         return expenseRepository.findAllByBudgetUser(budgetUser)
                 .stream()
@@ -95,8 +92,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Transactional(readOnly = true)
     @Override
     public Double getSumOfAllExpensesByUserAndTimeBetween(BudgetUser budgetUser, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        Session session = entityManager.unwrap(Session.class);
-        session.enableFilter("deletedFilter");
         return expenseRepository.getSumOfValueByUserAndTimeBetween(budgetUser, startDateTime, endDateTime);
     }
 
