@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import pl.dawidkaszuba.homebudget.service.HomeService;
+import pl.dawidkaszuba.homebudget.service.AccountService;
 import pl.dawidkaszuba.homebudget.service.SummaryService;
 
 import java.security.Principal;
@@ -17,7 +17,7 @@ import java.util.Locale;
 public class HomeController {
 
     private final SummaryService summaryService;
-    private final HomeService homeService;
+    private final AccountService accountService;
 
     @GetMapping("/")
     public String getHome(Model model, Principal principal) {
@@ -26,6 +26,7 @@ public class HomeController {
         model.addAttribute(summaryService.getSummary(principal));
         model.addAttribute("currentMonth", currentDate.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, locale));
         model.addAttribute("currentYear", currentDate.getYear());
+        model.addAttribute("accounts", accountService.findAllUserAccountsWithState(principal));
         return "index";
     }
 }

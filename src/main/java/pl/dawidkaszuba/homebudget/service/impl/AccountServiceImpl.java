@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.db.Account;
 import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.db.Home;
+import pl.dawidkaszuba.homebudget.model.dto.account.AccountViewStateDto;
 import pl.dawidkaszuba.homebudget.repository.AccountRepository;
 import pl.dawidkaszuba.homebudget.service.AccountService;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
@@ -24,5 +25,14 @@ public class AccountServiceImpl implements AccountService {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
         Home home = budgetUser.getHome();
         return accountRepository.findAllByHome(home);
+    }
+
+    @Override
+    public List<AccountViewStateDto> findAllUserAccountsWithState(Principal principal) {
+        BudgetUser budgetUser = budgetUserService
+                .getBudgetUserByUserName(principal.getName());
+
+        return accountRepository
+                .findAllAccountsWithStateByHome(budgetUser.getHome());
     }
 }

@@ -104,7 +104,15 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenseRepository.getSumOfValueByHomeAndTimeBetween(home, startDateTime, endDateTime);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
+    @Override
+    public Double getSumOfValueByHome(Principal principal) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        Home home = budgetUser.getHome();
+        return expenseRepository.getSumOfValueByHome(home);
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public void deleteIncome(Long id) {
         Expense expense = expenseRepository.findById(id).orElseThrow();

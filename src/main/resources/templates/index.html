@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Home Budget</title>
+    <title>Budżet Domowy</title>
 
     <!-- MOBILE -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,90 +18,116 @@
 <body>
 
 <!-- NAVBAR -->
-<div th:insert="fragments/navbar"></div>
+<div th:insert="~{fragments/navbar}"></div>
 
 <div class="container mt-4">
 
     <!-- GREETING -->
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="h4">
-                👋 Cześć!
-            </h1>
+            <h1 class="h4">👋 Cześć!</h1>
             <div class="text-muted small">
                 Podsumowanie za <strong th:text="${currentMonth}"></strong>
             </div>
         </div>
     </div>
 
-    <!-- ================= SUMMARY CARDS ================= -->
-    <div class="row">
-
-        <!-- MONTHLY BALANCE -->
-        <div class="col-12 col-md-6 mb-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <div class="text-muted small">Saldo miesiąca</div>
-                    <h3 class="mb-0"
-                        th:classappend="${summary.monthlyBalance >= 0} ? 'text-success' : 'text-danger'"
-                        th:text="${summary.monthlyBalance} + ' zł'">
-                    </h3>
-                </div>
-            </div>
-        </div>
-
-        <!-- YEARLY BALANCE -->
-        <div class="col-12 col-md-6 mb-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <div class="text-muted small">
-                        Saldo roku <span th:text="${currentYear}"></span>
-                    </div>
-                    <h3 class="mb-0"
-                        th:classappend="${summary.annualBalance >= 0} ? 'text-success' : 'text-danger'"
-                        th:text="${summary.annualBalance} + ' zł'">
-                    </h3>
+    <!-- ================= MONTHLY INCOMES & EXPENSES ================= -->
+    <div class="row mb-3">
+        <!-- MONTHLY INCOMES -->
+        <div class="col-6 mb-3">
+            <div class="card shadow-sm border-success">
+                <div class="card-body text-center">
+                    <div class="text-muted small">Wpływy: <span th:text="${currentMonth}"></span></div>
+                    <h4 class="mb-0 text-success" th:text="${summary.monthlyIncomes} + ' zł'"></h4>
                 </div>
             </div>
         </div>
 
         <!-- MONTHLY EXPENSES -->
-        <div class="col-12 col-md-6 mb-3">
+        <div class="col-6 mb-3">
             <div class="card shadow-sm border-danger">
-                <div class="card-body">
-                    <div class="text-muted small">Wydatki (miesiąc)</div>
-                    <h4 class="mb-0 text-danger"
-                        th:text="${summary.monthlyExpenses} + ' zł'">
-                    </h4>
+                <div class="card-body text-center">
+                    <div class="text-muted small">Wydatki: <span th:text="${currentMonth}"></span></div>
+                    <h4 class="mb-0 text-danger" th:text="${summary.monthlyExpenses} + ' zł'"></h4>
                 </div>
             </div>
         </div>
-
-        <!-- MONTHLY INCOMES -->
-        <div class="col-12 col-md-6 mb-3">
-            <div class="card shadow-sm border-success">
-                <div class="card-body">
-                    <div class="text-muted small">Wpływy (miesiąc)</div>
-                    <h4 class="mb-0 text-success"
-                        th:text="${summary.monthlyIncomes} + ' zł'">
-                    </h4>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- QUICK ACTIONS -->
-    <div class="row mt-3">
-        <div class="col-12">
+    <!-- ================= BALANCES ================= -->
+    <div class="row mb-3">
+        <!-- TOTAL BALANCE -->
+        <div class="col-12 col-sm-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="text-muted small">Saldo</div>
+                    <h5 class="mb-0"
+                        th:classappend="${summary.balance >= 0} ? 'text-success' : 'text-danger'"
+                        th:text="${summary.balance} + ' zł'"></h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- MONTHLY BALANCE -->
+        <div class="col-12 col-sm-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="text-muted small">Saldo miesiąca</div>
+                    <h5 class="mb-0"
+                        th:classappend="${summary.monthlyBalance >= 0} ? 'text-success' : 'text-danger'"
+                        th:text="${summary.monthlyBalance} + ' zł'"></h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANNUAL BALANCE -->
+        <div class="col-12 col-sm-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="text-muted small">Saldo roku <span th:text="${currentYear}"></span></div>
+                    <h5 class="mb-0"
+                        th:classappend="${summary.annualBalance >= 0} ? 'text-success' : 'text-danger'"
+                        th:text="${summary.annualBalance} + ' zł'"></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= QUICK ACTIONS ================= -->
+    <div class="row mt-3 mb-3">
+        <div class="col-6 pr-1">
             <a th:href="@{/expenses/new}"
-               class="btn btn-danger btn-block mb-2">
+               class="btn btn-danger btn-lg btn-block"
+               style="height: 60px; font-size: 1.2rem;">
                 ➖ Dodaj wydatek
             </a>
+        </div>
+        <div class="col-6 pl-1">
             <a th:href="@{/incomes/new}"
-               class="btn btn-success btn-block">
+               class="btn btn-success btn-lg btn-block"
+               style="height: 60px; font-size: 1.2rem;">
                 ➕ Dodaj wpływ
             </a>
+        </div>
+    </div>
+
+
+    <!-- ================= ACCOUNTS ================= -->
+    <div class="row mt-4">
+        <div class="col-12 mb-2">
+            <h2 class="h5">💼 Konta</h2>
+        </div>
+
+        <div class="col-12 col-md-4 mb-3"
+             th:each="account : ${accounts}">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <strong th:text="${account.name}">Konto</strong>
+                    <div th:text="${account.state} + ' zł'"
+                         th:classappend="${account.state >= 0} ? 'text-success' : 'text-danger'"></div>
+                </div>
+            </div>
         </div>
     </div>
 

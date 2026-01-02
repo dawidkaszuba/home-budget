@@ -25,4 +25,6 @@ public interface IncomeService {
     Double getSumOfAllIncomesByUserAndTimeBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, Principal principal);
 
     void deleteIncome(Long id);
+
+    Double getSumOfValueByHome(Principal principal);
 }
