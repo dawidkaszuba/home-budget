@@ -1,45 +1,90 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="pl"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <meta charset="UTF-8">
-  <title>Dodaj kategorię</title>
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-        crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Dodaj kategorię</title>
+
+    <!-- MOBILE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
 </head>
 <body>
+
+<!-- NAVBAR -->
 <div th:insert="fragments/navbar"></div>
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-      <h1 class = "text-center">Nowa kategoria</h1>
-      <div class = "card=body">
-        <form th:action="@{/categories}" th:object="${category}" method="POST">
-          <div class = "form-group">
-            <label>nazwa</label>
-            <input
-                    type = "text"
-                    name = "name"
-                    th:field = "${category.name}"
-                    class = "form-control"
-            />
-          </div>
-          <div class = "form-group">
-            <label>typ</label>
-            <select th:field="${category.categoryType}">
-              <option th:each="categoryType : ${categoryTypes}" th:value="${categoryType}" th:text="${categoryType.value}">
-              </option>
-            </select>
-          </div>
-          <div class="box-footer">
-            <button type="submit" class="btn btn-primary">Dodaj</button>
-          </div>
-        </form>
-      </div>
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h1 class="h4 text-center mb-4">
+                        🏷 Nowa kategoria
+                    </h1>
+
+                    <form th:action="@{/categories}"
+                          th:object="${category}"
+                          method="POST">
+
+                        <!-- NAZWA -->
+                        <div class="form-group">
+                            <label for="name">Nazwa</label>
+                            <input id="name"
+                                   type="text"
+                                   th:field="*{name}"
+                                   class="form-control"
+                                   placeholder="np. Jedzenie"
+                                   required />
+                        </div>
+
+                        <!-- TYP -->
+                        <div class="form-group">
+                            <label for="type">Typ</label>
+                            <select id="type"
+                                    th:field="*{categoryType}"
+                                    class="form-control"
+                                    required>
+                                <option value="" disabled selected>Wybierz typ</option>
+                                <option th:each="type : ${categoryTypes}"
+                                        th:value="${type}"
+                                        th:text="${type.value}"
+                                        th:classappend="${type.name() == 'INCOME'} ? 'text-success' : 'text-danger'">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- ACTIONS -->
+                        <div class="mt-4">
+                            <button type="submit"
+                                    class="btn btn-primary btn-block">
+                                💾 Dodaj kategorię
+                            </button>
+
+                            <a th:href="@{/categories}"
+                               class="btn btn-outline-secondary btn-block mt-2">
+                                ↩ Anuluj
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
     </div>
-  </div>
+
 </div>
+
 </body>
 </html>

@@ -10,5 +10,6 @@ import java.math.BigDecimal;
 public class CreateExpenseDto {
 
     private Long categoryId;
+    private Long accountId;
     private BigDecimal value;
 }

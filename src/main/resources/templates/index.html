@@ -1,37 +1,121 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="pl"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <meta charset="UTF-8">
-  <title>Home budget</title>
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-        crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Home Budget</title>
+
+    <!-- MOBILE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
 </head>
 <body>
+
+<!-- NAVBAR -->
 <div th:insert="fragments/navbar"></div>
-<div class = "container">
-  <div class = "row">
-    <h1>Cześć</h1>
-  </div>
-  <table class = "table table-striped table-bordered">
-    <thead class = "table-dark">
-    <tr>
-      <th>saldo: <span th:text="${currentMonth}"></span></th>
-      <th>saldo: <span th:text="${currentYear}"></span> rok</th>
-      <th>wydatki: <span th:text="${currentMonth}"></span></th>
-      <th>wpływy: <span th:text="${currentMonth}"></span></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td th:text = "${summary.monthlyBalance}"></td>
-      <td th:text = "${summary.annualBalance}"></td>
-      <td th:text = "${summary.monthlyExpenses}"></td>
-      <td th:text = "${summary.monthlyIncomes}"></td>
-    </tr>
-    </tbody>
-  </table>
+
+<div class="container mt-4">
+
+    <!-- GREETING -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h4">
+                👋 Cześć!
+            </h1>
+            <div class="text-muted small">
+                Podsumowanie za <strong th:text="${currentMonth}"></strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SUMMARY CARDS ================= -->
+    <div class="row">
+
+        <!-- MONTHLY BALANCE -->
+        <div class="col-12 col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted small">Saldo miesiąca</div>
+                    <h3 class="mb-0"
+                        th:classappend="${summary.monthlyBalance >= 0} ? 'text-success' : 'text-danger'"
+                        th:text="${summary.monthlyBalance} + ' zł'">
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- YEARLY BALANCE -->
+        <div class="col-12 col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted small">
+                        Saldo roku <span th:text="${currentYear}"></span>
+                    </div>
+                    <h3 class="mb-0"
+                        th:classappend="${summary.annualBalance >= 0} ? 'text-success' : 'text-danger'"
+                        th:text="${summary.annualBalance} + ' zł'">
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- MONTHLY EXPENSES -->
+        <div class="col-12 col-md-6 mb-3">
+            <div class="card shadow-sm border-danger">
+                <div class="card-body">
+                    <div class="text-muted small">Wydatki (miesiąc)</div>
+                    <h4 class="mb-0 text-danger"
+                        th:text="${summary.monthlyExpenses} + ' zł'">
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- MONTHLY INCOMES -->
+        <div class="col-12 col-md-6 mb-3">
+            <div class="card shadow-sm border-success">
+                <div class="card-body">
+                    <div class="text-muted small">Wpływy (miesiąc)</div>
+                    <h4 class="mb-0 text-success"
+                        th:text="${summary.monthlyIncomes} + ' zł'">
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <a th:href="@{/expenses/new}"
+               class="btn btn-danger btn-block mb-2">
+                ➖ Dodaj wydatek
+            </a>
+            <a th:href="@{/incomes/new}"
+               class="btn btn-success btn-block">
+                ➕ Dodaj wpływ
+            </a>
+        </div>
+    </div>
+
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa4/9E+7FfD4aFnmIbbVYUew+"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy3H0G/2QqzvFZkZrR+0O+GmZ6pL5dEj7/5dXj3"
+        crossorigin="anonymous"></script>
+
 </body>
 </html>

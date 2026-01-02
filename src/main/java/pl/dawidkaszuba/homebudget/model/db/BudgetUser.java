@@ -1,10 +1,6 @@
 package pl.dawidkaszuba.homebudget.model.db;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 
@@ -24,5 +20,9 @@ public class BudgetUser extends AuditableEntity {
     private String userName;
     private String password;
     private String roles;
+    @ManyToOne
+    @JoinColumn(name = "home_id", nullable = false)
+    private Home home;
+
 
 }

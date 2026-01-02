@@ -1,14 +1,14 @@
 package pl.dawidkaszuba.homebudget.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dawidkaszuba.homebudget.mapper.IncomeMapper;
-import pl.dawidkaszuba.homebudget.model.db.Category;
-import pl.dawidkaszuba.homebudget.model.db.Income;
-import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
+import pl.dawidkaszuba.homebudget.model.db.*;
 import pl.dawidkaszuba.homebudget.model.dto.income.CreateIncomeDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.IncomeViewDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
+import pl.dawidkaszuba.homebudget.repository.AccountRepository;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
 import pl.dawidkaszuba.homebudget.repository.IncomeRepository;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class IncomeServiceImpl implements IncomeService {
 
@@ -26,22 +27,15 @@ public class IncomeServiceImpl implements IncomeService {
     private final BudgetUserService budgetUserService;
     private final CategoryRepository categoryRepository;
     private final IncomeMapper incomeMapper;
+    private final AccountRepository accountRepository;
 
-    public IncomeServiceImpl(IncomeRepository incomeRepository,
-                             BudgetUserService budgetUserService,
-                             CategoryRepository categoryRepository,
-                             IncomeMapper incomeMapper) {
-        this.incomeRepository = incomeRepository;
-        this.budgetUserService = budgetUserService;
-        this.categoryRepository = categoryRepository;
-        this.incomeMapper = incomeMapper;
-    }
 
     @Transactional(readOnly = true)
     @Override
     public List<IncomeViewDto> getAllIncomesByUser(String userName) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
-        return incomeRepository.findAllByBudgetUser(budgetUser)
+        Home userHome = budgetUser.getHome();
+        return incomeRepository.findAllByHome(userHome)
                 .stream()
                 .map(incomeMapper::toDto)
                 .toList();
@@ -52,14 +46,24 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     public void save(CreateIncomeDto dto, Principal principal) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
-        Category category = categoryRepository
-                .findById(dto.getCategoryId())
+        Home userHome = budgetUser.getHome();
+
+        Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
-        Income income = incomeMapper.toEntity(dto);
+        Account account = accountRepository.findById(dto.getAccountId())
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
-        income.setBudgetUser(budgetUser);
+        if (!account.getHome().getId().equals(userHome.getId())) {
+            throw new IllegalStateException("Account does not belong to the user's home");
+        }
+        if (!category.getHome().getId().equals(userHome.getId())) {
+            throw new IllegalStateException("Category does not belong to the user's home");
+        }
+
+        Income income = incomeMapper.toEntity(dto);
         income.setCategory(category);
+        income.setAccount(account);
         incomeRepository.save(income);
     }
 
@@ -91,8 +95,12 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Transactional(readOnly = true)
     @Override
-    public Double getSumOfAllIncomesByUserAndTimeBetween(BudgetUser budgetUser, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return incomeRepository.findSumOfValueByUserAndCreateTimeBetween(budgetUser, startDateTime, endDateTime);
+    public Double getSumOfAllIncomesByUserAndTimeBetween(LocalDateTime startDateTime,
+                                                         LocalDateTime endDateTime,
+                                                         Principal principal) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        Home home = budgetUser.getHome();
+        return incomeRepository.findSumOfValueByUserAndCreateTimeBetween(home, startDateTime, endDateTime);
     }
 
     @Transactional

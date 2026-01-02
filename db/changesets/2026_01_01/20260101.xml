@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="add_accounts" author="dawid">
+        <sqlFile path="db/changesets/2026_01_01/01_create_homes.sql"/>
+        <sqlFile path="db/changesets/2026_01_01/02_add_home_to_users.sql"/>
+        <sqlFile path="db/changesets/2026_01_01/03_create_accounts.sql"/>
+        <sqlFile path="db/changesets/2026_01_01/04_add_account_to_expenses_incomes.sql"/>
+        <sqlFile path="db/changesets/2026_01_01/05_data_migration.sql"/>
+        <rollback>
+            <sqlFile path="rollback.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="set_not_null" author="dawid" context="dev,test">
+        <sqlFile path="db/changesets/2026_01_01/06_set_not_null.sql"/>
+    </changeSet>
+
+    <changeSet id="tag_add_accounts" author="dawid">
+        <tagDatabase tag="v0.0.2"/>
+    </changeSet>
+
+</databaseChangeLog>

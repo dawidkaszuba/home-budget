@@ -1,5 +1,6 @@
 package pl.dawidkaszuba.homebudget.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,35 +9,33 @@ import pl.dawidkaszuba.homebudget.model.db.CategoryType;
 import pl.dawidkaszuba.homebudget.model.db.Expense;
 import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.UpdateExpenseDto;
+import pl.dawidkaszuba.homebudget.service.AccountService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
 
 import java.security.Principal;
 
 @Controller
+@RequiredArgsConstructor
 public class ExpenseController {
 
     private final ExpenseService expenseService;
     private final CategoryService categoryService;
     private final ExpenseMapper expenseMapper;
-
-    public ExpenseController(ExpenseService expenseService, CategoryService categoryService, ExpenseMapper expenseMapper) {
-        this.expenseService = expenseService;
-        this.categoryService = categoryService;
-        this.expenseMapper = expenseMapper;
-    }
+    private final AccountService accountService;
 
     @GetMapping("/expenses")
     public String listExpenses(Model model, Principal principal) {
-        model.addAttribute("expenses", expenseService.getAllExpensesByBudgetUser(principal.getName()));
+        model.addAttribute("expenses", expenseService.getAllExpensesByBudgetUserHome(principal.getName()));
         return "expenses";
     }
 
     @GetMapping("/expenses/new")
-    public String addNewExpense(Model model) {
+    public String addNewExpense(Model model, Principal principal) {
         CreateExpenseDto dto = new CreateExpenseDto();
         model.addAttribute("expense", dto);
         model.addAttribute("categories", categoryService.findByCategoryType(CategoryType.EXPENSE));
+        model.addAttribute("accounts", accountService.findAllUserAccounts(principal));
         return "create_expense";
     }
 

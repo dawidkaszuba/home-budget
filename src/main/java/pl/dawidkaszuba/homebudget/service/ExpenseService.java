@@ -1,7 +1,6 @@
 package pl.dawidkaszuba.homebudget.service;
 
 import org.springframework.stereotype.Service;
-import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.db.Expense;
 import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.ExpenseViewDto;
@@ -14,7 +13,7 @@ import java.util.List;
 @Service
 public interface ExpenseService {
 
-    List<ExpenseViewDto> getAllExpensesByBudgetUser(String userName);
+    List<ExpenseViewDto> getAllExpensesByBudgetUserHome(String userName);
 
     void save(CreateExpenseDto dto, Principal principal);
 
@@ -22,7 +21,7 @@ public interface ExpenseService {
 
     Expense getExpenseById(Long id);
 
-    Double getSumOfAllExpensesByUserAndTimeBetween(BudgetUser userId, LocalDateTime startDateTime, LocalDateTime endDateTime);
+    Double getSumOfAllExpensesByUserAndTimeBetween(Principal principal, LocalDateTime startDateTime, LocalDateTime endDateTime);
 
     void deleteIncome(Long id);
 }

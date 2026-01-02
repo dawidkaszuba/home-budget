@@ -18,10 +18,11 @@ public class Expense extends AuditableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "budget_user_id", nullable = false)
-    private BudgetUser budgetUser;
-    @ManyToOne
     private Category category;
     private BigDecimal value;
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
+
 
 }
