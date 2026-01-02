@@ -33,8 +33,10 @@ public class SummaryServiceImpl implements SummaryService {
         LocalDateTime startDateTimeMonthly = LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(), firstDayOfCurrentMonth, 0, 0);
         LocalDateTime endDateTimeMonthly = LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(), lastDayOfCurrentMonth, 0, 0);
 
+        Double allExpensesDb = expenseService.getSumOfValueByHome(principal);
         Double annualExpensesDb = expenseService.getSumOfAllExpensesByUserAndTimeBetween(principal, startDateTimeAnnual, endDateTimeAnnual);
         Double monthlyExpensesDb = expenseService.getSumOfAllExpensesByUserAndTimeBetween(principal, startDateTimeMonthly, endDateTimeMonthly);
+        Double allIncomesDb = incomeService.getSumOfValueByHome(principal);
         Double annualIncomesDb = incomeService.getSumOfAllIncomesByUserAndTimeBetween(startDateTimeAnnual, endDateTimeAnnual, principal);
         Double monthlyIncomesDb = incomeService.getSumOfAllIncomesByUserAndTimeBetween(startDateTimeMonthly, endDateTimeMonthly, principal);
 
@@ -44,7 +46,10 @@ public class SummaryServiceImpl implements SummaryService {
         Double monthlyExpenses = monthlyExpensesDb != null ? monthlyExpensesDb : Double.valueOf(0);
         Double annualIncomes = annualIncomesDb != null ? annualIncomesDb : Double.valueOf(0);
         Double monthlyIncomes = monthlyIncomesDb != null ? monthlyIncomesDb : Double.valueOf(0);
+        Double allIncomes = allIncomesDb != null ? allIncomesDb : Double.valueOf(0);
+        Double allExpenses = allExpensesDb != null ? allExpensesDb : Double.valueOf(0);
 
+        summary.setBalance(BigDecimal.valueOf(allIncomes - allExpenses));
         summary.setAnnualBalance(BigDecimal.valueOf(annualIncomes - annualExpenses));
         summary.setMonthlyBalance(BigDecimal.valueOf(monthlyIncomes - monthlyExpenses));
         summary.setMonthlyIncomes(BigDecimal.valueOf(monthlyIncomes));

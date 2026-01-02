@@ -109,4 +109,12 @@ public class IncomeServiceImpl implements IncomeService {
         Income income = incomeRepository.findById(id).orElseThrow();
         incomeRepository.delete(income);
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Double getSumOfValueByHome(Principal principal) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        Home home = budgetUser.getHome();
+        return incomeRepository.findSumOfValueByHome(home);
+    }
 }

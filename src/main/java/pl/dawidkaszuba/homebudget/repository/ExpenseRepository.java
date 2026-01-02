@@ -23,6 +23,13 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             @Param("endDateTime") LocalDateTime endDateTime
     );
 
+    @Query("""
+    SELECT SUM(e.value)
+    FROM Expense e
+    WHERE e.account.home = :home
+    """)
+    Double getSumOfValueByHome(@Param("home") Home home);
+
 
     @Query("SELECT e FROM Expense e WHERE e.account.home = :home")
     List<Expense> findAllByHome(@Param("home") Home home);

@@ -8,8 +8,10 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class Summary {
-    private BigDecimal monthlyBalance;
+
+    private BigDecimal balance;
     private BigDecimal annualBalance;
+    private BigDecimal monthlyBalance;
     private BigDecimal monthlyExpenses;
     private BigDecimal monthlyIncomes;
 }

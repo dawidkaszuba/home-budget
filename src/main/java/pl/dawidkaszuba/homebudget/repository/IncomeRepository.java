@@ -28,4 +28,10 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     @Query("SELECT i FROM Income i WHERE i.account.home = :home")
     List<Income> findAllByHome(@Param("home") Home home);
 
+    @Query("""
+    SELECT SUM(i.value)
+    FROM Income i
+    WHERE i.account.home = :home
+    """)
+    Double findSumOfValueByHome(@Param("home") Home home);
 }
