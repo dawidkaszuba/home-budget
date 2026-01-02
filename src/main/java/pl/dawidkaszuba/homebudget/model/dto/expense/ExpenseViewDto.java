@@ -13,6 +13,7 @@ public class ExpenseViewDto {
     private Long id;
     private String categoryName;
     private BigDecimal value;
+    private String accountName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

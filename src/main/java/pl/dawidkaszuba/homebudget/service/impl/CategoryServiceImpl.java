@@ -6,12 +6,14 @@ import pl.dawidkaszuba.homebudget.mapper.CategoryMapper;
 import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.db.Category;
 import pl.dawidkaszuba.homebudget.model.db.CategoryType;
+import pl.dawidkaszuba.homebudget.model.db.Home;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryViewDto;
 import pl.dawidkaszuba.homebudget.model.dto.category.CreateCategoryDto;
 import pl.dawidkaszuba.homebudget.model.dto.category.UpdateCategoryDto;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
+import pl.dawidkaszuba.homebudget.service.HomeService;
 
 import java.security.Principal;
 import java.util.List;
@@ -21,12 +23,12 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final BudgetUserService budgetUserService;
+    private final HomeService homeService;
     private final CategoryMapper categoryMapper;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, BudgetUserService budgetUserService, CategoryMapper categoryMapper) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, HomeService homeService, CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
-        this.budgetUserService = budgetUserService;
+        this.homeService = homeService;
         this.categoryMapper = categoryMapper;
     }
 
@@ -48,9 +50,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public void save(CreateCategoryDto dto, Principal principal) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        Home home = homeService.getHomeByBudgetUser(principal.getName());
+
+        if (categoryRepository.existsByHomeAndCategoryTypeAndName(
+                home,
+                dto.getCategoryType(),
+                dto.getName()
+        )) {
+            throw new IllegalStateException("Category already exists in this home");
+        }
+
         Category category = categoryMapper.toEntity(dto);
-        category.setBudgetUser(budgetUser);
+        category.setHome(home);
         categoryRepository.save(category);
     }
 

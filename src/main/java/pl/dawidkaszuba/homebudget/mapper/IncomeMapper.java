@@ -11,11 +11,11 @@ import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
 public interface IncomeMapper {
 
     @Mapping(target = "categoryName", source = "category.name")
+    @Mapping(target = "accountName", source = "account.name")
     IncomeViewDto toDto(Income entity);
 
     @Mapping(target = "value", source = "value")
     @Mapping(target = "category", ignore = true)
-    @Mapping(target = "budgetUser", ignore = true)
     Income toEntity(CreateIncomeDto dto);
 
     @Mapping(target = "categoryId", source = "category.id")

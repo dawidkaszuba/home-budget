@@ -1,0 +1,8 @@
+ALTER TABLE budget_users
+ALTER COLUMN home_id SET NOT NULL;
+
+ALTER TABLE expenses
+ALTER COLUMN account_id SET NOT NULL;
+
+ALTER TABLE incomes
+ALTER COLUMN account_id SET NOT NULL;

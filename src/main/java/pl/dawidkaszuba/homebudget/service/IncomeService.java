@@ -22,7 +22,7 @@ public interface IncomeService {
 
     void updateIncome(UpdateIncomeDto dto);
 
-    Double getSumOfAllIncomesByUserAndTimeBetween(BudgetUser budgetUser, LocalDateTime startDateTime, LocalDateTime endDateTime);
+    Double getSumOfAllIncomesByUserAndTimeBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, Principal principal);
 
     void deleteIncome(Long id);
 }

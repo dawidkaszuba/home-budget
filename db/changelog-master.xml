@@ -6,4 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <include file="db/changesets/2025_12_29/20251229.xml"/>
+    <include file="db/changesets/2026_01_01/20260101.xml"/>
+    <include file="db/changesets/2026_01_01_a/20260101.xml"/>
+    <include file="db/changesets/2026_01_01_b/20260101.xml"/>
 </databaseChangeLog>

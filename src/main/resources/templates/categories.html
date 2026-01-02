@@ -1,43 +1,99 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="pl"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <meta charset="UTF-8">
-  <title>Zarządzanie kategoriami</title>
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-        crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Zarządzanie kategoriami</title>
+
+    <!-- MOBILE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
 </head>
 <body>
+
+<!-- NAVBAR -->
 <div th:insert="fragments/navbar"></div>
-<div class = "container">
-  <div class = "row">
-    <h1>Lista kategorii</h1>
-  </div>
-  <div class = "row">
-    <div class = "col-lg-3">
-      <a th:href = "@{/categories/new}" class="btn btn-primary btn-sm mb-3">Dodaj kategorię</a>
+
+<div class="container mt-4">
+
+    <!-- HEADER -->
+    <div class="row mb-3">
+        <div class="col-12 col-md-6">
+            <h1 class="h3">Lista kategorii</h1>
+        </div>
+        <div class="col-12 col-md-6 text-md-right">
+            <a th:href="@{/categories/new}"
+               class="btn btn-primary btn-sm btn-block btn-md-inline">
+                ➕ Dodaj kategorię
+            </a>
+        </div>
     </div>
-  </div>
-  <table class = "table table-striped table-bordered">
-    <thead class = "table-dark">
-    <tr>
-      <th>nazwa</th>
-      <th>typ</th>
-      <th>akcje</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each = "category: ${categories}">
-      <td th:text = "${category.name}"></td>
-      <td th:text = "${category.categoryType.value}"></td>
-      <td>
-        <a th:href = "@{/categories/edit/{id}(id=${category.id})}"
-           class = "btn btn-primary">Aktualizuj</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+
+    <!-- ================= DESKTOP TABLE ================= -->
+    <div class="d-none d-md-block">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                <tr>
+                    <th>Nazwa</th>
+                    <th>Typ</th>
+                    <th class="text-center">Akcje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category : ${categories}">
+                    <td th:text="${category.name}"></td>
+
+                    <td th:text="${category.categoryType.value}"
+                        th:classappend="${category.categoryType.name() == 'INCOME'} ?
+                        'text-success font-weight-bold' :
+                        (${category.categoryType.name() == 'EXPENSE'} ?
+                        'text-danger font-weight-bold' : '')">
+                    </td>
+
+                    <td class="text-center">
+                        <a th:href="@{/categories/edit/{id}(id=${category.id})}"
+                           class="btn btn-primary btn-sm">
+                            ✏️ Aktualizuj
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ================= MOBILE CARDS ================= -->
+    <div class="d-block d-md-none">
+        <div class="card mb-3 shadow-sm"
+             th:each="category : ${categories}">
+
+            <div class="card-body">
+                <h5 class="card-title" th:text="${category.name}"></h5>
+
+                <span class="badge badge-pill"
+                      th:text="${category.categoryType.value}"
+                      th:classappend="${category.categoryType.name() == 'INCOME'} ?
+                      'badge-success' : 'badge-danger'">
+                </span>
+
+                <div class="mt-3">
+                    <a th:href="@{/categories/edit/{id}(id=${category.id})}"
+                       class="btn btn-primary btn-sm btn-block">
+                        ✏️ Aktualizuj
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
 </body>
 </html>

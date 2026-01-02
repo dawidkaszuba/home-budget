@@ -1,55 +1,120 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="pl"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Dodaj wpływ</title>
+
+    <!-- MOBILE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- BOOTSTRAP -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
+
+    <!-- SIMPLE VALIDATION -->
     <script>
-     function validateForm() {
-        var x = document.forms["myForm"]["value"].value;
-        if (x == "" || x == null) {
-         alert("Kwota musi być wypełniona");
-    return false;
+        function validateForm() {
+            const value = document.forms["incomeForm"]["value"].value;
+            if (!value || value <= 0) {
+                alert("Kwota musi być większa od 0");
+                return false;
+            }
+            return true;
         }
-    }
     </script>
 </head>
 <body>
-    <div th:insert="fragments/navbar"></div>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-            <h1 class = "text-center">Nowy wpływ</h1>
-            <div class = "card=body">
-                <form th:action="@{/incomes}" th:object="${income}" method="POST" name="myForm" onsubmit="return validateForm()">
-                    <div class = "form-group">
-                        <label>wartość</label>
-                        <input
-                                type = "number"
-                                step = ".01"
-                                min = "0.01"
-                                name = "value"
-                                th:field = "${income.value}"
-                                class = "form-control"
-                        />
-                    </div>
-                    <div class = "form-group">
-                        <label>kategoria</label>
-                        <select th:field="${income.categoryId}">
-                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
-                            </option>
-                        </select>
-                    </div>
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Dodaj</button>
-                    </div>
-                </form>
+
+<!-- NAVBAR -->
+<div th:insert="fragments/navbar"></div>
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+
+            <div class="card shadow-sm border-success">
+                <div class="card-body">
+
+                    <h1 class="h4 text-center text-success mb-4">
+                        ➕ Nowy wpływ
+                    </h1>
+
+                    <form th:action="@{/incomes}"
+                          th:object="${income}"
+                          method="POST"
+                          name="incomeForm"
+                          onsubmit="return validateForm()">
+
+                        <!-- VALUE -->
+                        <div class="form-group">
+                            <label for="value">Kwota</label>
+                            <input id="value"
+                                   type="number"
+                                   step="0.01"
+                                   min="0.01"
+                                   th:field="*{value}"
+                                   class="form-control"
+                                   placeholder="np. 3500.00"
+                                   required />
+                        </div>
+
+                        <!-- ACCOUNT -->
+                        <div class="form-group">
+                            <label for="account">Konto</label>
+                            <select id="account"
+                                    th:field="*{accountId}"
+                                    class="form-control"
+                                    required>
+                                <option value="" disabled selected>Wybierz konto</option>
+                                <option th:each="account : ${accounts}"
+                                        th:value="${account.id}"
+                                        th:text="${account.name}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- CATEGORY -->
+                        <div class="form-group">
+                            <label for="category">Kategoria</label>
+                            <select id="category"
+                                    th:field="*{categoryId}"
+                                    class="form-control"
+                                    required>
+                                <option value="" disabled selected>Wybierz kategorię</option>
+                                <option th:each="category : ${categories}"
+                                        th:value="${category.id}"
+                                        th:text="${category.name}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- ACTIONS -->
+                        <div class="mt-4">
+                            <button type="submit"
+                                    class="btn btn-success btn-block">
+                                💾 Dodaj wpływ
+                            </button>
+
+                            <a th:href="@{/incomes}"
+                               class="btn btn-outline-secondary btn-block mt-2">
+                                ↩ Anuluj
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
             </div>
+
         </div>
     </div>
+
 </div>
+
 </body>
 </html>

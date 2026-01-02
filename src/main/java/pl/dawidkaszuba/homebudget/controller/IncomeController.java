@@ -1,5 +1,6 @@
 package pl.dawidkaszuba.homebudget.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,23 +9,21 @@ import pl.dawidkaszuba.homebudget.model.db.CategoryType;
 import pl.dawidkaszuba.homebudget.model.db.Income;
 import pl.dawidkaszuba.homebudget.model.dto.income.CreateIncomeDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
+import pl.dawidkaszuba.homebudget.service.AccountService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
 
 import java.security.Principal;
 
 @Controller
+@RequiredArgsConstructor
 public class IncomeController {
 
     private final IncomeService incomeService;
     private final CategoryService categoryService;
     private final IncomeMapper incomeMapper;
+    private final AccountService accountService;
 
-    public IncomeController(IncomeService incomeService, CategoryService categoryService, IncomeMapper incomeMapper) {
-        this.incomeService = incomeService;
-        this.categoryService = categoryService;
-        this.incomeMapper = incomeMapper;
-    }
 
     @GetMapping("/incomes")
     public String listIncomes(Model model, Principal principal) {
@@ -33,10 +32,11 @@ public class IncomeController {
     }
 
     @GetMapping("/incomes/new")
-    public String addNewIncome(Model model) {
+    public String addNewIncome(Model model, Principal principal) {
         CreateIncomeDto dto = new CreateIncomeDto();
         model.addAttribute("income", dto);
         model.addAttribute("categories", categoryService.findByCategoryType(CategoryType.INCOME));
+        model.addAttribute("accounts", accountService.findAllUserAccounts(principal));
         return "create_income";
     }
 

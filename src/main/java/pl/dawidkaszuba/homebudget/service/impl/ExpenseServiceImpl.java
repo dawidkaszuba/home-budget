@@ -1,14 +1,14 @@
 package pl.dawidkaszuba.homebudget.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dawidkaszuba.homebudget.mapper.ExpenseMapper;
-import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
-import pl.dawidkaszuba.homebudget.model.db.Category;
-import pl.dawidkaszuba.homebudget.model.db.Expense;
+import pl.dawidkaszuba.homebudget.model.db.*;
 import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.UpdateExpenseDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.ExpenseViewDto;
+import pl.dawidkaszuba.homebudget.repository.AccountRepository;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
 import pl.dawidkaszuba.homebudget.repository.ExpenseRepository;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
 
@@ -26,23 +27,16 @@ public class ExpenseServiceImpl implements ExpenseService {
     private final BudgetUserService budgetUserService;
     private final CategoryRepository categoryRepository;
     private final ExpenseMapper expenseMapper;
+    private final AccountRepository accountRepository;
 
-    public ExpenseServiceImpl(ExpenseRepository expenseRepository,
-                              BudgetUserService budgetUserService,
-                              CategoryRepository categoryRepository,
-                              ExpenseMapper expenseMapper) {
-        this.expenseRepository = expenseRepository;
-        this.budgetUserService = budgetUserService;
-        this.categoryRepository = categoryRepository;
-        this.expenseMapper = expenseMapper;
-    }
 
 
     @Transactional(readOnly = true)
     @Override
-    public List<ExpenseViewDto> getAllExpensesByBudgetUser(String userName) {
+    public List<ExpenseViewDto> getAllExpensesByBudgetUserHome(String userName) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
-        return expenseRepository.findAllByBudgetUser(budgetUser)
+        Home userHome = budgetUser.getHome();
+        return expenseRepository.findAllByHome(userHome)
                 .stream()
                 .map(expenseMapper::toDto)
                 .toList();
@@ -52,13 +46,24 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public void save(CreateExpenseDto dto, Principal principal) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
-        Category category = categoryRepository
-                .findById(dto.getCategoryId())
+        Home userHome = budgetUser.getHome();
+
+        Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
+        Account account = accountRepository.findById(dto.getAccountId())
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        if (!account.getHome().getId().equals(userHome.getId())) {
+            throw new IllegalStateException("Account does not belong to the user's home");
+        }
+        if (!category.getHome().getId().equals(userHome.getId())) {
+            throw new IllegalStateException("Category does not belong to the user's home");
+        }
+
         Expense expense = expenseMapper.toEntity(dto);
-        expense.setBudgetUser(budgetUser);
         expense.setCategory(category);
+        expense.setAccount(account);
 
         expenseRepository.save(expense);
     }
@@ -91,8 +96,12 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Transactional(readOnly = true)
     @Override
-    public Double getSumOfAllExpensesByUserAndTimeBetween(BudgetUser budgetUser, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return expenseRepository.getSumOfValueByUserAndTimeBetween(budgetUser, startDateTime, endDateTime);
+    public Double getSumOfAllExpensesByUserAndTimeBetween(Principal principal,
+                                                          LocalDateTime startDateTime,
+                                                          LocalDateTime endDateTime) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        Home home = budgetUser.getHome();
+        return expenseRepository.getSumOfValueByHomeAndTimeBetween(home, startDateTime, endDateTime);
     }
 
     @Transactional

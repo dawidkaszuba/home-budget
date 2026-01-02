@@ -1,7 +1,7 @@
 package pl.dawidkaszuba.homebudget.service;
 
-import pl.dawidkaszuba.homebudget.model.dto.Summary;
+import pl.dawidkaszuba.homebudget.model.db.Home;
 
 public interface HomeService {
-    Summary getSummary(String userName);
+    Home getHomeByBudgetUser(String name);
 }

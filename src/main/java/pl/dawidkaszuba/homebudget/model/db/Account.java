@@ -8,18 +8,17 @@ import org.hibernate.annotations.SQLDelete;
 @Getter
 @Setter
 @Entity
-@Table(name = "categories")
-@SQLDelete(sql = "UPDATE categories SET deleted_at = now() WHERE id = ?")
-public class Category extends AuditableEntity {
+@Table(name = "accounts")
+@SQLDelete(sql = "UPDATE accounts SET deleted_at = now() WHERE id = ?")
+public class Account extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Enumerated(EnumType.STRING)
-    private CategoryType categoryType;
     @ManyToOne
     @JoinColumn(name = "home_id", nullable = false)
     private Home home;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private BudgetUser owner;
 }
-
