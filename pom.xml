@@ -10,8 +10,9 @@
 	</parent>
 	<groupId>pl.dawidkaszuba</groupId>
 	<artifactId>home-budget</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>home-budget</name>
+    <packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
