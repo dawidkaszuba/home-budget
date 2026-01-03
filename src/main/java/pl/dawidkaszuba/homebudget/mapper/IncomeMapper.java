@@ -16,6 +16,11 @@ public interface IncomeMapper {
 
     @Mapping(target = "value", source = "value")
     @Mapping(target = "category", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "deletedAt", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "account", ignore = true)
     Income toEntity(CreateIncomeDto dto);
 
     @Mapping(target = "categoryId", source = "category.id")
