@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,13 +26,26 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/categories/**").hasRole("ADMIN")
+                        .requestMatchers("/accounts/**").hasRole("ADMIN")
+                        .requestMatchers("/home/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(jpaUserDetailsService)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/perform_login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/login?error")
+                        .permitAll()
+                )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .logout(logout -> logout.logoutUrl("/logout"))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                )
                 .exceptionHandling(ex -> ex.accessDeniedPage("/access-denied"));
 
         return http.build();
