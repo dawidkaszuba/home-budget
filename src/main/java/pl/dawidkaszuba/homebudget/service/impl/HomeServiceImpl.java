@@ -3,6 +3,7 @@ package pl.dawidkaszuba.homebudget.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dawidkaszuba.homebudget.exceptions.BudgetUserNotFoundException;
 import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.db.Home;
 import pl.dawidkaszuba.homebudget.repository.BudgetUserRepository;
@@ -26,7 +27,7 @@ public class HomeServiceImpl implements HomeService {
         return budgetUserRepository.findByUserName(userName)
                 .map(BudgetUser::getHome)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("User not found: " + userName)
+                    new BudgetUserNotFoundException("User not found: " + userName)
                 );
     }
 

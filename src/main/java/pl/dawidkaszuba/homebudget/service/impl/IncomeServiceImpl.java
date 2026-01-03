@@ -32,13 +32,10 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<IncomeViewDto> getAllIncomesByUser(String userName) {
+    public List<Income> getAllIncomesByUser(String userName) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
         Home userHome = budgetUser.getHome();
-        return incomeRepository.findAllByHome(userHome)
-                .stream()
-                .map(incomeMapper::toDto)
-                .toList();
+        return incomeRepository.findAllByHome(userHome);
     }
 
 
@@ -89,7 +86,14 @@ public class IncomeServiceImpl implements IncomeService {
             income.setCategory(category);
         }
 
-        income.setValue(income.getValue());
+        if(!income.getAccount().getId().equals(dto.getAccountId())) {
+            Account account = accountRepository
+                    .findById(dto.getAccountId())
+                    .orElseThrow();
+            income.setAccount(account);
+        }
+
+        income.setValue(dto.getValue());
         income.setUpdatedAt(LocalDateTime.now());
     }
 

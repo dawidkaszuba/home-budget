@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public interface ExpenseService {
 
-    List<ExpenseViewDto> getAllExpensesByBudgetUserHome(String userName);
+    List<Expense> getAllExpensesByBudgetUser(String userName);
 
     void save(CreateExpenseDto dto, Principal principal);
 

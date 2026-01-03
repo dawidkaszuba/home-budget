@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Dodaj wydatek</title>
+    <title>Wpływ</title>
 
     <!-- MOBILE -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +18,7 @@
     <!-- SIMPLE VALIDATION -->
     <script>
         function validateForm() {
-            const value = document.forms["expenseForm"]["value"].value;
+            const value = document.forms["incomeForm"]["value"].value;
             if (!value || value <= 0) {
                 alert("Kwota musi być większa od 0");
                 return false;
@@ -37,15 +37,17 @@
     <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-8 col-lg-6">
 
-            <div class="card shadow-sm">
+            <div class="card shadow-sm border-success">
                 <div class="card-body">
 
-                    <h1 class="h4 text-center mb-4">➖ Nowy wydatek</h1>
+                    <h1 class="h4 text-center text-success mb-4">
+                        ➕ Wpływ
+                    </h1>
 
-                    <form th:action="@{/expenses}"
-                          th:object="${expense}"
+                    <form th:action="@{${income.id} != null ? '/incomes/' + ${income.id} : '/incomes'}"
+                          th:object="${income}"
                           method="POST"
-                          name="expenseForm"
+                          name="incomeForm"
                           onsubmit="return validateForm()">
 
                         <!-- VALUE -->
@@ -57,9 +59,10 @@
                                    min="0.01"
                                    th:field="*{value}"
                                    class="form-control"
-                                   placeholder="np. 123.45"
+                                   placeholder="np. 3500.00"
                                    required />
                         </div>
+                        <div th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
 
                         <!-- ACCOUNT -->
                         <div class="form-group">
@@ -75,6 +78,7 @@
                                 </option>
                             </select>
                         </div>
+                        <div th:if="${#fields.hasErrors('accountId')}" th:errors="*{accountId}"></div>
 
                         <!-- CATEGORY -->
                         <div class="form-group">
@@ -90,15 +94,17 @@
                                 </option>
                             </select>
                         </div>
+                        <div th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></div>
+
 
                         <!-- ACTIONS -->
                         <div class="mt-4">
                             <button type="submit"
-                                    class="btn btn-primary btn-block">
-                                ➕ Dodaj wydatek
+                                    class="btn btn-success btn-block">
+                                💾 Zapisz
                             </button>
 
-                            <a th:href="@{/expenses}"
+                            <a th:href="@{/incomes}"
                                class="btn btn-outline-secondary btn-block mt-2">
                                 ↩ Anuluj
                             </a>

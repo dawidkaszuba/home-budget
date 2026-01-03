@@ -1,9 +1,14 @@
 package pl.dawidkaszuba.homebudget.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.dawidkaszuba.homebudget.exceptions.AccountNotFoundException;
+import pl.dawidkaszuba.homebudget.exceptions.CategoryNotBelongToHomeException;
+import pl.dawidkaszuba.homebudget.exceptions.CategoryNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.ExpenseMapper;
 import pl.dawidkaszuba.homebudget.model.db.CategoryType;
 import pl.dawidkaszuba.homebudget.model.db.Expense;
@@ -14,6 +19,7 @@ import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,42 +32,72 @@ public class ExpenseController {
 
     @GetMapping("/expenses")
     public String listExpenses(Model model, Principal principal) {
-        model.addAttribute("expenses", expenseService.getAllExpensesByBudgetUserHome(principal.getName()));
-        return "expenses";
+        List<Expense> expenses = expenseService.getAllExpensesByBudgetUser(principal.getName());
+        model.addAttribute("expenses", expenses.stream().map(expenseMapper::toViewDto).toList());
+        return "expenses/expenses";
     }
 
     @GetMapping("/expenses/new")
     public String addNewExpense(Model model, Principal principal) {
-        CreateExpenseDto dto = new CreateExpenseDto();
-        model.addAttribute("expense", dto);
-        model.addAttribute("categories", categoryService.findByCategoryType(CategoryType.EXPENSE));
-        model.addAttribute("accounts", accountService.findAllUserAccounts(principal));
-        return "create_expense";
+        model.addAttribute("expense", new CreateExpenseDto());
+        prepareExpenseForm(model, principal);
+        return "expenses/form";
     }
 
     @PostMapping("/expenses")
-    public String saveExpense(@ModelAttribute("expense") CreateExpenseDto dto, Principal principal) {
-        expenseService.save(dto, principal);
+    public String saveExpense(@Valid @ModelAttribute("expense") CreateExpenseDto dto,
+                              BindingResult bindingResult,
+                              Principal principal,
+                              Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return backToExpenseForm(model, principal);
+        }
+
+        try {
+            expenseService.save(dto, principal);
+        } catch (RuntimeException e) {
+            mapExpenseException(e, bindingResult);
+        }
+
+        if (bindingResult.hasErrors()) {
+            return backToExpenseForm(model, principal);
+        }
+
         return "redirect:/expenses";
     }
 
 
+
     @GetMapping("/expenses/edit/{id}")
-    public String getExpenseForUpdate(@PathVariable Long id, Model model) {
+    public String getExpenseForUpdate(@PathVariable Long id, Model model, Principal principal) {
         Expense expense = expenseService.getExpenseById(id);
-
-        model.addAttribute("expense",
-                expenseMapper.toUpdateExpenseDto(expense));
-
-        model.addAttribute("categories",
-                categoryService.findByCategoryType(CategoryType.EXPENSE));
-
-        return "update_expense";
+        model.addAttribute("expense", expenseMapper.toUpdateExpenseDto(expense));
+        prepareExpenseForm(model, principal);
+        return "expenses/form";
     }
 
     @PostMapping("/expenses/{id}")
-    public String updateExpense(@PathVariable Long id, @ModelAttribute("expense") UpdateExpenseDto dto) {
-        expenseService.updateExpense(dto);
+    public String updateExpense(@PathVariable Long id,
+                                @ModelAttribute("expense") UpdateExpenseDto dto,
+                                BindingResult bindingResult,
+                                Principal principal,
+                                Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return backToExpenseForm(model, principal);
+        }
+
+        try {
+            expenseService.updateExpense(dto);
+        } catch (RuntimeException e) {
+            mapExpenseException(e, bindingResult);
+        }
+
+        if (bindingResult.hasErrors()) {
+            return backToExpenseForm(model, principal);
+        }
+
         return "redirect:/expenses";
     }
 
@@ -70,4 +106,48 @@ public class ExpenseController {
         expenseService.deleteIncome(id);
         return "redirect:/expenses";
     }
+
+    private String backToExpenseForm(Model model, Principal principal) {
+        prepareExpenseForm(model, principal);
+        return "expenses/form";
+    }
+
+    private void prepareExpenseForm(Model model, Principal principal) {
+        model.addAttribute(
+                "categories",
+                categoryService.findByCategoryType(CategoryType.EXPENSE)
+        );
+        model.addAttribute(
+                "accounts",
+                accountService.findAllUserAccounts(principal)
+        );
+    }
+
+    private void mapExpenseException(
+            RuntimeException e,
+            BindingResult bindingResult) {
+
+        if (e instanceof AccountNotFoundException) {
+            bindingResult.rejectValue(
+                    "accountId",
+                    "account.notFound",
+                    e.getMessage()
+            );
+        } else if (e instanceof CategoryNotFoundException) {
+            bindingResult.rejectValue(
+                    "categoryId",
+                    "category.notFound",
+                    e.getMessage()
+            );
+        } else if (e instanceof CategoryNotBelongToHomeException) {
+            bindingResult.reject(
+                    "access.denied",
+                    e.getMessage()
+            );
+        } else {
+            throw e; // todo  nieznany wyjątek → ControllerAdvice
+        }
+    }
+
+
 }
