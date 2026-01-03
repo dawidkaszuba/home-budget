@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>pl.dawidkaszuba</groupId>
 	<artifactId>home-budget</artifactId>
-	<version>1.3.0</version>
+	<version>1.4.0</version>
 	<name>home-budget</name>
     <packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
