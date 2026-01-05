@@ -3,6 +3,7 @@ package pl.dawidkaszuba.homebudget.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import pl.dawidkaszuba.homebudget.exceptions.IncomeNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.IncomeMapper;
 import pl.dawidkaszuba.homebudget.model.db.*;
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -94,6 +96,10 @@ public class IncomeServiceImpl implements IncomeService {
             income.setAccount(account);
         }
 
+        String note = StringUtils.hasText(dto.getNote()) ? dto.getNote() : null;
+        if (!Objects.equals(note, income.getNote())) {
+            income.setNote(note);
+        }
         income.setValue(dto.getValue());
         income.setUpdatedAt(LocalDateTime.now());
     }

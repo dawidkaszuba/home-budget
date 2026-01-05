@@ -21,4 +21,5 @@ public class Account extends AuditableEntity {
     private Home home;
     @ManyToOne(fetch = FetchType.LAZY)
     private BudgetUser owner;
+    private String note;
 }
