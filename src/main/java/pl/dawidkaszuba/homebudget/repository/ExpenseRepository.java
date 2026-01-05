@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import pl.dawidkaszuba.homebudget.model.db.Expense;
 import pl.dawidkaszuba.homebudget.model.db.Home;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     WHERE e.account.home = :home
       AND e.createdAt BETWEEN :startDateTime AND :endDateTime
     """)
-    Double getSumOfValueByHomeAndTimeBetween(
+    BigDecimal getSumOfValueByHomeAndTimeBetween(
             @Param("home") Home home,
             @Param("startDateTime") LocalDateTime startDateTime,
             @Param("endDateTime") LocalDateTime endDateTime
@@ -28,7 +29,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     FROM Expense e
     WHERE e.account.home = :home
     """)
-    Double getSumOfValueByHome(@Param("home") Home home);
+    BigDecimal getSumOfValueByHome(@Param("home") Home home);
 
 
     @Query("SELECT e FROM Expense e WHERE e.account.home = :home")

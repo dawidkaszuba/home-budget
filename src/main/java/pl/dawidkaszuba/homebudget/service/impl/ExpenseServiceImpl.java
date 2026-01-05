@@ -14,6 +14,7 @@ import pl.dawidkaszuba.homebudget.repository.ExpenseRepository;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -96,7 +97,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Transactional(readOnly = true)
     @Override
-    public Double getSumOfAllExpensesByUserAndTimeBetween(Principal principal,
+    public BigDecimal getSumOfAllExpensesByUserAndTimeBetween(Principal principal,
                                                           LocalDateTime startDateTime,
                                                           LocalDateTime endDateTime) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
@@ -106,7 +107,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Transactional(readOnly = true)
     @Override
-    public Double getSumOfValueByHome(Principal principal) {
+    public BigDecimal getSumOfValueByHome(Principal principal) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
         Home home = budgetUser.getHome();
         return expenseRepository.getSumOfValueByHome(home);
