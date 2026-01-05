@@ -9,5 +9,6 @@ public class AccountViewDto {
 
     private Long id;
     private String name;
+    private String note;
 
 }

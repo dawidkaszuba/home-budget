@@ -14,6 +14,7 @@ public class IncomeViewDto {
     private String categoryName;
     private String accountName;
     private BigDecimal value;
+    private String note;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

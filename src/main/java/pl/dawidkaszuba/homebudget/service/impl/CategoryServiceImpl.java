@@ -2,6 +2,7 @@ package pl.dawidkaszuba.homebudget.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import pl.dawidkaszuba.homebudget.exceptions.CategoryAlreadyExistsException;
 import pl.dawidkaszuba.homebudget.exceptions.CategoryNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.CategoryMapper;
@@ -16,6 +17,7 @@ import pl.dawidkaszuba.homebudget.service.HomeService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -80,6 +82,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
         if (!category.getName().equals(dto.getName())) {
             category.setName(dto.getName());
+        }
+
+        String note = StringUtils.hasText(dto.getNote()) ? dto.getNote() : null;
+        if (!Objects.equals(note, category.getNote())) {
+            category.setNote(note);
         }
     }
 

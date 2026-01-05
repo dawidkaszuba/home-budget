@@ -53,20 +53,31 @@
 
                         <!-- TYP -->
                         <div class="form-group">
-                            <label for="type">Typ</label>
-                            <select id="type"
+                            <label for="categoryType">Typ</label>
+                            <select id="categoryType"
                                     th:field="*{categoryType}"
                                     class="form-control"
                                     required>
                                 <option value="" disabled selected>Wybierz typ</option>
-                                <option th:each="type : ${categoryTypes}"
-                                        th:value="${type}"
-                                        th:text="${type.value}"
-                                        th:classappend="${type.name() == 'INCOME'} ? 'text-success' : 'text-danger'">
+                                <option th:each="categoryType : ${categoryTypes}"
+                                        th:value="${categoryType}"
+                                        th:text="${categoryType.value}"
+                                        th:classappend="${categoryType.name() == 'INCOME'} ? 'text-success' : 'text-danger'">
                                 </option>
                             </select>
                         </div>
-                        <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+                        <div th:if="${#fields.hasErrors('categoryType')}" th:errors="*{categoryType}"></div>
+
+                        <div class="form-group">
+                            <label for="note">Uwagi</label>
+                            <input id="note"
+                                   type="text"
+                                   th:field="*{note}"
+                                   class="form-control"
+                                   placeholder="np. kategoria dla wydatków na stomatologa"
+                            />
+                        </div>
+                        <div th:if="${#fields.hasErrors('note')}" th:errors="*{note}"></div>
 
                         <!-- ACTIONS -->
                         <div class="mt-4">
