@@ -3,10 +3,10 @@ package pl.dawidkaszuba.homebudget.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dawidkaszuba.homebudget.exceptions.IncomeNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.IncomeMapper;
 import pl.dawidkaszuba.homebudget.model.db.*;
 import pl.dawidkaszuba.homebudget.model.dto.income.CreateIncomeDto;
-import pl.dawidkaszuba.homebudget.model.dto.income.IncomeViewDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
 import pl.dawidkaszuba.homebudget.repository.AccountRepository;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
@@ -110,7 +110,8 @@ public class IncomeServiceImpl implements IncomeService {
     @Transactional
     @Override
     public void deleteIncome(Long id) {
-        Income income = incomeRepository.findById(id).orElseThrow();
+        Income income = incomeRepository.findById(id)
+                .orElseThrow(() -> new IncomeNotFoundException("Income with id: " + id + " does not exist."));
         incomeRepository.delete(income);
     }
 

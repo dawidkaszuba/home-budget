@@ -5,11 +5,12 @@ import org.mapstruct.Mapping;
 import pl.dawidkaszuba.homebudget.model.db.Category;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryViewDto;
 import pl.dawidkaszuba.homebudget.model.dto.category.CreateCategoryDto;
+import pl.dawidkaszuba.homebudget.model.dto.category.UpdateCategoryDto;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
 
-    CategoryViewDto mapToDto(Category category);
+    CategoryViewDto mapToViewDto(Category category);
 
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
@@ -17,4 +18,6 @@ public interface CategoryMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "home", ignore = true)
     Category toEntity(CreateCategoryDto dto);
+
+    UpdateCategoryDto toUpdateCategoryDto(Category category);
 }

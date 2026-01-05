@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.dawidkaszuba.homebudget.exceptions.AccountNotFoundException;
 import pl.dawidkaszuba.homebudget.exceptions.CategoryNotBelongToHomeException;
 import pl.dawidkaszuba.homebudget.exceptions.CategoryNotFoundException;
+import pl.dawidkaszuba.homebudget.exceptions.ExpenseNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.ExpenseMapper;
 import pl.dawidkaszuba.homebudget.model.db.*;
 import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
@@ -120,7 +121,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Transactional(readOnly = true)
     @Override
     public void deleteIncome(Long id) {
-        Expense expense = expenseRepository.findById(id).orElseThrow();
+        Expense expense = expenseRepository.findById(id)
+                .orElseThrow(() -> new ExpenseNotFoundException("Expense with id: " + id + " does not exist."));
         expenseRepository.delete(expense);
     }
 }

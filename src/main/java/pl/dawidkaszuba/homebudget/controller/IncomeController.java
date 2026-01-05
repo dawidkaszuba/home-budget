@@ -6,9 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.dawidkaszuba.homebudget.exceptions.AccountNotFoundException;
-import pl.dawidkaszuba.homebudget.exceptions.CategoryNotBelongToHomeException;
-import pl.dawidkaszuba.homebudget.exceptions.CategoryNotFoundException;
+import pl.dawidkaszuba.homebudget.exceptions.DomainExceptionMapper;
 import pl.dawidkaszuba.homebudget.mapper.IncomeMapper;
 import pl.dawidkaszuba.homebudget.model.db.CategoryType;
 import pl.dawidkaszuba.homebudget.model.db.Income;
@@ -29,6 +27,7 @@ public class IncomeController {
     private final CategoryService categoryService;
     private final IncomeMapper incomeMapper;
     private final AccountService accountService;
+    private final DomainExceptionMapper domainExceptionMapper;
 
 
     @GetMapping("/incomes")
@@ -47,8 +46,8 @@ public class IncomeController {
 
     @PostMapping("/incomes")
     public String saveIncome(@Valid @ModelAttribute("income") CreateIncomeDto dto,
-                             Principal principal,
                              BindingResult bindingResult,
+                             Principal principal,
                              Model model) {
         if (bindingResult.hasErrors()) {
             return backToExpenseForm(model, principal);
@@ -57,7 +56,7 @@ public class IncomeController {
         try {
             incomeService.save(dto, principal);
         } catch (RuntimeException e) {
-            mapIncomeException(e, bindingResult);
+            domainExceptionMapper.map(e, bindingResult);
         }
 
         if (bindingResult.hasErrors()) {
@@ -76,8 +75,7 @@ public class IncomeController {
     }
 
     @PostMapping("/incomes/{id}")
-    public String saveUpdatedIncome(@PathVariable Long id,
-                                    @Valid @ModelAttribute("income") UpdateIncomeDto dto,
+    public String saveUpdatedIncome(@Valid @ModelAttribute("income") UpdateIncomeDto dto,
                                     BindingResult bindingResult,
                                     Principal principal,
                                     Model model) {
@@ -89,7 +87,7 @@ public class IncomeController {
         try {
             incomeService.updateIncome(dto);
         } catch (RuntimeException e) {
-            mapIncomeException(e, bindingResult);
+            domainExceptionMapper.map(e, bindingResult);
         }
 
         if (bindingResult.hasErrors()) {
@@ -121,29 +119,4 @@ public class IncomeController {
         return "incomes/form";
     }
 
-    private void mapIncomeException(
-            RuntimeException e,
-            BindingResult bindingResult) {
-
-        if (e instanceof AccountNotFoundException) {
-            bindingResult.rejectValue(
-                    "accountId",
-                    "account.notFound",
-                    e.getMessage()
-            );
-        } else if (e instanceof CategoryNotFoundException) {
-            bindingResult.rejectValue(
-                    "categoryId",
-                    "category.notFound",
-                    e.getMessage()
-            );
-        } else if (e instanceof CategoryNotBelongToHomeException) {
-            bindingResult.reject(
-                    "access.denied",
-                    e.getMessage()
-            );
-        } else {
-            throw e; // todo  nieznany wyjątek → ControllerAdvice
-        }
-    }
 }

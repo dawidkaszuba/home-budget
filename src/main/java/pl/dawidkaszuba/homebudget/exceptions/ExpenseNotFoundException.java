@@ -1,7 +1,8 @@
 package pl.dawidkaszuba.homebudget.exceptions;
 
-public class CategoryNotFoundException extends RuntimeException implements FieldAwareException {
-    public CategoryNotFoundException(String message) {
+public class ExpenseNotFoundException extends RuntimeException implements FieldAwareException {
+
+    public ExpenseNotFoundException(String message) {
         super(message);
     }
 
@@ -12,6 +13,6 @@ public class CategoryNotFoundException extends RuntimeException implements Field
 
     @Override
     public String getCode() {
-        return "category.notFound";
+        return "expense.notFound";
     }
 }

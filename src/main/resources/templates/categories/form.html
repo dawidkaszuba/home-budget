@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Aktualizuj kategorię</title>
+    <title>Dodaj kategorię</title>
 
     <!-- MOBILE -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,12 +29,15 @@
                 <div class="card-body">
 
                     <h1 class="h4 text-center mb-4">
-                        ✏️ Aktualizuj kategorię
+                        🏷 Kategoria
                     </h1>
 
-                    <form th:action="@{/categories/{id}(id=${category.id})}"
+                    <form th:action="@{${category.id} != null ? '/categories/' + ${category.id} : '/categories'}"
                           th:object="${category}"
                           method="POST">
+
+                        <input type="hidden" th:field="*{id}"/>
+                        <div th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
 
                         <!-- NAZWA -->
                         <div class="form-group">
@@ -46,10 +49,11 @@
                                    placeholder="np. Jedzenie"
                                    required />
                         </div>
+                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
                         <!-- TYP -->
                         <div class="form-group">
-                            <label for="type">Typ kategorii</label>
+                            <label for="type">Typ</label>
                             <select id="type"
                                     th:field="*{categoryType}"
                                     class="form-control"
@@ -62,12 +66,13 @@
                                 </option>
                             </select>
                         </div>
+                        <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
 
                         <!-- ACTIONS -->
                         <div class="mt-4">
                             <button type="submit"
                                     class="btn btn-primary btn-block">
-                                💾 Zapisz zmiany
+                                💾 Zapisz
                             </button>
 
                             <a th:href="@{/categories}"

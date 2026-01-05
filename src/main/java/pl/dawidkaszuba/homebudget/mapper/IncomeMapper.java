@@ -24,5 +24,6 @@ public interface IncomeMapper {
     Income toEntity(CreateIncomeDto dto);
 
     @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "accountId", ignore = true)
     UpdateIncomeDto toUpdateIncomeDto(Income income);
 }

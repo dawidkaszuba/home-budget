@@ -6,9 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.dawidkaszuba.homebudget.exceptions.AccountNotFoundException;
-import pl.dawidkaszuba.homebudget.exceptions.CategoryNotBelongToHomeException;
-import pl.dawidkaszuba.homebudget.exceptions.CategoryNotFoundException;
+import pl.dawidkaszuba.homebudget.exceptions.DomainExceptionMapper;
 import pl.dawidkaszuba.homebudget.mapper.ExpenseMapper;
 import pl.dawidkaszuba.homebudget.model.db.CategoryType;
 import pl.dawidkaszuba.homebudget.model.db.Expense;
@@ -29,6 +27,7 @@ public class ExpenseController {
     private final CategoryService categoryService;
     private final ExpenseMapper expenseMapper;
     private final AccountService accountService;
+    private final DomainExceptionMapper domainExceptionMapper;
 
     @GetMapping("/expenses")
     public String listExpenses(Model model, Principal principal) {
@@ -57,7 +56,7 @@ public class ExpenseController {
         try {
             expenseService.save(dto, principal);
         } catch (RuntimeException e) {
-            mapExpenseException(e, bindingResult);
+            domainExceptionMapper.map(e, bindingResult);
         }
 
         if (bindingResult.hasErrors()) {
@@ -78,8 +77,7 @@ public class ExpenseController {
     }
 
     @PostMapping("/expenses/{id}")
-    public String updateExpense(@PathVariable Long id,
-                                @ModelAttribute("expense") UpdateExpenseDto dto,
+    public String updateExpense(@ModelAttribute("expense") UpdateExpenseDto dto,
                                 BindingResult bindingResult,
                                 Principal principal,
                                 Model model) {
@@ -91,7 +89,7 @@ public class ExpenseController {
         try {
             expenseService.updateExpense(dto);
         } catch (RuntimeException e) {
-            mapExpenseException(e, bindingResult);
+            domainExceptionMapper.map(e, bindingResult);
         }
 
         if (bindingResult.hasErrors()) {
@@ -122,32 +120,5 @@ public class ExpenseController {
                 accountService.findAllUserAccounts(principal)
         );
     }
-
-    private void mapExpenseException(
-            RuntimeException e,
-            BindingResult bindingResult) {
-
-        if (e instanceof AccountNotFoundException) {
-            bindingResult.rejectValue(
-                    "accountId",
-                    "account.notFound",
-                    e.getMessage()
-            );
-        } else if (e instanceof CategoryNotFoundException) {
-            bindingResult.rejectValue(
-                    "categoryId",
-                    "category.notFound",
-                    e.getMessage()
-            );
-        } else if (e instanceof CategoryNotBelongToHomeException) {
-            bindingResult.reject(
-                    "access.denied",
-                    e.getMessage()
-            );
-        } else {
-            throw e; // todo  nieznany wyjątek → ControllerAdvice
-        }
-    }
-
 
 }

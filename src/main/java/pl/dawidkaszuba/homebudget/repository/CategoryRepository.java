@@ -12,5 +12,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findByCategoryType(CategoryType type);
 
     boolean existsByHomeAndCategoryTypeAndName(Home home, CategoryType categoryType, String name);
+
+    List<Category> findAllByHome(Home home);
 }
 
