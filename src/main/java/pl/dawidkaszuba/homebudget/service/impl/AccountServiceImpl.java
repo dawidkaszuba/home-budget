@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dawidkaszuba.homebudget.exceptions.AccountAlreadyExistsException;
+import pl.dawidkaszuba.homebudget.exceptions.AccountNotFoundException;
 import pl.dawidkaszuba.homebudget.model.db.*;
 import pl.dawidkaszuba.homebudget.model.dto.account.AccountViewStateDto;
 import pl.dawidkaszuba.homebudget.model.dto.account.CreateAccountDto;
@@ -44,12 +46,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional
     @Override
-    public void createAccount(CreateAccountDto dto, Principal principal) {
+    public void save(CreateAccountDto dto, Principal principal) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
         Home home = budgetUser.getHome();
 
         if (accountRepository.existsByHomeAndNameIgnoreCase(home, dto.getName().trim())) {
-            return; //todo wyjątek?
+            throw new AccountAlreadyExistsException("Account with name " + dto.getName() + " already exists for home: " + home.getName() + ".");
         }
 
         Account account = new Account();
@@ -73,10 +75,11 @@ public class AccountServiceImpl implements AccountService {
         Home home = budgetUser.getHome();
 
         if (accountRepository.existsByHomeAndNameIgnoreCase(home, dto.getName().trim())) {
-            return; //todo wyjątek?
+            throw new AccountAlreadyExistsException("Account with name " + dto.getName() + " already exists for home: " + home.getName() + ".");
         }
 
-        Account account = accountRepository.findById(dto.getId()).orElseThrow();
+        Account account = accountRepository.findById(dto.getId())
+                .orElseThrow(() -> new AccountNotFoundException("Account with id: " + dto.getId() + "does not exist."));
         String oldAccountName = account.getName();
 
         if (!account.getName().equals(dto.getName())) {

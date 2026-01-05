@@ -12,7 +12,7 @@ public interface ExpenseMapper {
 
     @Mapping(target = "categoryName", source = "category.name")
     @Mapping(target = "accountName", source = "account.name")
-    ExpenseViewDto toDto(Expense entity);
+    ExpenseViewDto toViewDto(Expense entity);
 
     @Mapping(target = "value", source = "value")
     @Mapping(target = "category", ignore = true)
@@ -24,5 +24,6 @@ public interface ExpenseMapper {
     Expense toEntity(CreateExpenseDto createExpenseDto);
 
     @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "accountId", ignore = true)
     UpdateExpenseDto toUpdateExpenseDto(Expense expense);
 }

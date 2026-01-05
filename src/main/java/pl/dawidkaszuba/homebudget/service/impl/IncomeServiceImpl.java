@@ -3,10 +3,10 @@ package pl.dawidkaszuba.homebudget.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dawidkaszuba.homebudget.exceptions.IncomeNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.IncomeMapper;
 import pl.dawidkaszuba.homebudget.model.db.*;
 import pl.dawidkaszuba.homebudget.model.dto.income.CreateIncomeDto;
-import pl.dawidkaszuba.homebudget.model.dto.income.IncomeViewDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
 import pl.dawidkaszuba.homebudget.repository.AccountRepository;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
@@ -33,13 +33,10 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<IncomeViewDto> getAllIncomesByUser(String userName) {
+    public List<Income> getAllIncomesByUser(String userName) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
         Home userHome = budgetUser.getHome();
-        return incomeRepository.findAllByHome(userHome)
-                .stream()
-                .map(incomeMapper::toDto)
-                .toList();
+        return incomeRepository.findAllByHome(userHome);
     }
 
 
@@ -90,6 +87,13 @@ public class IncomeServiceImpl implements IncomeService {
             income.setCategory(category);
         }
 
+        if(!income.getAccount().getId().equals(dto.getAccountId())) {
+            Account account = accountRepository
+                    .findById(dto.getAccountId())
+                    .orElseThrow();
+            income.setAccount(account);
+        }
+
         income.setValue(dto.getValue());
         income.setUpdatedAt(LocalDateTime.now());
     }
@@ -107,7 +111,8 @@ public class IncomeServiceImpl implements IncomeService {
     @Transactional
     @Override
     public void deleteIncome(Long id) {
-        Income income = incomeRepository.findById(id).orElseThrow();
+        Income income = incomeRepository.findById(id)
+                .orElseThrow(() -> new IncomeNotFoundException("Income with id: " + id + " does not exist."));
         incomeRepository.delete(income);
     }
 

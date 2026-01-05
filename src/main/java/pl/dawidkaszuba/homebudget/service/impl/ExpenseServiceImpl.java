@@ -3,11 +3,14 @@ package pl.dawidkaszuba.homebudget.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dawidkaszuba.homebudget.exceptions.AccountNotFoundException;
+import pl.dawidkaszuba.homebudget.exceptions.CategoryNotBelongToHomeException;
+import pl.dawidkaszuba.homebudget.exceptions.CategoryNotFoundException;
+import pl.dawidkaszuba.homebudget.exceptions.ExpenseNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.ExpenseMapper;
 import pl.dawidkaszuba.homebudget.model.db.*;
 import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.UpdateExpenseDto;
-import pl.dawidkaszuba.homebudget.model.dto.expense.ExpenseViewDto;
 import pl.dawidkaszuba.homebudget.repository.AccountRepository;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
 import pl.dawidkaszuba.homebudget.repository.ExpenseRepository;
@@ -34,13 +37,10 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<ExpenseViewDto> getAllExpensesByBudgetUserHome(String userName) {
+    public List<Expense> getAllExpensesByBudgetUser(String userName) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
         Home userHome = budgetUser.getHome();
-        return expenseRepository.findAllByHome(userHome)
-                .stream()
-                .map(expenseMapper::toDto)
-                .toList();
+        return expenseRepository.findAllByHome(userHome);
     }
 
     @Transactional
@@ -50,16 +50,16 @@ public class ExpenseServiceImpl implements ExpenseService {
         Home userHome = budgetUser.getHome();
 
         Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
 
         Account account = accountRepository.findById(dto.getAccountId())
-                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
 
         if (!account.getHome().getId().equals(userHome.getId())) {
-            throw new IllegalStateException("Account does not belong to the user's home");
+            throw new AccountNotFoundException("Account does not belong to the user's home");
         }
         if (!category.getHome().getId().equals(userHome.getId())) {
-            throw new IllegalStateException("Category does not belong to the user's home");
+            throw new CategoryNotBelongToHomeException("Category does not belong to the user's home");
         }
 
         Expense expense = expenseMapper.toEntity(dto);
@@ -82,6 +82,12 @@ public class ExpenseServiceImpl implements ExpenseService {
                     .findById(dto.getCategoryId())
                     .orElseThrow();
             expense.setCategory(category);
+        }
+        if(!expense.getAccount().getId().equals(dto.getAccountId())) {
+            Account account = accountRepository
+                    .findById(dto.getAccountId())
+                    .orElseThrow();
+            expense.setAccount(account);
         }
         expense.setValue(dto.getValue());
         expense.setUpdatedAt(LocalDateTime.now());
@@ -116,7 +122,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Transactional(readOnly = true)
     @Override
     public void deleteIncome(Long id) {
-        Expense expense = expenseRepository.findById(id).orElseThrow();
+        Expense expense = expenseRepository.findById(id)
+                .orElseThrow(() -> new ExpenseNotFoundException("Expense with id: " + id + " does not exist."));
         expenseRepository.delete(expense);
     }
 }

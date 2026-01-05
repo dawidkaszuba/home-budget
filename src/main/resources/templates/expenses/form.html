@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Aktualizuj wydatek</title>
+    <title>Dodaj wydatek</title>
 
     <!-- MOBILE -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,14 +37,12 @@
     <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-8 col-lg-6">
 
-            <div class="card shadow-sm border-danger">
+            <div class="card shadow-sm">
                 <div class="card-body">
 
-                    <h1 class="h4 text-center text-danger mb-4">
-                        ✏️ Aktualizuj wydatek
-                    </h1>
+                    <h1 class="h4 text-center mb-4">➖ Wydatek</h1>
 
-                    <form th:action="@{/expenses/{id}(id=${expense.id})}"
+                    <form th:action="@{${expense.id} != null ? '/expenses/' + ${expense.id} : '/expenses'}"
                           th:object="${expense}"
                           method="POST"
                           name="expenseForm"
@@ -59,8 +57,26 @@
                                    min="0.01"
                                    th:field="*{value}"
                                    class="form-control"
+                                   placeholder="np. 123.45"
                                    required />
                         </div>
+                        <div th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
+
+                        <!-- ACCOUNT -->
+                        <div class="form-group">
+                            <label for="account">Konto</label>
+                            <select id="account"
+                                    th:field="*{accountId}"
+                                    class="form-control"
+                                    required>
+                                <option value="" disabled selected>Wybierz konto</option>
+                                <option th:each="account : ${accounts}"
+                                        th:value="${account.id}"
+                                        th:text="${account.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div th:if="${#fields.hasErrors('accountId')}" th:errors="*{accountId}"></div>
 
                         <!-- CATEGORY -->
                         <div class="form-group">
@@ -69,18 +85,20 @@
                                     th:field="*{categoryId}"
                                     class="form-control"
                                     required>
+                                <option value="" disabled selected>Wybierz kategorię</option>
                                 <option th:each="category : ${categories}"
                                         th:value="${category.id}"
                                         th:text="${category.name}">
                                 </option>
                             </select>
                         </div>
+                        <div th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></div>
 
                         <!-- ACTIONS -->
                         <div class="mt-4">
                             <button type="submit"
-                                    class="btn btn-danger btn-block">
-                                💾 Zapisz zmiany
+                                    class="btn btn-primary btn-block">
+                                ➕ Zapisz
                             </button>
 
                             <a th:href="@{/expenses}"

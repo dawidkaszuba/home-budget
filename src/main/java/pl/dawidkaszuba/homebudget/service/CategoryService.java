@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public interface CategoryService {
-    List<CategoryViewDto> getAllCategories();
+    List<Category> getAllCategories(Principal principal);
 
     List<Category> findByCategoryType(CategoryType type);
 

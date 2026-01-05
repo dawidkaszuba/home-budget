@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public interface IncomeService {
 
-    List<IncomeViewDto> getAllIncomesByUser(String userName);
+    List<Income> getAllIncomesByUser(String userName);
 
     void save(CreateIncomeDto dto, Principal principal);
 

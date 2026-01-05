@@ -12,7 +12,7 @@ public interface IncomeMapper {
 
     @Mapping(target = "categoryName", source = "category.name")
     @Mapping(target = "accountName", source = "account.name")
-    IncomeViewDto toDto(Income entity);
+    IncomeViewDto toViewDto(Income entity);
 
     @Mapping(target = "value", source = "value")
     @Mapping(target = "category", ignore = true)
@@ -24,5 +24,6 @@ public interface IncomeMapper {
     Income toEntity(CreateIncomeDto dto);
 
     @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "accountId", ignore = true)
     UpdateIncomeDto toUpdateIncomeDto(Income income);
 }

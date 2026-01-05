@@ -2,16 +2,15 @@ package pl.dawidkaszuba.homebudget.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dawidkaszuba.homebudget.exceptions.CategoryAlreadyExistsException;
+import pl.dawidkaszuba.homebudget.exceptions.CategoryNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.CategoryMapper;
-import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.db.Category;
 import pl.dawidkaszuba.homebudget.model.db.CategoryType;
 import pl.dawidkaszuba.homebudget.model.db.Home;
-import pl.dawidkaszuba.homebudget.model.dto.category.CategoryViewDto;
 import pl.dawidkaszuba.homebudget.model.dto.category.CreateCategoryDto;
 import pl.dawidkaszuba.homebudget.model.dto.category.UpdateCategoryDto;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
-import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.HomeService;
 
@@ -34,11 +33,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<CategoryViewDto> getAllCategories() {
-        return categoryRepository.findAll()
-                .stream()
-                .map(categoryMapper::mapToDto)
-                .toList();
+    public List<Category> getAllCategories(Principal principal) {
+        Home home = homeService.getHomeByBudgetUser(principal.getName());
+        return categoryRepository.findAllByHome(home);
     }
 
     @Transactional(readOnly = true)
@@ -55,9 +52,8 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryRepository.existsByHomeAndCategoryTypeAndName(
                 home,
                 dto.getCategoryType(),
-                dto.getName()
-        )) {
-            throw new IllegalStateException("Category already exists in this home");
+                dto.getName())) {
+            throw new CategoryAlreadyExistsException("Category already exists in this home");
         }
 
         Category category = categoryMapper.toEntity(dto);
@@ -69,13 +65,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryById(Long id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
-        return optionalCategory.orElseThrow();
+        return optionalCategory
+                .orElseThrow(() -> new CategoryNotFoundException("Category with id: " + id + " does not exists."));
     }
 
     @Transactional
     @Override
     public void updateCategory(UpdateCategoryDto dto) {
-        Category category = categoryRepository.findById(dto.getId()).orElseThrow();
+        Category category = categoryRepository.findById(dto.getId())
+                .orElseThrow(() -> new CategoryNotFoundException("Category with id: " + dto.getId() + " does not exists."));
 
         if (!category.getCategoryType().equals(dto.getCategoryType())) {
             category.setCategoryType(dto.getCategoryType());

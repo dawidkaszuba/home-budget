@@ -25,7 +25,7 @@
     <!-- HEADER -->
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="h3">Dodaj nowe konto</h1>
+            <h1 class="h3">Konto</h1>
         </div>
     </div>
 
@@ -33,12 +33,15 @@
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
 
-            <form th:action="@{/accounts}"
+            <form th:action="@{${account.id} != null ? '/accounts/' + ${account.id} : '/accounts'}"
                   th:object="${account}"
                   method="post"
                   class="card shadow-sm">
 
                 <div class="card-body">
+
+                    <input type="hidden" th:field="*{id}"/>
+                    <div th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
 
                     <!-- NAME -->
                     <div class="form-group">
@@ -50,6 +53,7 @@
                                placeholder="np. Konto główne"
                                required>
                     </div>
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
                     <!-- ACTIONS -->
                     <div class="mt-4">

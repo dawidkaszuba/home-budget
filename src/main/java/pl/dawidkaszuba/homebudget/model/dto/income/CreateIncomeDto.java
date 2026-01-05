@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Getter
 public class CreateIncomeDto {
 
+    private Long id;
     private Long categoryId;
     private Long accountId;
     private BigDecimal value;

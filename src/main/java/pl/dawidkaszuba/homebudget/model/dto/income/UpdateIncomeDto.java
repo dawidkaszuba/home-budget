@@ -11,6 +11,7 @@ public class UpdateIncomeDto {
 
     private Long id;
     private Long categoryId;
+    private Long accountId;
     private BigDecimal value;
 
 }

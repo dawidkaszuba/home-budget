@@ -12,6 +12,7 @@ public class UpdateExpenseDto {
 
     private Long id;
     private Long categoryId;
+    private Long accountId;
     private BigDecimal value;
 
 }
