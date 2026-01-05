@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.dawidkaszuba.homebudget.exceptions.DomainExceptionMapper;
 import pl.dawidkaszuba.homebudget.mapper.CategoryMapper;
 import pl.dawidkaszuba.homebudget.model.db.Category;
@@ -21,6 +18,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+@RequestMapping("/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 
@@ -28,21 +26,21 @@ public class CategoryController {
     private final CategoryMapper categoryMapper;
     private final DomainExceptionMapper domainExceptionMapper;
 
-    @GetMapping("/categories")
+    @GetMapping
     public String getAllCategories(Model model, Principal principal) {
         List<Category> categories = categoryService.getAllCategories(principal);
         model.addAttribute("categories", categories.stream().map(categoryMapper::mapToViewDto).toList());
         return "categories/categories";
     }
 
-    @GetMapping("/categories/new")
+    @GetMapping("/new")
     public String addNewCategory(Model model) {
         model.addAttribute("category", new CreateCategoryDto());
         model.addAttribute("categoryTypes", CategoryType.values());
         return "categories/form";
     }
 
-    @PostMapping("/categories")
+    @PostMapping
     public String saveCategory(@Valid @ModelAttribute("category") CreateCategoryDto dto,
                                BindingResult bindingResult,
                                Principal principal,
@@ -64,7 +62,7 @@ public class CategoryController {
         return "redirect:/categories";
     }
 
-    @GetMapping("/categories/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String updateCategory(@PathVariable Long id, Model model) {
 
         Category category = categoryService.getCategoryById(id);
@@ -75,7 +73,7 @@ public class CategoryController {
         return "categories/form";
     }
 
-    @PostMapping("/categories/{id}")
+    @PostMapping("/{id}")
     public String saveUpdatedCategory(@ModelAttribute("category") UpdateCategoryDto dto,
                                       BindingResult bindingResult,
                                       Model model) {

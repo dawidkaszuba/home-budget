@@ -25,7 +25,7 @@ public class HomeController {
     @GetMapping("/")
     public String getHome(Model model, Principal principal) {
         LocalDate currentDate = LocalDate.now();
-        Locale locale = new Locale("pl");
+        Locale locale = Locale.forLanguageTag("pl-PL");
         model.addAttribute(summaryService.getSummary(principal));
         model.addAttribute("currentMonth", currentDate.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, locale));
         model.addAttribute("currentYear", currentDate.getYear());

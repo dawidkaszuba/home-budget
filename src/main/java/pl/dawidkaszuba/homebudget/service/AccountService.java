@@ -14,7 +14,7 @@ public interface AccountService {
 
     List<AccountViewStateDto> findAllUserAccountsWithState(Principal principal);
 
-    void createAccount(CreateAccountDto dto, Principal principal);
+    void save(CreateAccountDto dto, Principal principal);
 
     Account findAccountById(Long id);
 

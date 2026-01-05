@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 public class UpdateHomeDto {
 
+    private Long id;
     @NotBlank
     @Size(max = 100)
     private String name;

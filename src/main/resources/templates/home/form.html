@@ -29,7 +29,7 @@
                 Zmień nazwę domu
             </h4>
 
-            <form th:action="@{/home/edit}"
+            <form th:action="'/home/' + ${home.id}"
                   th:object="${home}"
                   method="post">
 
@@ -42,6 +42,7 @@
                            placeholder="np. Dom rodzinny"
                            required>
                 </div>
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
                 <div class="d-flex justify-content-between">
                     <a th:href="@{/home}"
