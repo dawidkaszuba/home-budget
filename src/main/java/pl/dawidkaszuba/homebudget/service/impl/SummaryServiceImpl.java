@@ -33,27 +33,27 @@ public class SummaryServiceImpl implements SummaryService {
         LocalDateTime startDateTimeMonthly = LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(), firstDayOfCurrentMonth, 0, 0);
         LocalDateTime endDateTimeMonthly = LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(), lastDayOfCurrentMonth, 0, 0);
 
-        Double allExpensesDb = expenseService.getSumOfValueByHome(principal);
-        Double annualExpensesDb = expenseService.getSumOfAllExpensesByUserAndTimeBetween(principal, startDateTimeAnnual, endDateTimeAnnual);
-        Double monthlyExpensesDb = expenseService.getSumOfAllExpensesByUserAndTimeBetween(principal, startDateTimeMonthly, endDateTimeMonthly);
-        Double allIncomesDb = incomeService.getSumOfValueByHome(principal);
-        Double annualIncomesDb = incomeService.getSumOfAllIncomesByUserAndTimeBetween(startDateTimeAnnual, endDateTimeAnnual, principal);
-        Double monthlyIncomesDb = incomeService.getSumOfAllIncomesByUserAndTimeBetween(startDateTimeMonthly, endDateTimeMonthly, principal);
+        BigDecimal allExpensesDb = expenseService.getSumOfValueByHome(principal);
+        BigDecimal annualExpensesDb = expenseService.getSumOfAllExpensesByUserAndTimeBetween(principal, startDateTimeAnnual, endDateTimeAnnual);
+        BigDecimal monthlyExpensesDb = expenseService.getSumOfAllExpensesByUserAndTimeBetween(principal, startDateTimeMonthly, endDateTimeMonthly);
+        BigDecimal allIncomesDb = incomeService.getSumOfValueByHome(principal);
+        BigDecimal annualIncomesDb = incomeService.getSumOfAllIncomesByUserAndTimeBetween(startDateTimeAnnual, endDateTimeAnnual, principal);
+        BigDecimal monthlyIncomesDb = incomeService.getSumOfAllIncomesByUserAndTimeBetween(startDateTimeMonthly, endDateTimeMonthly, principal);
 
         Summary summary = new Summary();
 
-        Double annualExpenses = annualExpensesDb != null ? annualExpensesDb : Double.valueOf(0);
-        Double monthlyExpenses = monthlyExpensesDb != null ? monthlyExpensesDb : Double.valueOf(0);
-        Double annualIncomes = annualIncomesDb != null ? annualIncomesDb : Double.valueOf(0);
-        Double monthlyIncomes = monthlyIncomesDb != null ? monthlyIncomesDb : Double.valueOf(0);
-        Double allIncomes = allIncomesDb != null ? allIncomesDb : Double.valueOf(0);
-        Double allExpenses = allExpensesDb != null ? allExpensesDb : Double.valueOf(0);
+        BigDecimal annualExpenses = annualExpensesDb != null ? annualExpensesDb : BigDecimal.valueOf(0);
+        BigDecimal monthlyExpenses = monthlyExpensesDb != null ? monthlyExpensesDb : BigDecimal.valueOf(0);
+        BigDecimal annualIncomes = annualIncomesDb != null ? annualIncomesDb : BigDecimal.valueOf(0);
+        BigDecimal monthlyIncomes = monthlyIncomesDb != null ? monthlyIncomesDb : BigDecimal.valueOf(0);
+        BigDecimal allIncomes = allIncomesDb != null ? allIncomesDb : BigDecimal.valueOf(0);
+        BigDecimal allExpenses = allExpensesDb != null ? allExpensesDb : BigDecimal.valueOf(0);
 
-        summary.setBalance(BigDecimal.valueOf(allIncomes - allExpenses));
-        summary.setAnnualBalance(BigDecimal.valueOf(annualIncomes - annualExpenses));
-        summary.setMonthlyBalance(BigDecimal.valueOf(monthlyIncomes - monthlyExpenses));
-        summary.setMonthlyIncomes(BigDecimal.valueOf(monthlyIncomes));
-        summary.setMonthlyExpenses(BigDecimal.valueOf(monthlyExpenses));
+        summary.setBalance(allIncomes.subtract(allExpenses));
+        summary.setAnnualBalance(annualIncomes.subtract(annualExpenses));
+        summary.setMonthlyBalance(monthlyIncomes.subtract(monthlyExpenses));
+        summary.setMonthlyIncomes(monthlyIncomes);
+        summary.setMonthlyExpenses(monthlyExpenses);
         return summary;
     }
 }

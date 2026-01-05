@@ -7,6 +7,7 @@ import pl.dawidkaszuba.homebudget.model.dto.income.CreateIncomeDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.IncomeViewDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,9 +23,9 @@ public interface IncomeService {
 
     void updateIncome(UpdateIncomeDto dto);
 
-    Double getSumOfAllIncomesByUserAndTimeBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, Principal principal);
+    BigDecimal getSumOfAllIncomesByUserAndTimeBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, Principal principal);
 
     void deleteIncome(Long id);
 
-    Double getSumOfValueByHome(Principal principal);
+    BigDecimal getSumOfValueByHome(Principal principal);
 }

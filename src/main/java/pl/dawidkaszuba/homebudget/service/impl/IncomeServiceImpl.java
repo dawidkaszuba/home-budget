@@ -14,6 +14,7 @@ import pl.dawidkaszuba.homebudget.repository.IncomeRepository;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -99,7 +100,7 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Transactional(readOnly = true)
     @Override
-    public Double getSumOfAllIncomesByUserAndTimeBetween(LocalDateTime startDateTime,
+    public BigDecimal getSumOfAllIncomesByUserAndTimeBetween(LocalDateTime startDateTime,
                                                          LocalDateTime endDateTime,
                                                          Principal principal) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
@@ -117,7 +118,7 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Transactional(readOnly = true)
     @Override
-    public Double getSumOfValueByHome(Principal principal) {
+    public BigDecimal getSumOfValueByHome(Principal principal) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
         Home home = budgetUser.getHome();
         return incomeRepository.findSumOfValueByHome(home);
