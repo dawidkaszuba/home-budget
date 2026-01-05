@@ -8,6 +8,7 @@ import pl.dawidkaszuba.homebudget.model.db.Expense;
 import pl.dawidkaszuba.homebudget.model.db.Home;
 import pl.dawidkaszuba.homebudget.model.db.Income;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     WHERE i.account.home = :home
       AND i.createdAt BETWEEN :startDateTime AND :endDateTime
     """)
-    Double findSumOfValueByUserAndCreateTimeBetween(
+    BigDecimal findSumOfValueByUserAndCreateTimeBetween(
             @Param("home") Home home,
             @Param("startDateTime") LocalDateTime startDateTime,
             @Param("endDateTime") LocalDateTime endDateTime
@@ -33,5 +34,5 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     FROM Income i
     WHERE i.account.home = :home
     """)
-    Double findSumOfValueByHome(@Param("home") Home home);
+    BigDecimal findSumOfValueByHome(@Param("home") Home home);
 }

@@ -7,6 +7,7 @@ import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.ExpenseViewDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.UpdateExpenseDto;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,10 +23,9 @@ public interface ExpenseService {
 
     Expense getExpenseById(Long id);
 
-    Double getSumOfAllExpensesByUserAndTimeBetween(Principal principal, LocalDateTime startDateTime, LocalDateTime endDateTime);
+    BigDecimal getSumOfAllExpensesByUserAndTimeBetween(Principal principal, LocalDateTime startDateTime, LocalDateTime endDateTime);
 
-    @Transactional
-    Double getSumOfValueByHome(Principal principal);
+    BigDecimal getSumOfValueByHome(Principal principal);
 
     void deleteIncome(Long id);
 }
