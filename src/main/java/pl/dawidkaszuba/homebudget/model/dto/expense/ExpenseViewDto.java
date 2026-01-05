@@ -16,4 +16,5 @@ public class ExpenseViewDto {
     private String accountName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String note;
 }

@@ -1,6 +1,7 @@
 package pl.dawidkaszuba.homebudget.model.dto.expense;
 
 
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,5 +15,7 @@ public class UpdateExpenseDto {
     private Long categoryId;
     private Long accountId;
     private BigDecimal value;
+    @Size(max = 255)
+    private String note;
 
 }

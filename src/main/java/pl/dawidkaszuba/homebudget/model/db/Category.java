@@ -21,5 +21,6 @@ public class Category extends AuditableEntity {
     @ManyToOne
     @JoinColumn(name = "home_id", nullable = false)
     private Home home;
+    private String note;
 }
 

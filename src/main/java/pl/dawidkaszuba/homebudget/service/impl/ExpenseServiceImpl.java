@@ -3,6 +3,7 @@ package pl.dawidkaszuba.homebudget.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import pl.dawidkaszuba.homebudget.exceptions.AccountNotFoundException;
 import pl.dawidkaszuba.homebudget.exceptions.CategoryNotBelongToHomeException;
 import pl.dawidkaszuba.homebudget.exceptions.CategoryNotFoundException;
@@ -21,6 +22,7 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -89,9 +91,13 @@ public class ExpenseServiceImpl implements ExpenseService {
                     .orElseThrow();
             expense.setAccount(account);
         }
+
+        String note = StringUtils.hasText(dto.getNote()) ? dto.getNote() : null;
+        if (!Objects.equals(note, expense.getNote())) {
+            expense.setNote(note);
+        }
         expense.setValue(dto.getValue());
         expense.setUpdatedAt(LocalDateTime.now());
-        //todo  Brak save() – Hibernate zrobi dirty checking - wrzucić do lesson learned
     }
 
     @Transactional(readOnly = true)

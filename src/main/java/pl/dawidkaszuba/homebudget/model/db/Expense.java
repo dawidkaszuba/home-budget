@@ -23,6 +23,7 @@ public class Expense extends AuditableEntity {
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
+    private String note;
 
 
 }

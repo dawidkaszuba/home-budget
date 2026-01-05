@@ -43,6 +43,7 @@
                     <th>Kwota</th>
                     <th>Kategoria</th>
                     <th>Konto</th>
+                    <th>Uwagi</th>
                     <th>Utworzono</th>
                     <th>Edytowano</th>
                     <th class="text-center">Akcje</th>
@@ -57,6 +58,7 @@
 
                     <td th:text="${expense.categoryName}"></td>
                     <td th:text="${expense.accountName}"></td>
+                    <td th:text="${expense.note}"></td>
 
                     <td th:text="${#temporals.format(expense.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
                     <td th:text="${#temporals.format(expense.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>
@@ -104,6 +106,7 @@
                 </div>
 
                 <div class="mt-2 small text-muted">
+                    <div><span th:text="${expense.note}"></span></div>
                     <div>🏦 <span th:text="${expense.accountName}"></span></div>
                     <div>📅 <span th:text="${#temporals.format(expense.createdAt, 'dd-MM-yyyy HH:mm')}"></span></div>
                 </div>

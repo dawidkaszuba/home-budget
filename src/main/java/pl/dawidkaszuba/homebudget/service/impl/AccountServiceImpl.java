@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import pl.dawidkaszuba.homebudget.exceptions.AccountAlreadyExistsException;
 import pl.dawidkaszuba.homebudget.exceptions.AccountNotFoundException;
 import pl.dawidkaszuba.homebudget.model.db.*;
@@ -17,6 +18,7 @@ import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -71,13 +73,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void updateAccount(UpdateAccountDto dto, Principal principal) {
 
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
-        Home home = budgetUser.getHome();
-
-        if (accountRepository.existsByHomeAndNameIgnoreCase(home, dto.getName().trim())) {
-            throw new AccountAlreadyExistsException("Account with name " + dto.getName() + " already exists for home: " + home.getName() + ".");
-        }
-
         Account account = accountRepository.findById(dto.getId())
                 .orElseThrow(() -> new AccountNotFoundException("Account with id: " + dto.getId() + "does not exist."));
         String oldAccountName = account.getName();
@@ -87,5 +82,11 @@ public class AccountServiceImpl implements AccountService {
             account.setUpdatedAt(LocalDateTime.now());
             log.info("User {} changed name of account {} to '{}'", principal.getName(), oldAccountName, dto.getName());
         }
+
+        String note = StringUtils.hasText(dto.getNote()) ? dto.getNote() : null;
+        if (!Objects.equals(note, account.getNote())) {
+            account.setNote(note);
+        }
+
     }
 }
