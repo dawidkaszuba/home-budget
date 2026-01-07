@@ -32,7 +32,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     BigDecimal getSumOfValueByHome(@Param("home") Home home);
 
 
-    @Query("SELECT e FROM Expense e WHERE e.account.home = :home")
+    @Query("SELECT e FROM Expense e WHERE e.account.home = :home ORDER BY e.createdAt desc")
     List<Expense> findAllByHome(@Param("home") Home home);
 
 }
