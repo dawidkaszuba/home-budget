@@ -26,13 +26,14 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
             @Param("endDateTime") LocalDateTime endDateTime
     );
 
-    @Query("SELECT i FROM Income i WHERE i.account.home = :home")
-    List<Income> findAllByHome(@Param("home") Home home);
-
     @Query("""
     SELECT SUM(i.value)
     FROM Income i
     WHERE i.account.home = :home
     """)
     BigDecimal findSumOfValueByHome(@Param("home") Home home);
+
+
+    @Query("SELECT i FROM Income i WHERE i.account.home = :home ORDER BY i.createdAt desc")
+    List<Income> findAllByHome(@Param("home") Home home);
 }
