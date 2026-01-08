@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     @Override
     public List<Category> findByCategoryType(CategoryType type) {
-        return categoryRepository.findByCategoryType(type);
+        return categoryRepository.findByCategoryTypeOrderByName(type);
     }
 
     @Transactional

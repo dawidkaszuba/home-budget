@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    List<Category> findByCategoryType(CategoryType type);
+    List<Category> findByCategoryTypeOrderByName(CategoryType type);
 
     boolean existsByHomeAndCategoryTypeAndName(Home home, CategoryType categoryType, String name);
 
