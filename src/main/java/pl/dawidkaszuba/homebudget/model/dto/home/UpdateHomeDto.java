@@ -10,7 +10,7 @@ import lombok.Setter;
 public class UpdateHomeDto {
 
     private Long id;
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "{home.name.required}")
+    @Size(max = 100, message = "{home.name.size}")
     private String name;
 }

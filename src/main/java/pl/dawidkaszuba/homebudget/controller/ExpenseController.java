@@ -77,7 +77,7 @@ public class ExpenseController {
     }
 
     @PostMapping("/expenses/{id}")
-    public String updateExpense(@ModelAttribute("expense") UpdateExpenseDto dto,
+    public String updateExpense(@Valid @ModelAttribute("expense") UpdateExpenseDto dto,
                                 BindingResult bindingResult,
                                 Principal principal,
                                 Model model) {

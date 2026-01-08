@@ -74,7 +74,7 @@ public class CategoryController {
     }
 
     @PostMapping("/{id}")
-    public String saveUpdatedCategory(@ModelAttribute("category") UpdateCategoryDto dto,
+    public String saveUpdatedCategory(@Valid @ModelAttribute("category") UpdateCategoryDto dto,
                                       BindingResult bindingResult,
                                       Model model) {
 
