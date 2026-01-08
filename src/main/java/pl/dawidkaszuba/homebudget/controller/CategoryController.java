@@ -2,6 +2,9 @@ package pl.dawidkaszuba.homebudget.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +18,7 @@ import pl.dawidkaszuba.homebudget.model.dto.category.UpdateCategoryDto;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
 
 import java.security.Principal;
-import java.util.List;
+
 
 @Controller
 @RequestMapping("/categories")
@@ -27,9 +30,15 @@ public class CategoryController {
     private final DomainExceptionMapper domainExceptionMapper;
 
     @GetMapping
-    public String getAllCategories(Model model, Principal principal) {
-        List<Category> categories = categoryService.getAllCategories(principal);
-        model.addAttribute("categories", categories.stream().map(categoryMapper::mapToViewDto).toList());
+    public String getAllCategories(Model model,
+                                   Principal principal,
+                                   @RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Category> categoryPage = categoryService.getAllCategories(principal, pageable);
+        model.addAttribute("categories", categoryPage.stream().map(categoryMapper::mapToViewDto).toList());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", categoryPage.getTotalPages());
         return "categories/categories";
     }
 
@@ -74,7 +83,7 @@ public class CategoryController {
     }
 
     @PostMapping("/{id}")
-    public String saveUpdatedCategory(@ModelAttribute("category") UpdateCategoryDto dto,
+    public String saveUpdatedCategory(@Valid @ModelAttribute("category") UpdateCategoryDto dto,
                                       BindingResult bindingResult,
                                       Model model) {
 

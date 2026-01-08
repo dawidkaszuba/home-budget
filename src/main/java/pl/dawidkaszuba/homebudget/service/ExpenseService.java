@@ -1,21 +1,20 @@
 package pl.dawidkaszuba.homebudget.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pl.dawidkaszuba.homebudget.model.db.Expense;
 import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
-import pl.dawidkaszuba.homebudget.model.dto.expense.ExpenseViewDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.UpdateExpenseDto;
 
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public interface ExpenseService {
 
-    List<Expense> getAllExpensesByBudgetUser(String userName);
+    Page<Expense> getAllExpensesByBudgetUser(String userName, Pageable pageable);
 
     void save(CreateExpenseDto dto, Principal principal);
 

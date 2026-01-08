@@ -1,6 +1,8 @@
 package pl.dawidkaszuba.homebudget.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -21,7 +23,6 @@ import pl.dawidkaszuba.homebudget.service.ExpenseService;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -39,10 +40,10 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Expense> getAllExpensesByBudgetUser(String userName) {
+    public Page<Expense> getAllExpensesByBudgetUser(String userName, Pageable pageable) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
         Home userHome = budgetUser.getHome();
-        return expenseRepository.findAllByHome(userHome);
+        return expenseRepository.findAllByHome(userHome, pageable);
     }
 
     @Transactional

@@ -13,13 +13,13 @@ import java.math.BigDecimal;
 public class CreateExpenseDto {
 
     private Long id;
-    @NotNull(message = "Kategoria jest wymagana")
+    @NotNull(message = "{expense.category.required}")
     private Long categoryId;
-    @NotNull(message = "Konto jest wymagane")
+    @NotNull(message = "{expense.account.required}")
     private Long accountId;
-    @NotNull(message = "Kwota jest wymagana")
-    @DecimalMin(value = "0.01", message = "Kwota musi być > 0")
+    @NotNull(message = "{expense.value.required}")
+    @DecimalMin(value = "0.01", message = "{expense.value.min}")
     private BigDecimal value;
-    @Size(max = 255)
+    @Size(max = 255, message = "{expense.note.size}")
     private String note;
 }

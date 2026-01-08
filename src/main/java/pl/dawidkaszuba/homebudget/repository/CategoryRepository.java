@@ -1,5 +1,7 @@
 package pl.dawidkaszuba.homebudget.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.dawidkaszuba.homebudget.model.db.Category;
 import pl.dawidkaszuba.homebudget.model.db.CategoryType;
@@ -9,10 +11,10 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    List<Category> findByCategoryType(CategoryType type);
+    List<Category> findByCategoryTypeOrderByName(CategoryType type);
 
     boolean existsByHomeAndCategoryTypeAndName(Home home, CategoryType categoryType, String name);
 
-    List<Category> findAllByHome(Home home);
+    Page<Category> findAllByHomeOrderByName(Home home, Pageable pageable);
 }
 
