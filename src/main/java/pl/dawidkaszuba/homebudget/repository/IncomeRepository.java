@@ -1,16 +1,16 @@
 package pl.dawidkaszuba.homebudget.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
-import pl.dawidkaszuba.homebudget.model.db.Expense;
 import pl.dawidkaszuba.homebudget.model.db.Home;
 import pl.dawidkaszuba.homebudget.model.db.Income;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 public interface IncomeRepository extends JpaRepository<Income, Long> {
 
@@ -34,6 +34,6 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     BigDecimal findSumOfValueByHome(@Param("home") Home home);
 
 
-    @Query("SELECT i FROM Income i WHERE i.account.home = :home ORDER BY i.createdAt desc")
-    List<Income> findAllByHome(@Param("home") Home home);
+    @Query("SELECT i FROM Income i WHERE i.account.home = :home ORDER BY i.createdAt DESC")
+    Page<Income> findAllByHome(@Param("home") Home home, Pageable pageable);
 }

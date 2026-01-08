@@ -2,6 +2,9 @@ package pl.dawidkaszuba.homebudget.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,7 +20,7 @@ import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.ExpenseService;
 
 import java.security.Principal;
-import java.util.List;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -30,9 +33,15 @@ public class ExpenseController {
     private final DomainExceptionMapper domainExceptionMapper;
 
     @GetMapping("/expenses")
-    public String listExpenses(Model model, Principal principal) {
-        List<Expense> expenses = expenseService.getAllExpensesByBudgetUser(principal.getName());
-        model.addAttribute("expenses", expenses.stream().map(expenseMapper::toViewDto).toList());
+    public String listExpenses(Model model,
+                               Principal principal,
+                               @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Expense> expensePage = expenseService.getAllExpensesByBudgetUser(principal.getName(), pageable);
+        model.addAttribute("expenses", expensePage.stream().map(expenseMapper::toViewDto).toList());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", expensePage.getTotalPages());
         return "expenses/expenses";
     }
 
