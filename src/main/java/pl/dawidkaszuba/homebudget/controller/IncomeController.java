@@ -2,6 +2,9 @@ package pl.dawidkaszuba.homebudget.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,7 +20,7 @@ import pl.dawidkaszuba.homebudget.service.CategoryService;
 import pl.dawidkaszuba.homebudget.service.IncomeService;
 
 import java.security.Principal;
-import java.util.List;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -31,11 +34,27 @@ public class IncomeController {
 
 
     @GetMapping("/incomes")
-    public String listIncomes(Model model, Principal principal) {
-        List<Income> incomes = incomeService.getAllIncomesByUser(principal.getName());
-        model.addAttribute("incomes", incomes.stream().map(incomeMapper::toViewDto).toList());
+    public String listIncomes(
+            Model model,
+            Principal principal,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Income> incomesPage =
+                incomeService.getAllIncomesByUser(principal.getName(), pageable);
+
+        model.addAttribute("incomes",
+                incomesPage.getContent().stream()
+                        .map(incomeMapper::toViewDto)
+                        .toList());
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", incomesPage.getTotalPages());
+
         return "incomes/incomes";
     }
+
 
     @GetMapping("/incomes/new")
     public String addNewIncome(Model model, Principal principal) {

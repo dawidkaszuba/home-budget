@@ -1,5 +1,7 @@
 package pl.dawidkaszuba.homebudget.service.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -35,9 +37,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Category> getAllCategories(Principal principal) {
+    public Page<Category> getAllCategories(Principal principal, Pageable pageable) {
         Home home = homeService.getHomeByBudgetUser(principal.getName());
-        return categoryRepository.findAllByHome(home);
+        return categoryRepository.findAllByHomeOrderByName(home, pageable);
     }
 
     @Transactional(readOnly = true)

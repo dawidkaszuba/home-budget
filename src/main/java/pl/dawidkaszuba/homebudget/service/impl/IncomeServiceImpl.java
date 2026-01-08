@@ -1,6 +1,8 @@
 package pl.dawidkaszuba.homebudget.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -18,7 +20,6 @@ import pl.dawidkaszuba.homebudget.service.IncomeService;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,11 +36,12 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Income> getAllIncomesByUser(String userName) {
+    public Page<Income> getAllIncomesByUser(String userName, Pageable pageable) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
         Home userHome = budgetUser.getHome();
-        return incomeRepository.findAllByHome(userHome);
+        return incomeRepository.findAllByHome(userHome, pageable);
     }
+
 
 
     @Transactional

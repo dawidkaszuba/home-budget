@@ -7,7 +7,6 @@ import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 import pl.dawidkaszuba.homebudget.repository.BudgetUserRepository;
 import pl.dawidkaszuba.homebudget.service.BudgetUserService;
 
-import java.util.List;
 
 @Service
 public class BudgetUserServiceImpl implements BudgetUserService {
@@ -26,9 +25,4 @@ public class BudgetUserServiceImpl implements BudgetUserService {
            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userName));
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<BudgetUser> getAllUsers() {
-        return budgetUserRepository.findAll();
-    }
 }
