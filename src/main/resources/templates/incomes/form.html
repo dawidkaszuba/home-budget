@@ -14,18 +14,7 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
-
-    <!-- SIMPLE VALIDATION -->
-    <script>
-        function validateForm() {
-            const value = document.forms["incomeForm"]["value"].value;
-            if (!value || value <= 0) {
-                alert("Kwota musi być większa od 0");
-                return false;
-            }
-            return true;
-        }
-    </script>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
 
@@ -47,8 +36,7 @@
                     <form th:action="@{${income.id} != null ? '/incomes/' + ${income.id} : '/incomes'}"
                           th:object="${income}"
                           method="POST"
-                          name="incomeForm"
-                          onsubmit="return validateForm()">
+                          name="incomeForm">
 
                         <!-- VALUE -->
                         <div class="form-group">
@@ -62,7 +50,7 @@
                                    placeholder="np. 3500.00"
                                    required />
                         </div>
-                        <div th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
+                        <div class="field-error" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
 
                         <!-- ACCOUNT -->
                         <div class="form-group">
@@ -78,7 +66,7 @@
                                 </option>
                             </select>
                         </div>
-                        <div th:if="${#fields.hasErrors('accountId')}" th:errors="*{accountId}"></div>
+                        <div class="field-error" th:if="${#fields.hasErrors('accountId')}" th:errors="*{accountId}"></div>
 
                         <!-- CATEGORY -->
                         <div class="form-group">
@@ -94,7 +82,7 @@
                                 </option>
                             </select>
                         </div>
-                        <div th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></div>
+                        <div class="field-error" th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></div>
 
                         <div class="form-group">
                             <label for="note">Uwagi</label>
@@ -105,7 +93,7 @@
                                    placeholder="np. zwrot za reklamację"
                             />
                         </div>
-                        <div th:if="${#fields.hasErrors('note')}" th:errors="*{note}"></div>
+                        <div class="field-error" th:if="${#fields.hasErrors('note')}" th:errors="*{note}"></div>
 
 
                         <!-- ACTIONS -->

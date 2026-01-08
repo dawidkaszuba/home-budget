@@ -1,6 +1,7 @@
 package pl.dawidkaszuba.homebudget.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +49,7 @@ public class BudgetUserHomeController {
     }
 
     @PostMapping("/{id}")
-    public String saveUpdatedHome(@ModelAttribute("home") UpdateHomeDto dto,
+    public String saveUpdatedHome(@Valid @ModelAttribute("home") UpdateHomeDto dto,
                                   BindingResult bindingResult,
                                   Principal principal) {
 

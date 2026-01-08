@@ -1,5 +1,6 @@
 package pl.dawidkaszuba.homebudget.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -78,7 +79,7 @@ public class AccountController {
     }
 
     @PostMapping("/{id}")
-    public String updateAccount(@ModelAttribute("account") UpdateAccountDto dto,
+    public String updateAccount(@Valid @ModelAttribute("account") UpdateAccountDto dto,
                                 BindingResult bindingResult,
                                 Principal principal) {
 
