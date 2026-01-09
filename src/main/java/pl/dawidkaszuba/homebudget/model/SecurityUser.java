@@ -7,6 +7,7 @@ import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class SecurityUser implements UserDetails {
 
@@ -17,13 +18,18 @@ public class SecurityUser implements UserDetails {
         this.user = user;
     }
 
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return Arrays.stream(user
+//            .getRoles()
+//            .split(","))
+//            .map(SimpleGrantedAuthority::new)
+//            .toList();
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(user
-            .getRoles()
-            .split(","))
-            .map(SimpleGrantedAuthority::new)
-            .toList();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
     }
 
     public Long getUserId() {
@@ -32,12 +38,12 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return user.getPasswordHash();
     }
 
     @Override
     public String getUsername() {
-        return user.getUserName();
+        return user.getUsername();
     }
 
     @Override

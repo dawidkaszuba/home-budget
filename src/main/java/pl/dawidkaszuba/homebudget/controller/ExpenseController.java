@@ -122,7 +122,7 @@ public class ExpenseController {
     private void prepareExpenseForm(Model model, Principal principal) {
         model.addAttribute(
                 "categories",
-                categoryService.findByCategoryType(CategoryType.EXPENSE)
+                categoryService.findByCategoryType(CategoryType.EXPENSE, principal)
         );
         model.addAttribute(
                 "accounts",

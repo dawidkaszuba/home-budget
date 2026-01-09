@@ -24,7 +24,7 @@ public class HomeServiceImpl implements HomeService {
     @Transactional(readOnly = true)
     @Override
     public Home getHomeByBudgetUser(String userName) {
-        return budgetUserRepository.findByUserName(userName)
+        return budgetUserRepository.findByUsername(userName)
                 .map(BudgetUser::getHome)
                 .orElseThrow(() ->
                     new BudgetUserNotFoundException("User not found: " + userName)

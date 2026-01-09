@@ -125,7 +125,7 @@ public class IncomeController {
     private void prepareIncomeForm(Model model, Principal principal) {
         model.addAttribute(
                 "categories",
-                categoryService.findByCategoryType(CategoryType.INCOME)
+                categoryService.findByCategoryType(CategoryType.INCOME, principal)
         );
         model.addAttribute(
                 "accounts",

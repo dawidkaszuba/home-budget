@@ -21,7 +21,7 @@ public class BudgetUserServiceImpl implements BudgetUserService {
     @Override
     public BudgetUser getBudgetUserByUserName(String userName) {
        return budgetUserRepository
-           .findByUserName(userName)
+           .findByUsername(userName)
            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userName));
     }
 

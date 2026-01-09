@@ -6,5 +6,5 @@ import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 import java.util.Optional;
 
 public interface BudgetUserRepository extends JpaRepository<BudgetUser, Long> {
-    Optional<BudgetUser> findByUserName(String username);
+    Optional<BudgetUser> findByUsername(String username);
 }

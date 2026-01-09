@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    List<Category> findByCategoryTypeOrderByName(CategoryType type);
+    List<Category> findByCategoryTypeAndHomeOrderByName(CategoryType type, Home home);
 
     boolean existsByHomeAndCategoryTypeAndName(Home home, CategoryType categoryType, String name);
 

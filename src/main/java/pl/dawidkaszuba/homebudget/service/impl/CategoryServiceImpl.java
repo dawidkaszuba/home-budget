@@ -44,8 +44,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Category> findByCategoryType(CategoryType type) {
-        return categoryRepository.findByCategoryTypeOrderByName(type);
+    public List<Category> findByCategoryType(CategoryType type, Principal principal) {
+        Home home = homeService.getHomeByBudgetUser(principal.getName());
+        return categoryRepository.findByCategoryTypeAndHomeOrderByName(type, home);
     }
 
     @Transactional

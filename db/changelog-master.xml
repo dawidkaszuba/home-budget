@@ -12,4 +12,5 @@
     <include file="db/changesets/2026_01_02/20260102.xml"/>
     <include file="db/changesets/2026_01_03/20260103.xml"/>
     <include file="db/changesets/2026_01_05/20260105.xml"/>
+    <include file="db/changesets/2026_01_09/20260109.xml"/>
 </databaseChangeLog>

@@ -3,6 +3,7 @@ package pl.dawidkaszuba.homebudget.model.db;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
+import pl.dawidkaszuba.homebudget.model.AuthProvider;
 
 @Getter
 @Setter
@@ -17,9 +18,13 @@ public class BudgetUser extends AuditableEntity {
     private Long id;
     private String firstName;
     private String lastName;
-    private String userName;
-    private String password;
-    private String roles;
+    private String username;
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "auth_provider", nullable = false)
+    private AuthProvider authProvider = AuthProvider.LOCAL;
+    private String role;
     @ManyToOne
     @JoinColumn(name = "home_id", nullable = false)
     private Home home;

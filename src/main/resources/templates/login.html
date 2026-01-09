@@ -102,8 +102,15 @@
             </form>
 
             <div class="text-center mt-3">
-                <small>Nie masz konta? Skontaktuj się z administratorem.</small>
+                <small>
+                    Nie masz konta?
+                    <a th:href="@{/register}">Zarejestruj się</a>
+                </small>
             </div>
+            <div th:if="${param.registered}" class="text-success mb-2 small">
+                Konto zostało utworzone. Możesz się zalogować.
+            </div>
+
 
         </div>
     </div>
