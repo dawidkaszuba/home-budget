@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dawidkaszuba.homebudget.model.AuthProvider;
 import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 import pl.dawidkaszuba.homebudget.model.db.Home;
+import pl.dawidkaszuba.homebudget.model.db.UserCredential;
 import pl.dawidkaszuba.homebudget.model.dto.register.RegisterForm;
 import pl.dawidkaszuba.homebudget.repository.BudgetUserRepository;
 import pl.dawidkaszuba.homebudget.repository.HomeRepository;
@@ -18,8 +20,8 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
     private static final String ADMIN_ROLE = "ADMIN";
 
     private final HomeRepository homeRepository;
-    private final BudgetUserRepository budgetUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final BudgetUserRepository budgetUserRepository;
 
 
     @Transactional
@@ -33,11 +35,15 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
         BudgetUser user = new BudgetUser();
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
-        user.setUsername(dto.getUsername());
         user.setRole(ADMIN_ROLE);
         user.setHome(home);
 
-        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+        UserCredential credential = new UserCredential();
+        credential.setProvider(AuthProvider.LOCAL);
+        credential.setEmail(dto.getEmail());
+        credential.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+
+        user.addCredential(credential);
 
         budgetUserRepository.save(user);
     }

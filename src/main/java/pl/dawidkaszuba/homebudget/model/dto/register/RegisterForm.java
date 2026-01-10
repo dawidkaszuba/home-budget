@@ -18,10 +18,6 @@ public class RegisterForm {
     @Size(min = 2, max = 50, message = "{user.lastName.size}")
     private String lastName;
 
-    @NotBlank(message = "{user.username.required}")
-    @Size(min = 3, max = 20, message = "{user.username.size}")
-    private String username;
-
     @NotBlank(message = "{user.email.required}")
     @Email
     private String email;

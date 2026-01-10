@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Service
 public interface IncomeService {
 
-    Page<Income> getAllIncomesByUser(String userName, Pageable pageable);
+    Page<Income> getAllIncomesByUser(Principal principal, Pageable pageable);
 
     void save(CreateIncomeDto dto, Principal principal);
 

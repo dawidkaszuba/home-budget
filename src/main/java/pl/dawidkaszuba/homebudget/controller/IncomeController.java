@@ -42,7 +42,7 @@ public class IncomeController {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Income> incomesPage =
-                incomeService.getAllIncomesByUser(principal.getName(), pageable);
+                incomeService.getAllIncomesByUser(principal, pageable);
 
         model.addAttribute("incomes",
                 incomesPage.getContent().stream()

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Service
 public interface ExpenseService {
 
-    Page<Expense> getAllExpensesByBudgetUser(String userName, Pageable pageable);
+    Page<Expense> getAllExpensesByBudgetUser(Principal principal, Pageable pageable);
 
     void save(CreateExpenseDto dto, Principal principal);
 

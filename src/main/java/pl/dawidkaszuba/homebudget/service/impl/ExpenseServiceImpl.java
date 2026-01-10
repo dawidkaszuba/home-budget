@@ -40,8 +40,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Expense> getAllExpensesByBudgetUser(String userName, Pageable pageable) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
+    public Page<Expense> getAllExpensesByBudgetUser(Principal principal, Pageable pageable) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home userHome = budgetUser.getHome();
         return expenseRepository.findAllByHome(userHome, pageable);
     }
@@ -49,7 +49,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Transactional
     @Override
     public void save(CreateExpenseDto dto, Principal principal) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home userHome = budgetUser.getHome();
 
         Category category = categoryRepository.findById(dto.getCategoryId())
@@ -113,7 +113,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     public BigDecimal getSumOfAllExpensesByUserAndTimeBetween(Principal principal,
                                                           LocalDateTime startDateTime,
                                                           LocalDateTime endDateTime) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home home = budgetUser.getHome();
         return expenseRepository.getSumOfValueByHomeAndTimeBetween(home, startDateTime, endDateTime);
     }
@@ -121,7 +121,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Transactional(readOnly = true)
     @Override
     public BigDecimal getSumOfValueByHome(Principal principal) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home home = budgetUser.getHome();
         return expenseRepository.getSumOfValueByHome(home);
     }
