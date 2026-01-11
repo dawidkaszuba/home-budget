@@ -26,6 +26,20 @@
         </rollback>
     </changeSet>
 
+    <changeSet id="activation_link" author="dawid">
+        <sqlFile path="db/changesets/2026_01_10/04_activation_link.sql"/>
+        <rollback>
+            <sqlFile path="04_rollback.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="enabled_true_for_existing_users" author="dawid">
+        <sqlFile path="db/changesets/2026_01_10/05_enabled_true_for_existing_users.sql"/>
+        <rollback>
+            <sqlFile path="05_rollback.sql"/>
+        </rollback>
+    </changeSet>
+
 
     <changeSet id="tag_create_user_credentials" author="dawid">
         <tagDatabase tag="v0.0.8"/>

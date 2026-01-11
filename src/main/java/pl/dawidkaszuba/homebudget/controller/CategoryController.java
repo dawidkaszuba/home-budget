@@ -29,6 +29,7 @@ public class CategoryController {
     private final CategoryMapper categoryMapper;
     private final DomainExceptionMapper domainExceptionMapper;
 
+
     @GetMapping
     public String getAllCategories(Model model,
                                    Principal principal,

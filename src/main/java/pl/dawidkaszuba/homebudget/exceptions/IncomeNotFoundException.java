@@ -1,6 +1,7 @@
 package pl.dawidkaszuba.homebudget.exceptions;
 
 public class IncomeNotFoundException extends RuntimeException implements FieldAwareException {
+
     public IncomeNotFoundException(String message) {
         super(message);
     }

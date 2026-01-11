@@ -41,6 +41,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
         UserCredential credential = new UserCredential();
         credential.setProvider(AuthProvider.LOCAL);
         credential.setEmail(dto.getEmail());
+        credential.setEnabled(true);
         credential.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
 
         user.addCredential(credential);

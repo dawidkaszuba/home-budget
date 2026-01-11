@@ -1,6 +1,7 @@
 package pl.dawidkaszuba.homebudget.exceptions;
 
 public class CategoryAlreadyExistsException extends RuntimeException implements FieldAwareException {
+
     public CategoryAlreadyExistsException(String message) {
         super(message);
     }

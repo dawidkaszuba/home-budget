@@ -12,4 +12,6 @@ public interface UserCredentialRepository
     Optional<UserCredential> findByProviderAndEmail(AuthProvider provider, String email);
 
     Optional<UserCredential> findByProviderAndProviderUserId(AuthProvider provider,String providerUserId);
+
+    Optional<UserCredential> findByActivationToken(String token);
 }

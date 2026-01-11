@@ -30,6 +30,11 @@ public class UserCredential {
     @Column(name = "password_hash")
     private String passwordHash;
 
+    private boolean enabled = false;
+
+    @Column(name = "activation_token")
+    private String activationToken;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private BudgetUser user;
