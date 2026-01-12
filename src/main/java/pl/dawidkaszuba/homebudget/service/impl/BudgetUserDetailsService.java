@@ -35,6 +35,10 @@ public class BudgetUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 credential.getEmail(),
                 credential.getPasswordHash(),
+                credential.isEnabled(),
+                true,
+                true,
+                true,
                 List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
         );
     }

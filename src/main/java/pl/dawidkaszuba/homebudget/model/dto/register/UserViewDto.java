@@ -15,6 +15,7 @@ public class UserViewDto {
 
     public enum UserStatus {
         INVITED,
-        ACTIVE
+        ACTIVE,
+        NOT_ACTIVE
     }
 }

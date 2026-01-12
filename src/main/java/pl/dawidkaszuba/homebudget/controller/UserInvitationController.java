@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.dawidkaszuba.homebudget.model.dto.register.InviteUserDto;
 import pl.dawidkaszuba.homebudget.service.InvitationUserService;
 
@@ -41,4 +38,12 @@ public class UserInvitationController {
 
         return "redirect:/users/invite?success";
     }
+
+    @PostMapping("/resend/{id}")
+    public String resendInvitation(@PathVariable Long id) {
+        invitationUserService.resendInvitation(id);
+        return "redirect:/users";
+    }
+
+
 }

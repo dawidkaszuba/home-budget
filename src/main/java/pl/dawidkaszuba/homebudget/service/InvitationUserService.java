@@ -8,4 +8,6 @@ import java.security.Principal;
 public interface InvitationUserService {
 
     UserCredential inviteUserToHome(InviteUserDto dto, Principal principal);
+
+    void resendInvitation(Long id);
 }

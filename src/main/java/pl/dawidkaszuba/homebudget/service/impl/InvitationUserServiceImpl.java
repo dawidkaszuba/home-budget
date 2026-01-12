@@ -69,4 +69,25 @@ public class InvitationUserServiceImpl implements InvitationUserService {
         return credential;
     }
 
+    @Override
+    @Transactional
+    public void resendInvitation(Long userId) {
+        BudgetUser user = budgetUserRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        UserCredential credential = user.getCredentials().stream()
+                .filter(c -> c.getProvider() == AuthProvider.LOCAL)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("LOCAL credential not found"));
+
+        if (credential.isEnabled()) {
+            throw new IllegalStateException("User is already active");
+        }
+
+        credential.setActivationToken(UUID.randomUUID().toString());
+
+        emailService.sendActivationEmail(credential);
+    }
+
+
 }

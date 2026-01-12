@@ -170,4 +170,4 @@ target
 
 /config/*.yml
 /config/*.properties
-/src/main/resources/*.properties
+/src/main/resources/liquibase.properties

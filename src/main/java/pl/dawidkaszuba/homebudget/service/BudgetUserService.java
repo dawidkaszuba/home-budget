@@ -12,4 +12,8 @@ public interface BudgetUserService {
 
     List<BudgetUser> getUsersForAdminHome(Principal principal);
 
+    void disableUser(Long userId, Principal principal);
+
+    void enableUser(Long id, Principal principal);
+
 }

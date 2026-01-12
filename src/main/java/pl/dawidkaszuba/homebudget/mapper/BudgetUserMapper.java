@@ -22,10 +22,20 @@ public interface BudgetUserMapper {
 
     @Named("extractStatus")
     default UserViewDto.UserStatus extractStatus(BudgetUser user) {
-        return getLocalCredential(user).isEnabled()
-                ? UserViewDto.UserStatus.ACTIVE
-                : UserViewDto.UserStatus.INVITED;
+
+        UserCredential credential = getLocalCredential(user);
+
+        if (credential.isEnabled()) {
+            return UserViewDto.UserStatus.ACTIVE;
+        }
+
+        if (credential.getActivationToken() != null) {
+            return UserViewDto.UserStatus.INVITED;
+        }
+
+        return UserViewDto.UserStatus.NOT_ACTIVE;
     }
+
 
     default UserCredential getLocalCredential(BudgetUser user) {
         return user.getCredentials()

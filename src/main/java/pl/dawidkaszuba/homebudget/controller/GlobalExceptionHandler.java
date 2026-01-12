@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import pl.dawidkaszuba.homebudget.exceptions.IllegalUserStateException;
 import pl.dawidkaszuba.homebudget.exceptions.TokenDoesNotExistsException;
 import pl.dawidkaszuba.homebudget.exceptions.UserAlreadyExistsException;
 
@@ -66,6 +67,26 @@ public class GlobalExceptionHandler {
                 model,
                 HttpStatus.BAD_REQUEST,
                 "error.user.exists",
+                locale);
+    }
+
+    @ExceptionHandler(IllegalUserStateException.class)
+    public String handleIllegalUserStateException(IllegalUserStateException ex, Model model, Locale locale) {
+        log.warn("Could not enable invited not active user.");
+        return buildErrorPage(
+                model,
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage(),
+                locale);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public String handleIllegalStateException(IllegalStateException ex, Model model, Locale locale) {
+        log.warn(ex.getMessage());
+        return buildErrorPage(
+                model,
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage(),
                 locale);
     }
 

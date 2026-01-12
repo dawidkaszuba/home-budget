@@ -11,6 +11,6 @@ import java.util.List;
 public interface BudgetUserRepository extends JpaRepository<BudgetUser, Long> {
 
     @EntityGraph(attributePaths = "credentials")
-    List<BudgetUser> findAllByHome(Home home);
+    List<BudgetUser> findAllByHomeOrderByFirstNameAscLastNameAsc(Home home);
 
 }

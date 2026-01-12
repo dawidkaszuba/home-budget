@@ -3,6 +3,7 @@ package pl.dawidkaszuba.homebudget.model.db;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
+import pl.dawidkaszuba.homebudget.model.AuthProvider;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,6 +32,13 @@ public class BudgetUser extends AuditableEntity {
     public void addCredential(UserCredential credential) {
         credentials.add(credential);
         credential.setUser(this);
+    }
+
+    public void disableLocalCredential() {
+        credentials.stream()
+                .filter(c -> c.getProvider() == AuthProvider.LOCAL)
+                .findFirst()
+                .ifPresent(c -> c.setEnabled(false));
     }
 
 }
