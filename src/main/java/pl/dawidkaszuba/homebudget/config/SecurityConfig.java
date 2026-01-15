@@ -3,6 +3,7 @@ package pl.dawidkaszuba.homebudget.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -26,6 +27,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login", "/css/**", "/js/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/activate").permitAll()
                         .requestMatchers("/categories/**").hasRole("ADMIN")
                         .requestMatchers("/accounts/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("ADMIN")

@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.dawidkaszuba.homebudget.exceptions.BudgetUserNotFoundException;
+import pl.dawidkaszuba.homebudget.exceptions.IllegalUserStateException;
 import pl.dawidkaszuba.homebudget.exceptions.UserAlreadyExistsException;
 import pl.dawidkaszuba.homebudget.model.AuthProvider;
 import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
@@ -73,7 +75,7 @@ public class InvitationUserServiceImpl implements InvitationUserService {
     @Transactional
     public void resendInvitation(Long userId) {
         BudgetUser user = budgetUserRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new BudgetUserNotFoundException("User not found"));
 
         UserCredential credential = user.getCredentials().stream()
                 .filter(c -> c.getProvider() == AuthProvider.LOCAL)
@@ -81,7 +83,7 @@ public class InvitationUserServiceImpl implements InvitationUserService {
                 .orElseThrow(() -> new IllegalStateException("LOCAL credential not found"));
 
         if (credential.isEnabled()) {
-            throw new IllegalStateException("User is already active");
+            throw new IllegalUserStateException("User is already active");
         }
 
         credential.setActivationToken(UUID.randomUUID().toString());
