@@ -12,6 +12,7 @@ import pl.dawidkaszuba.homebudget.exceptions.CategoryNotFoundException;
 import pl.dawidkaszuba.homebudget.exceptions.ExpenseNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.ExpenseMapper;
 import pl.dawidkaszuba.homebudget.model.db.*;
+import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.UpdateExpenseDto;
 import pl.dawidkaszuba.homebudget.repository.AccountRepository;
@@ -23,6 +24,7 @@ import pl.dawidkaszuba.homebudget.service.ExpenseService;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -132,5 +134,12 @@ public class ExpenseServiceImpl implements ExpenseService {
         Expense expense = expenseRepository.findById(id)
                 .orElseThrow(() -> new ExpenseNotFoundException("Expense with id: " + id + " does not exist."));
         expenseRepository.delete(expense);
+    }
+
+    @Override
+    public List<CategoryAmountDto> getAllExpensesByHomeAndCategory(Principal principal, LocalDateTime from, LocalDateTime to) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
+        Home home = budgetUser.getHome();
+        return expenseRepository.findAllByHomeGroupedByCategory(home, from, to);
     }
 }

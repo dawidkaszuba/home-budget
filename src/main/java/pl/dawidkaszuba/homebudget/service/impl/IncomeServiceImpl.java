@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import pl.dawidkaszuba.homebudget.exceptions.IncomeNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.IncomeMapper;
 import pl.dawidkaszuba.homebudget.model.db.*;
+import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.CreateIncomeDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
 import pl.dawidkaszuba.homebudget.repository.AccountRepository;
@@ -20,6 +21,7 @@ import pl.dawidkaszuba.homebudget.service.IncomeService;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -130,5 +132,12 @@ public class IncomeServiceImpl implements IncomeService {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home home = budgetUser.getHome();
         return incomeRepository.findSumOfValueByHome(home);
+    }
+
+    @Override
+    public List<CategoryAmountDto> getAllIncomesByHomeAndCategory(Principal principal, LocalDateTime from, LocalDateTime to) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
+        Home home = budgetUser.getHome();
+        return incomeRepository.findSumIncomesByCategory(home, from, to);
     }
 }
