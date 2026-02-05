@@ -31,7 +31,7 @@ public class HomeController {
         model.addAttribute("currentYear", currentDate.getYear());
         model.addAttribute("accounts", accountService.findAllUserAccountsWithState(principal));
 
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         model.addAttribute("userName", budgetUser.getFirstName());
         return "index";
     }

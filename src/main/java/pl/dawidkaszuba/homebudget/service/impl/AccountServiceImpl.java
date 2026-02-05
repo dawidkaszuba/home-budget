@@ -31,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(readOnly = true)
     @Override
     public List<Account> findAllUserAccounts(Principal principal) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home home = budgetUser.getHome();
         return accountRepository.findAllByHome(home);
     }
@@ -40,7 +40,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountViewStateDto> findAllUserAccountsWithState(Principal principal) {
         BudgetUser budgetUser = budgetUserService
-                .getBudgetUserByUserName(principal.getName());
+                .getBudgetUserByPrincipal(principal);
 
         return accountRepository
                 .findAllAccountsWithStateByHome(budgetUser.getHome());
@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public void save(CreateAccountDto dto, Principal principal) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home home = budgetUser.getHome();
 
         if (accountRepository.existsByHomeAndNameIgnoreCase(home, dto.getName().trim())) {

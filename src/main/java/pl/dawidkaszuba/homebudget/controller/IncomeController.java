@@ -42,7 +42,7 @@ public class IncomeController {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Income> incomesPage =
-                incomeService.getAllIncomesByUser(principal.getName(), pageable);
+                incomeService.getAllIncomesByUser(principal, pageable);
 
         model.addAttribute("incomes",
                 incomesPage.getContent().stream()
@@ -125,7 +125,7 @@ public class IncomeController {
     private void prepareIncomeForm(Model model, Principal principal) {
         model.addAttribute(
                 "categories",
-                categoryService.findByCategoryType(CategoryType.INCOME)
+                categoryService.findByCategoryType(CategoryType.INCOME, principal)
         );
         model.addAttribute(
                 "accounts",

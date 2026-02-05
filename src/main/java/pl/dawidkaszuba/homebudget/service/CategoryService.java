@@ -16,7 +16,7 @@ public interface CategoryService {
 
     Page<Category> getAllCategories(Principal principal, Pageable pageable);
 
-    List<Category> findByCategoryType(CategoryType type);
+    List<Category> findByCategoryType(CategoryType type, Principal principal);
 
     void save(CreateCategoryDto dto, Principal principal);
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="change_budget_users" author="dawid">
+        <sqlFile path="db/changesets/2026_01_09/01_change_budget_users.sql"/>
+        <rollback>
+            <sqlFile path="rollback.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="tag_change_budget_users" author="dawid">
+        <tagDatabase tag="v0.0.7"/>
+    </changeSet>
+
+</databaseChangeLog>

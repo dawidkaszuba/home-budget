@@ -38,7 +38,7 @@ public class ExpenseController {
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Expense> expensePage = expenseService.getAllExpensesByBudgetUser(principal.getName(), pageable);
+        Page<Expense> expensePage = expenseService.getAllExpensesByBudgetUser(principal, pageable);
         model.addAttribute("expenses", expensePage.stream().map(expenseMapper::toViewDto).toList());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", expensePage.getTotalPages());
@@ -122,7 +122,7 @@ public class ExpenseController {
     private void prepareExpenseForm(Model model, Principal principal) {
         model.addAttribute(
                 "categories",
-                categoryService.findByCategoryType(CategoryType.EXPENSE)
+                categoryService.findByCategoryType(CategoryType.EXPENSE, principal)
         );
         model.addAttribute(
                 "accounts",

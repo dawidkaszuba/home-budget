@@ -30,7 +30,7 @@ public class BudgetUserHomeController {
 
     @GetMapping
     public String getHome(Model model, Principal principal) {
-        Home home = homeService.getHomeByBudgetUser(principal.getName());
+        Home home = homeService.getHomeByPrincipal(principal);
         HomeViewDto dto = homeMapper.toViewDto(home);
 
         model.addAttribute("home", dto);
@@ -40,7 +40,7 @@ public class BudgetUserHomeController {
     @GetMapping("/edit")
     public String getHomeForEdit(Model model, Principal principal) {
 
-        Home home = homeService.getHomeByBudgetUser(principal.getName());
+        Home home = homeService.getHomeByPrincipal(principal);
         UpdateHomeDto dto = homeMapper.toUpdateHomeDto(home);
 
         model.addAttribute("home", dto);

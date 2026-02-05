@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="create_user_credentials" author="dawid">
+        <sqlFile path="db/changesets/2026_01_10/01_create_user_credentials.sql"/>
+        <rollback>
+            <sqlFile path="01_rollback.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="migrate_local_users" author="dawid">
+        <sqlFile path="db/changesets/2026_01_10/02_migrate_local_users.sql"/>
+        <rollback>
+            <sqlFile path="02_rollback.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="03_cleanup-budget-user.sql" author="dawid">
+        <sqlFile path="db/changesets/2026_01_10/03_cleanup-budget-user.sql"/>
+        <rollback>
+            <sqlFile path="03_rollback.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="activation_link" author="dawid">
+        <sqlFile path="db/changesets/2026_01_10/04_activation_link.sql"/>
+        <rollback>
+            <sqlFile path="04_rollback.sql"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="enabled_true_for_existing_users" author="dawid">
+        <sqlFile path="db/changesets/2026_01_10/05_enabled_true_for_existing_users.sql"/>
+        <rollback>
+            <sqlFile path="05_rollback.sql"/>
+        </rollback>
+    </changeSet>
+
+
+    <changeSet id="tag_create_user_credentials" author="dawid">
+        <tagDatabase tag="v0.0.8"/>
+    </changeSet>
+
+</databaseChangeLog>

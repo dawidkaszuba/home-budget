@@ -1,6 +1,7 @@
 package pl.dawidkaszuba.homebudget.exceptions;
 
 public class AccountNotFoundException extends RuntimeException implements FieldAwareException {
+
     public AccountNotFoundException(String message) {
         super(message);
     }

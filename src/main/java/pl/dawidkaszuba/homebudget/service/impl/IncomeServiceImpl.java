@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import pl.dawidkaszuba.homebudget.exceptions.IncomeNotFoundException;
 import pl.dawidkaszuba.homebudget.mapper.IncomeMapper;
 import pl.dawidkaszuba.homebudget.model.db.*;
+import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.CreateIncomeDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
 import pl.dawidkaszuba.homebudget.repository.AccountRepository;
@@ -20,6 +21,7 @@ import pl.dawidkaszuba.homebudget.service.IncomeService;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,8 +38,8 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Income> getAllIncomesByUser(String userName, Pageable pageable) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(userName);
+    public Page<Income> getAllIncomesByUser(Principal principal, Pageable pageable) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home userHome = budgetUser.getHome();
         return incomeRepository.findAllByHome(userHome, pageable);
     }
@@ -47,7 +49,7 @@ public class IncomeServiceImpl implements IncomeService {
     @Transactional
     @Override
     public void save(CreateIncomeDto dto, Principal principal) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home userHome = budgetUser.getHome();
 
         Category category = categoryRepository.findById(dto.getCategoryId())
@@ -111,7 +113,7 @@ public class IncomeServiceImpl implements IncomeService {
     public BigDecimal getSumOfAllIncomesByUserAndTimeBetween(LocalDateTime startDateTime,
                                                          LocalDateTime endDateTime,
                                                          Principal principal) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home home = budgetUser.getHome();
         return incomeRepository.findSumOfValueByUserAndCreateTimeBetween(home, startDateTime, endDateTime);
     }
@@ -127,8 +129,15 @@ public class IncomeServiceImpl implements IncomeService {
     @Transactional(readOnly = true)
     @Override
     public BigDecimal getSumOfValueByHome(Principal principal) {
-        BudgetUser budgetUser = budgetUserService.getBudgetUserByUserName(principal.getName());
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home home = budgetUser.getHome();
         return incomeRepository.findSumOfValueByHome(home);
+    }
+
+    @Override
+    public List<CategoryAmountDto> getAllIncomesByHomeAndCategory(Principal principal, LocalDateTime from, LocalDateTime to) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
+        Home home = budgetUser.getHome();
+        return incomeRepository.findSumIncomesByCategory(home, from, to);
     }
 }

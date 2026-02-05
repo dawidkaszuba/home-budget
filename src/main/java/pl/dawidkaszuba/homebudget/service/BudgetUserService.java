@@ -1,12 +1,19 @@
 package pl.dawidkaszuba.homebudget.service;
 
-import org.springframework.stereotype.Service;
 import pl.dawidkaszuba.homebudget.model.db.BudgetUser;
 
+import java.security.Principal;
+import java.util.List;
 
-@Service
+
 public interface BudgetUserService {
 
-    BudgetUser getBudgetUserByUserName(String userName);
+    BudgetUser getBudgetUserByPrincipal(Principal principal);
+
+    List<BudgetUser> getUsersForAdminHome(Principal principal);
+
+    void disableUser(Long userId, Principal principal);
+
+    void enableUser(Long id, Principal principal);
 
 }

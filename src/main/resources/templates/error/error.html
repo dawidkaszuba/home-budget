@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}">Błąd</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
+
+    <style>
+        .error-container {
+            max-width: 600px;
+            margin: 80px auto;
+            text-align: center;
+        }
+
+        .error-container h1 {
+            font-size: 72px;
+            color: #dc3545;
+        }
+
+        .error-container p {
+            margin-top: 16px;
+            font-size: 1.1rem;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="error-container">
+    <h1 th:text="${status}">404</h1>
+    <h2 th:text="${title}">Błąd</h2>
+
+    <p th:text="${message}"></p>
+
+    <a th:href="@{/}" class="btn btn-primary">
+        Wróć na stronę główną
+    </a>
+</div>
+
+</body>
+</html>

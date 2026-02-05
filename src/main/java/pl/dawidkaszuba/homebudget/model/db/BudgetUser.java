@@ -3,6 +3,10 @@ package pl.dawidkaszuba.homebudget.model.db;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
+import pl.dawidkaszuba.homebudget.model.AuthProvider;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,12 +21,24 @@ public class BudgetUser extends AuditableEntity {
     private Long id;
     private String firstName;
     private String lastName;
-    private String userName;
-    private String password;
-    private String roles;
+    private String role;
     @ManyToOne
     @JoinColumn(name = "home_id", nullable = false)
     private Home home;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCredential> credentials = new HashSet<>();
 
+
+    public void addCredential(UserCredential credential) {
+        credentials.add(credential);
+        credential.setUser(this);
+    }
+
+    public void disableLocalCredential() {
+        credentials.stream()
+                .filter(c -> c.getProvider() == AuthProvider.LOCAL)
+                .findFirst()
+                .ifPresent(c -> c.setEnabled(false));
+    }
 
 }
