@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.dawidkaszuba.homebudget.model.db.Expense;
 import pl.dawidkaszuba.homebudget.model.db.Home;
+import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
@@ -36,4 +38,15 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query("SELECT e FROM Expense e WHERE e.account.home = :home ORDER BY e.createdAt desc")
     Page<Expense> findAllByHome(@Param("home") Home home, Pageable pageable);
 
+
+    @Query("""
+        SELECT new pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto(c.name, SUM(e.value))
+        FROM Expense e
+        JOIN e.category c
+        WHERE e.account.home = :home
+        AND e.createdAt >= :from AND e.createdAt <= :to
+        GROUP BY c
+        ORDER BY SUM(e.value) DESC
+        """)
+    List<CategoryAmountDto> findAllByHomeGroupedByCategory(@Param("home") Home home, @Param("from")  LocalDateTime from, @Param("to") LocalDateTime to);
 }
