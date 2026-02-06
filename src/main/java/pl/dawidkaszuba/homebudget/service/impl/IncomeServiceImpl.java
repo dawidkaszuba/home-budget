@@ -12,6 +12,7 @@ import pl.dawidkaszuba.homebudget.model.db.*;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.CreateIncomeDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
+import pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto;
 import pl.dawidkaszuba.homebudget.repository.AccountRepository;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
 import pl.dawidkaszuba.homebudget.repository.IncomeRepository;
@@ -139,5 +140,16 @@ public class IncomeServiceImpl implements IncomeService {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home home = budgetUser.getHome();
         return incomeRepository.findSumIncomesByCategory(home, from, to);
+    }
+
+    @Override
+    public List<ReportRowDto> findForReport(Principal principal, List<Long> categoryIds, LocalDateTime from, LocalDateTime to) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
+        Home home = budgetUser.getHome();
+
+        if (categoryIds.isEmpty()) {
+            return incomeRepository.findForReport(home, from, to);
+        }
+        return incomeRepository.findForReport(home, from, to, categoryIds);
     }
 }
