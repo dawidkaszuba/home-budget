@@ -177,32 +177,54 @@
         });
     }
 
-    function renderPieChart(canvasId, labels, values, colors, total) {
-        const canvas = document.getElementById(canvasId);
-        if (!canvas || values.length === 0) return;
+    function generateColors(count, saturation = 65, lightness = 55) {
+    return Array.from({ length: count }, (_, i) =>
+        `hsl(${Math.round((360 / count) * i)}, ${saturation}%, ${lightness}%)`
+    );
+}
 
-        new Chart(canvas, {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{ data: values, backgroundColor: colors }]
-            },
-            options: {
-                plugins: {
-                    legend: { position: 'right' },
-                    tooltip: {
-                        callbacks: {
-                            label: ctx => {
-                                const v = ctx.raw;
-                                const p = ((v / total) * 100).toFixed(1);
-                                return `${ctx.label}: ${v} zł (${p}%)`;
-                            }
+
+    function renderPieChart(canvasId, labels, values, total) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas || values.length === 0) return;
+
+    const colors = generateColors(values.length);
+
+    new Chart(canvas, {
+        type: 'pie',
+        data: {
+            labels,
+            datasets: [{
+                data: values,
+                backgroundColor: colors,
+                borderColor: '#ffffff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        boxWidth: 14,
+                        padding: 12
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => {
+                            const v = ctx.raw;
+                            const p = ((v / total) * 100).toFixed(1);
+                            return `${ctx.label}: ${v} zł (${p}%)`;
                         }
                     }
                 }
             }
-        });
-    }
+        }
+    });
+}
+
 
     /* ===== WYDATKI ===== */
     const expenses = /*[[${expensesByCategory}]]*/ [];
@@ -214,7 +236,6 @@
         'expensesChart',
         expenseLabels,
         expenseValues,
-        ['#dc3545','#e55361','#ea868f','#f1aeb5','#f8d7da'],
         expensesTotal
     );
 
@@ -231,7 +252,6 @@
         'incomesChart',
         incomeLabels,
         incomeValues,
-        ['#198754','#20c997','#75b798','#a3cfbb','#d1e7dd'],
         incomesTotal
     );
 

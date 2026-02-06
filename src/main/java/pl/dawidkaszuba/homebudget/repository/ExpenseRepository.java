@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import pl.dawidkaszuba.homebudget.model.db.Expense;
 import pl.dawidkaszuba.homebudget.model.db.Home;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
+import pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -49,4 +50,37 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
         ORDER BY SUM(e.value) DESC
         """)
     List<CategoryAmountDto> findAllByHomeGroupedByCategory(@Param("home") Home home, @Param("from")  LocalDateTime from, @Param("to") LocalDateTime to);
+
+    @Query("""
+            SELECT new pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto(
+                c.name,
+                SUM(e.value)
+            )
+            FROM Expense e
+            JOIN e.category c
+            WHERE (:categoryIds IS NULL OR c.id IN :categoryIds)
+              AND e.createdAt BETWEEN :from AND :to
+              AND e.account.home = :home
+            GROUP BY c
+        """)
+    List<ReportRowDto> findForReport(@Param("home") Home home,
+                                     @Param("from")  LocalDateTime from,
+                                     @Param("to") LocalDateTime to,
+                                     @Param("categoryIds") List<Long> categoryIds);
+
+    @Query("""
+            SELECT new pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto(
+                c.name,
+                SUM(e.value)
+            )
+            FROM Expense e
+            JOIN e.category c
+            WHERE e.createdAt BETWEEN :from AND :to
+              AND e.account.home = :home
+            GROUP BY c.name
+        """)
+    List<ReportRowDto> findForReport(@Param("home")  Home home,
+                                     @Param("from") LocalDateTime from,
+                                     @Param("to") LocalDateTime to);
+
 }

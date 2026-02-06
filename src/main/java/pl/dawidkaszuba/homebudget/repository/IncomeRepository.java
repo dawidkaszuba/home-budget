@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import pl.dawidkaszuba.homebudget.model.db.Home;
 import pl.dawidkaszuba.homebudget.model.db.Income;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
+import pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -50,4 +51,36 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
         """)
     List<CategoryAmountDto> findSumIncomesByCategory(Home home, LocalDateTime from, LocalDateTime to);
 
+    @Query("""
+            SELECT new pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto(
+                c.name,
+                SUM(i.value)
+            )
+            FROM Income i
+            JOIN i.category c
+            WHERE (:categoryIds IS NULL OR c.id IN :categoryIds)
+              AND i.createdAt BETWEEN :from AND :to
+              AND i.account.home = :home
+            GROUP BY c
+        """)
+    List<ReportRowDto> findForReport(@Param("home") Home home,
+                                     @Param("from")  LocalDateTime from,
+                                     @Param("to") LocalDateTime to,
+                                     @Param("categoryIds") List<Long> categoryIds);
+
+    @Query("""
+            SELECT new pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto(
+                c.name,
+                SUM(i.value)
+            )
+            FROM Income i
+            JOIN i.category c
+            WHERE i.createdAt BETWEEN :from AND :to
+              AND i.account.home = :home
+            GROUP BY c.name
+        """)
+    List<ReportRowDto> findForReport(
+            Home home,
+            LocalDateTime from,
+            LocalDateTime to);
 }
