@@ -15,6 +15,7 @@ import pl.dawidkaszuba.homebudget.model.db.*;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.UpdateExpenseDto;
+import pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto;
 import pl.dawidkaszuba.homebudget.repository.AccountRepository;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
 import pl.dawidkaszuba.homebudget.repository.ExpenseRepository;
@@ -141,5 +142,16 @@ public class ExpenseServiceImpl implements ExpenseService {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         Home home = budgetUser.getHome();
         return expenseRepository.findAllByHomeGroupedByCategory(home, from, to);
+    }
+
+    @Override
+    public List<ReportRowDto> findForReport(Principal principal, List<Long> categoryIds, LocalDateTime from, LocalDateTime to) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
+        Home home = budgetUser.getHome();
+
+        if (categoryIds.isEmpty()) {
+            return expenseRepository.findForReport(home, from, to);
+        }
+        return expenseRepository.findForReport(home, from, to, categoryIds);
     }
 }
