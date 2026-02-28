@@ -31,7 +31,7 @@ public class SummaryServiceImpl implements SummaryService {
         int firstDayOfCurrentMonth = LocalDateTime.now().withDayOfMonth(1).getDayOfMonth();
         int lastDayOfCurrentMonth = LocalDateTime.now().withDayOfMonth(LocalDateTime.now().getMonth().length(now.isLeapYear())).getDayOfMonth();
         LocalDateTime startDateTimeMonthly = LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(), firstDayOfCurrentMonth, 0, 0);
-        LocalDateTime endDateTimeMonthly = LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(), lastDayOfCurrentMonth, 0, 0);
+        LocalDateTime endDateTimeMonthly = LocalDateTime.of(currentDateTime.getYear(), currentDateTime.getMonth(), lastDayOfCurrentMonth, 23, 59);
 
         BigDecimal allExpensesDb = expenseService.getSumOfValueByHome(principal);
         BigDecimal annualExpensesDb = expenseService.getSumOfAllExpensesByUserAndTimeBetween(principal, startDateTimeAnnual, endDateTimeAnnual);
