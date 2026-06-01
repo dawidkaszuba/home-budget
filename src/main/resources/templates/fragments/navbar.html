@@ -70,7 +70,7 @@
                 </a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                 <a class="nav-link" th:href="@{/transfers}">
                     🔄 Przelewy
                 </a>
