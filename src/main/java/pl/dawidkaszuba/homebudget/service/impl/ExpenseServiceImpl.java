@@ -129,7 +129,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenseRepository.getSumOfValueByHome(home);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public void deleteIncome(Long id) {
         Expense expense = expenseRepository.findById(id)

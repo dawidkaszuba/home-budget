@@ -27,6 +27,18 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
                         FROM Expense e
                         WHERE e.account = a
                           AND e.deletedAt IS NULL
+                    ) +
+                    (
+                        SELECT COALESCE(SUM(t.value), 0)
+                        FROM Transfer t
+                        WHERE t.targetAccount = a
+                          AND t.deletedAt IS NULL
+                    ) -
+                    (
+                        SELECT COALESCE(SUM(t.value), 0)
+                        FROM Transfer t
+                        WHERE t.sourceAccount = a
+                          AND t.deletedAt IS NULL
                     )
                 )
                 FROM Account a
