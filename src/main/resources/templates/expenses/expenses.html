@@ -133,20 +133,22 @@
 
     </div>
 
-    <nav th:if="${totalPages > 1}">
-        <ul class="pagination justify-content-center">
+    <nav th:if="${totalPages > 1}" aria-label="Stronicowanie">
+        <ul class="pagination justify-content-center flex-wrap"
+            th:with="startPage=${T(java.lang.Math).max(0, T(java.lang.Math).min(currentPage - 2, totalPages - 5))},
+                     endPage=${T(java.lang.Math).min(totalPages - 1, startPage + 4)}">
 
             <!-- PREV -->
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                 <a class="page-link"
                    th:href="@{/expenses(page=${currentPage - 1})}">
-                    ‹
+                    ‹ Poprzednia
                 </a>
             </li>
 
-            <!-- NUMERY STRON -->
+            <!-- NUMERY STRON (max 5) -->
             <li class="page-item"
-                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:each="i : ${#numbers.sequence(startPage, endPage)}"
                 th:classappend="${i == currentPage} ? 'active'">
                 <a class="page-link"
                    th:text="${i + 1}"
@@ -159,7 +161,7 @@
                 th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
                 <a class="page-link"
                    th:href="@{/expenses(page=${currentPage + 1})}">
-                    ›
+                    Następna ›
                 </a>
             </li>
 
