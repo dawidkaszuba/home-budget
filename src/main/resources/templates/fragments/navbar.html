@@ -3,6 +3,9 @@
     <!-- Brand -->
     <a class="navbar-brand font-weight-bold" href="/">
         💰 Budżet Domowy
+        <small class="text-muted" style="font-size: 0.6rem; font-weight: normal;"
+               th:if="${appVersion != null}"
+               th:text="'v' + ${appVersion}"></small>
     </a>
 
     <!-- Hamburger -->
