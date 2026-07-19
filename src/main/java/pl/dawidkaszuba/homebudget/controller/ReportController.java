@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
+import pl.dawidkaszuba.homebudget.model.dto.report.MonthlyNetDto;
 import pl.dawidkaszuba.homebudget.model.dto.report.ReportFilterDto;
 import pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto;
 import pl.dawidkaszuba.homebudget.service.CategoryService;
@@ -84,6 +85,25 @@ public class ReportController {
         return "reports/custom-report";
     }
 
+    @GetMapping("/monthly")
+    public String monthlyReport(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            Principal principal,
+            Model model
+    ) {
+        if (from == null || to == null) {
+            from = LocalDate.now().withDayOfYear(1);
+            to = LocalDate.now();
+        }
 
+        List<MonthlyNetDto> monthlyNet = reportService.getMonthlyNet(from, to, principal);
+
+        model.addAttribute("from", from);
+        model.addAttribute("to", to);
+        model.addAttribute("monthlyNet", monthlyNet);
+
+        return "reports/monthly-report";
+    }
 
 }

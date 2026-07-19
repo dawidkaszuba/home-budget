@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import pl.dawidkaszuba.homebudget.model.db.Home;
 import pl.dawidkaszuba.homebudget.model.db.Income;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
+import pl.dawidkaszuba.homebudget.model.dto.report.DateValueDto;
 import pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto;
 
 import java.math.BigDecimal;
@@ -83,4 +84,17 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
             Home home,
             LocalDateTime from,
             LocalDateTime to);
+
+    @Query("""
+            SELECT new pl.dawidkaszuba.homebudget.model.dto.report.DateValueDto(
+                i.createdAt,
+                i.value
+            )
+            FROM Income i
+            WHERE i.createdAt BETWEEN :from AND :to
+              AND i.account.home = :home
+        """)
+    List<DateValueDto> findValuesByHomeAndTimeBetween(@Param("home") Home home,
+                                                       @Param("from") LocalDateTime from,
+                                                       @Param("to") LocalDateTime to);
 }

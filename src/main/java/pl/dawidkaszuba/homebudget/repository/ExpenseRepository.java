@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import pl.dawidkaszuba.homebudget.model.db.Expense;
 import pl.dawidkaszuba.homebudget.model.db.Home;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
+import pl.dawidkaszuba.homebudget.model.dto.report.DateValueDto;
 import pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto;
 
 import java.math.BigDecimal;
@@ -82,5 +83,18 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<ReportRowDto> findForReport(@Param("home")  Home home,
                                      @Param("from") LocalDateTime from,
                                      @Param("to") LocalDateTime to);
+
+    @Query("""
+            SELECT new pl.dawidkaszuba.homebudget.model.dto.report.DateValueDto(
+                e.createdAt,
+                e.value
+            )
+            FROM Expense e
+            WHERE e.createdAt BETWEEN :from AND :to
+              AND e.account.home = :home
+        """)
+    List<DateValueDto> findValuesByHomeAndTimeBetween(@Param("home") Home home,
+                                                       @Param("from") LocalDateTime from,
+                                                       @Param("to") LocalDateTime to);
 
 }

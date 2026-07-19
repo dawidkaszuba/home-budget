@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pl"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bilans miesięczny</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<div th:insert="~{fragments/navbar}"></div>
+
+<div class="container mt-4">
+
+    <!-- ================= HEADER ================= -->
+    <h1 class="h3 mb-4">📆 Bilans miesięczny</h1>
+    <p class="text-muted">Przychody minus wydatki w kolejnych miesiącach dla wszystkich kont domu.</p>
+
+    <!-- ================= FILTRY ================= -->
+    <form method="get"
+          th:action="@{/reports/monthly}"
+          class="card card-body mb-4 shadow-sm">
+
+        <div class="form-row">
+            <div class="col-md-4 mb-2">
+                <label>Od</label>
+                <input type="date" class="form-control" name="from" th:value="${from}">
+            </div>
+
+            <div class="col-md-4 mb-2">
+                <label>Do</label>
+                <input type="date" class="form-control" name="to" th:value="${to}">
+            </div>
+
+            <div class="col-md-4 d-flex align-items-end">
+                <button class="btn btn-primary btn-block">🔍 Filtruj</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- ================= WYKRES ================= -->
+    <div th:if="${!monthlyNet.isEmpty()}" class="card shadow-sm mb-4">
+        <div class="card-body">
+            <canvas id="monthlyNetChart" height="120"></canvas>
+        </div>
+    </div>
+
+    <div th:if="${monthlyNet.isEmpty()}" class="text-center text-muted my-5">
+        Brak danych w wybranym okresie
+    </div>
+
+    <!-- ================= TABELA ================= -->
+    <div th:if="${!monthlyNet.isEmpty()}" class="d-none d-md-block">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th>Miesiąc</th>
+                <th class="text-right">Przychody</th>
+                <th class="text-right">Wydatki</th>
+                <th class="text-right">Bilans</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="row : ${monthlyNet}">
+                <td th:text="${row.month}">2026-01</td>
+                <td class="text-right" th:text="${row.income} + ' zł'"></td>
+                <td class="text-right" th:text="${row.expense} + ' zł'"></td>
+                <td class="text-right font-weight-bold"
+                    th:classappend="${row.net.signum() >= 0} ? 'text-success' : 'text-danger'"
+                    th:text="${row.net} + ' zł'"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- MOBILE -->
+    <div th:if="${!monthlyNet.isEmpty()}" class="d-md-none">
+        <div class="card mb-2 shadow-sm"
+             th:classappend="${row.net.signum() >= 0} ? 'border-success' : 'border-danger'"
+             th:each="row : ${monthlyNet}">
+            <div class="card-body">
+                <strong th:text="${row.month}"></strong><br>
+                <span class="text-muted">Przychody:</span> <span th:text="${row.income} + ' zł'"></span><br>
+                <span class="text-muted">Wydatki:</span> <span th:text="${row.expense} + ' zł'"></span><br>
+                <span class="text-muted">Bilans:</span>
+                <span th:classappend="${row.net.signum() >= 0} ? 'text-success' : 'text-danger'"
+                      class="font-weight-bold"
+                      th:text="${row.net} + ' zł'"></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    const monthlyNet = /*[[${monthlyNet}]]*/ [];
+
+    function renderMonthlyNetChart(canvasId, data) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas || data.length === 0) return;
+
+        const labels = data.map(m => m.month);
+        const values = data.map(m => Number(m.net));
+        const colors = values.map(v => v >= 0 ? '#28a745' : '#dc3545');
+
+        new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Bilans (przychody - wydatki)',
+                    data: values,
+                    backgroundColor: colors
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `${ctx.raw >= 0 ? 'Odłożono' : 'Przekroczono'}: ${ctx.raw} zł`
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    renderMonthlyNetChart('monthlyNetChart', monthlyNet);
+
+    /*]]>*/
+</script>
+
+</body>
+</html>

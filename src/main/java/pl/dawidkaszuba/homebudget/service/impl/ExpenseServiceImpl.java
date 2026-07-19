@@ -15,6 +15,7 @@ import pl.dawidkaszuba.homebudget.model.db.*;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.CreateExpenseDto;
 import pl.dawidkaszuba.homebudget.model.dto.expense.UpdateExpenseDto;
+import pl.dawidkaszuba.homebudget.model.dto.report.DateValueDto;
 import pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto;
 import pl.dawidkaszuba.homebudget.repository.AccountRepository;
 import pl.dawidkaszuba.homebudget.repository.CategoryRepository;
@@ -153,5 +154,12 @@ public class ExpenseServiceImpl implements ExpenseService {
             return expenseRepository.findForReport(home, from, to);
         }
         return expenseRepository.findForReport(home, from, to, categoryIds);
+    }
+
+    @Override
+    public List<DateValueDto> findValuesByHomeAndTimeBetween(Principal principal, LocalDateTime from, LocalDateTime to) {
+        BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
+        Home home = budgetUser.getHome();
+        return expenseRepository.findValuesByHomeAndTimeBetween(home, from, to);
     }
 }

@@ -7,6 +7,7 @@ import pl.dawidkaszuba.homebudget.model.db.Income;
 import pl.dawidkaszuba.homebudget.model.dto.category.CategoryAmountDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.CreateIncomeDto;
 import pl.dawidkaszuba.homebudget.model.dto.income.UpdateIncomeDto;
+import pl.dawidkaszuba.homebudget.model.dto.report.DateValueDto;
 import pl.dawidkaszuba.homebudget.model.dto.report.ReportRowDto;
 
 import java.math.BigDecimal;
@@ -34,4 +35,6 @@ public interface IncomeService {
     List<CategoryAmountDto> getAllIncomesByHomeAndCategory(Principal principal, LocalDateTime from, LocalDateTime to);
 
     List<ReportRowDto> findForReport(Principal principal, List<Long> categoryIds, LocalDateTime from, LocalDateTime to);
+
+    List<DateValueDto> findValuesByHomeAndTimeBetween(Principal principal, LocalDateTime from, LocalDateTime to);
 }

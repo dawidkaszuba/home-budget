@@ -20,6 +20,7 @@ public class HomeServiceImpl implements HomeService {
 
 
     @Transactional(readOnly = true)
+    @Override
     public Home getHomeByPrincipal(Principal principal) {
         BudgetUser budgetUser = budgetUserService.getBudgetUserByPrincipal(principal);
         return budgetUser.getHome();
