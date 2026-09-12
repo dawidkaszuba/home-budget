@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>pl.dawidkaszuba</groupId>
 	<artifactId>home-budget</artifactId>
-	<version>1.14.0</version>
+	<version>1.15.0</version>
 	<name>home-budget</name>
     <packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
@@ -82,6 +82,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
 
         <dependency>

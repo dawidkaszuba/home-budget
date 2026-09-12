@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
+                        .requestMatchers("/actuator/health", "/actuator/health/**", "/actuator/prometheus/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/activate").permitAll()
                         .requestMatchers("/categories/**").hasRole("ADMIN")
                         .requestMatchers("/accounts/**").hasRole("ADMIN")
